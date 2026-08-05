@@ -12,4 +12,4 @@ env/
 
 # Local raw datasets
 data/raw/*
-!data/raw/.gitkeep
+!data/raw/.gitkeep.vscode/
