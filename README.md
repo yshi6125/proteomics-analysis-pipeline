@@ -55,6 +55,12 @@ results/     Processed tables and analysis outputs
 * Protein-intensity visualization
 * Normalization assessment
 
+## Run the Initial Normalization Diagnostics
+
+```bash
+/opt/anaconda3/bin/python src/initial_normalization_diagnostics.py
+```
+
 ## Planned Analyses
 
 * Sample correlation analysis

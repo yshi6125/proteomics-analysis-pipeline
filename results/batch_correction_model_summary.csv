@@ -1,0 +1,5 @@
+protein_identifier,row_index,number_of_observations,correction_status,reason_not_corrected,estimated_batch_coefficients
+P1,0,7,corrected,,{'batch__B2': 0.5999999999999988}
+P2,0,8,corrected,,{'batch__B2': 1.0000000000000004}
+P3,1,8,corrected,,{'batch__B2': 1.0000000000000022}
+P4,1,8,corrected,,{'batch__B2': 1.000000000000001}
