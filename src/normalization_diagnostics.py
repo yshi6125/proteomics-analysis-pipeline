@@ -1,13 +1,7 @@
-"""Proteomics data-quality diagnostics for the abundance table.
+"""Reusable normalization diagnostics for QC-approved abundance data.
 
-Workflow
---------
-1. Check missing values
-2. Inspect abundance distributions
-3. PCA
-4. Correlation heatmap
-5. Hierarchical clustering
-6. Outlier detection
+The same diagnostics can be run before and after approved preprocessing. Sample
+columns are always resolved from ``metadata["sample_id"]`` in metadata row order.
 
 The module performs diagnosis only. It does not transform, normalize, scale,
 impute the analysis dataframe, or batch-correct the abundance values.
@@ -17,216 +11,152 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
-import re
 import warnings
 
 import numpy as np
 import pandas as pd
 
 
-SCRIPT_DIR: Path = Path(__file__).resolve().parent
-# When stored at ``project/src/initial_normalization_diagnostics.py``, the project root is the
-# parent of ``src``. The fallback also allows the module to work if it is placed
-# directly in the project root.
-PROJECT_ROOT: Path = SCRIPT_DIR.parent if SCRIPT_DIR.name == "src" else SCRIPT_DIR
-RAW_DATA_PATH: Path = PROJECT_ROOT / "data" / "raw" / "abundantdata.xlsx"
-FIGURES_DIR: Path = PROJECT_ROOT / "figures"
-RESULTS_DIR: Path = PROJECT_ROOT / "results"
-
-# Exact pattern for the 20 original abundance columns, e.g.
-# Abundance.NDM_B1_1 or Abundance.DM_B2_20.
-ABUNDANCE_PATTERN = re.compile(r"^Abundance\.(?:NDM|DM)_B\d+_\d+$")
-
-
-def load_raw_data(file_path: Path = RAW_DATA_PATH) -> pd.DataFrame:
-    """Load the raw Excel workbook without modifying its values."""
-    if not file_path.exists():
-        raise FileNotFoundError(f"Input file not found: {file_path}")
-    return pd.read_excel(file_path)
-
-
-def promote_first_row_to_header(data: pd.DataFrame) -> pd.DataFrame:
-    """Return a copy using the first data row as column names."""
-    if data.empty:
-        raise ValueError("Cannot promote a header from an empty dataframe.")
-
-    result = data.copy()
-    result.columns = result.iloc[0].tolist()
-    return result.iloc[1:].reset_index(drop=True)
-
-
-def print_data_overview(data: pd.DataFrame) -> None:
-    """Print the dataframe shape, column names, and first five rows."""
-    print(f"DataFrame dimensions: {data.shape}")
-    print(f"Column names: {data.columns.tolist()}")
-    print("First five rows:")
-    print(data.head(5))
-
+PROJECT_ROOT: Path = Path(__file__).resolve().parent.parent
+PROCESSED_DATA_PATH: Path = PROJECT_ROOT / "data" / "processed" / "data_qc.pkl"
+METADATA_PATH: Path = PROJECT_ROOT / "data" / "processed" / "sample_metadata.csv"
+FIGURES_DIR: Path = PROJECT_ROOT / "figures" / "normalization_diagnostics"
+RESULTS_DIR: Path = PROJECT_ROOT / "results" / "normalization_diagnostics"
+REQUIRED_METADATA_COLUMNS = ["sample_id", "group", "batch", "original_column"]
 
 def _ensure_output_directories() -> None:
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def resolve_abundance_columns(df: pd.DataFrame) -> list[str]:
-    """Return only the original abundance columns using an exact name pattern."""
-    abundance_cols = [
-        column
-        for column in df.columns
-        if isinstance(column, str) and ABUNDANCE_PATTERN.fullmatch(column)
-    ]
-    if not abundance_cols:
+def _validate_output_prefix(output_prefix: str) -> str:
+    """Validate a filename-safe, non-empty diagnostic-run prefix."""
+    if not isinstance(output_prefix, str) or not output_prefix.strip():
+        raise ValueError("output_prefix must be a non-empty string.")
+    prefix = output_prefix.strip()
+    if any(character not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-" for character in prefix):
         raise ValueError(
-            "No original abundance columns were found. Expected names such as "
-            "'Abundance.NDM_B1_1' or 'Abundance.DM_B2_20'."
+            "output_prefix may contain only letters, numbers, '.', '_', and '-'."
         )
-    return abundance_cols
+    return prefix
 
 
-def copy_numeric_abundances(df: pd.DataFrame) -> pd.DataFrame:
-    """Return a numeric copy of the original abundance columns."""
-    abundance_cols = resolve_abundance_columns(df)
-    abundance_df = df.loc[:, abundance_cols].copy()
-    return abundance_df.apply(pd.to_numeric, errors="coerce")
+def _output_path(directory: Path, output_prefix: str, filename: str) -> Path:
+    """Build a prefixed output path after validating the prefix."""
+    return directory / f"{_validate_output_prefix(output_prefix)}_{filename}"
 
 
-def create_sample_metadata(df: pd.DataFrame) -> pd.DataFrame:
-    """Parse disease, batch, and sample number from abundance-column names."""
-    rows: list[dict[str, Any]] = []
+def load_qc_data(
+    data_path: Path = PROCESSED_DATA_PATH,
+    metadata_path: Path = METADATA_PATH,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Load QC-approved data and standardized sample metadata."""
+    if not data_path.exists():
+        raise FileNotFoundError(f"QC-approved dataframe not found: {data_path}")
+    if not metadata_path.exists():
+        raise FileNotFoundError(f"Sample metadata not found: {metadata_path}")
+    df = pd.read_pickle(data_path)
+    metadata = pd.read_csv(metadata_path)
+    resolve_abundance_columns(df, metadata)
+    return df, metadata
 
-    for column in resolve_abundance_columns(df):
-        sample_id = column.removeprefix("Abundance.")
-        parts = sample_id.split("_")
-        if len(parts) != 3:
-            raise ValueError(f"Unexpected abundance-column format: {column}")
 
-        disease, batch, sample_number = parts
-        rows.append(
-            {
-                "sample": column,
-                "sample_id": sample_id,
-                "disease": disease,
-                "batch": batch,
-                "sample_number": int(sample_number),
-            }
+def resolve_abundance_columns(
+    df: pd.DataFrame, metadata: pd.DataFrame
+) -> list[str]:
+    """Resolve sample columns from authoritative metadata order."""
+    missing_columns = [
+        column for column in REQUIRED_METADATA_COLUMNS if column not in metadata.columns
+    ]
+    if missing_columns:
+        raise ValueError(f"Metadata is missing required columns: {missing_columns}")
+    duplicated_required_columns = [
+        column
+        for column in REQUIRED_METADATA_COLUMNS
+        if list(metadata.columns).count(column) > 1
+    ]
+    if duplicated_required_columns:
+        raise ValueError(
+            "Required metadata column names must be unique. Duplicates: "
+            f"{duplicated_required_columns}"
         )
+    if metadata.empty:
+        raise ValueError("Metadata must contain at least one sample row.")
+    required_metadata = metadata.loc[:, REQUIRED_METADATA_COLUMNS]
+    columns_with_missing_values = required_metadata.columns[
+        required_metadata.isna().any()
+    ].tolist()
+    if columns_with_missing_values:
+        raise ValueError(
+            "Required metadata columns contain missing values: "
+            f"{columns_with_missing_values}"
+        )
+    columns_with_empty_values = [
+        column
+        for column in REQUIRED_METADATA_COLUMNS
+        if metadata[column].map(
+            lambda value: isinstance(value, str) and not value.strip()
+        ).any()
+    ]
+    if columns_with_empty_values:
+        raise ValueError(
+            "Required metadata columns contain empty string values: "
+            f"{columns_with_empty_values}"
+        )
+    sample_ids = metadata["sample_id"].tolist()
+    if not all(isinstance(value, str) and value.strip() for value in sample_ids):
+        raise ValueError("metadata['sample_id'] must contain non-empty strings.")
+    if len(sample_ids) != len(set(sample_ids)):
+        raise ValueError("metadata['sample_id'] values must be unique.")
+    if metadata["original_column"].duplicated().any():
+        raise ValueError("metadata['original_column'] values must be unique.")
+    missing = [sample_id for sample_id in sample_ids if sample_id not in df.columns]
+    if missing:
+        raise ValueError(f"Dataframe is missing metadata sample columns: {missing}")
+    return sample_ids
 
-    metadata = pd.DataFrame(rows).set_index("sample")
-    return metadata
 
-
-def check_missing_values(
-    df: pd.DataFrame,
-) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any]]:
-    """Summarize missingness by sample and by protein and create QC plots."""
-    import matplotlib.pyplot as plt
-
-    _ensure_output_directories()
-    abundance_df = copy_numeric_abundances(df)
-
-    sample_missingness = pd.DataFrame(
-        {
-            "observed_count": abundance_df.count(axis=0),
-            "missing_count": abundance_df.isna().sum(axis=0),
-            "missing_percent": abundance_df.isna().mean(axis=0) * 100,
+def copy_numeric_abundances(
+    df: pd.DataFrame, metadata: pd.DataFrame
+) -> pd.DataFrame:
+    """Return a numeric abundance copy in authoritative metadata order."""
+    abundance_cols = resolve_abundance_columns(df, metadata)
+    raw_abundances = df.loc[:, abundance_cols].copy()
+    abundance_df = raw_abundances.apply(pd.to_numeric, errors="coerce")
+    malformed = raw_abundances.notna() & abundance_df.isna()
+    if malformed.any().any():
+        examples = {
+            column: raw_abundances.loc[malformed[column], column]
+            .astype(str)
+            .unique()[:5]
+            .tolist()
+            for column in abundance_cols
+            if malformed[column].any()
         }
-    )
-    sample_missingness.index.name = "sample"
-
-    protein_missingness = pd.DataFrame(
-        {
-            "observed_count": abundance_df.count(axis=1),
-            "missing_count": abundance_df.isna().sum(axis=1),
-            "missing_percent": abundance_df.isna().mean(axis=1) * 100,
-        },
-        index=df.index,
-    )
-    if "Accession" in df.columns:
-        protein_missingness.insert(0, "Accession", df["Accession"].values)
-
-    sample_missingness.to_csv(RESULTS_DIR / "sample_missingness.csv")
-    protein_missingness.to_csv(RESULTS_DIR / "protein_missingness.csv", index=False)
-
-    figure, axis = plt.subplots(figsize=(14, 6))
-    sample_missingness["missing_percent"].plot(kind="bar", ax=axis)
-    axis.set_title("Missing Abundance Values by Sample")
-    axis.set_xlabel("Sample")
-    axis.set_ylabel("Missing values (%)")
-    axis.tick_params(axis="x", labelrotation=60)
-    figure.tight_layout()
-    figure.savefig(FIGURES_DIR / "missingness_by_sample.png", dpi=300, bbox_inches="tight")
-    plt.show()
-    plt.close(figure)
-
-    figure, axis = plt.subplots(figsize=(10, 6))
-    axis.hist(protein_missingness["missing_percent"], bins=21, edgecolor="black")
-    axis.set_title("Distribution of Missingness Across Proteins")
-    axis.set_xlabel("Missing values per protein (%)")
-    axis.set_ylabel("Number of proteins")
-    figure.tight_layout()
-    figure.savefig(FIGURES_DIR / "missingness_by_protein.png", dpi=300, bbox_inches="tight")
-    plt.show()
-    plt.close(figure)
-
-    max_sample_missing = float(sample_missingness["missing_percent"].max())
-    median_sample_missing = float(sample_missingness["missing_percent"].median())
-    sample_missing_spread = float(
-        sample_missingness["missing_percent"].max()
-        - sample_missingness["missing_percent"].min()
-    )
-    proteins_over_half_missing = int((protein_missingness["missing_percent"] > 50).sum())
-    proportion_over_half_missing = float(
-        (protein_missingness["missing_percent"] > 50).mean()
-    )
-
-    if max_sample_missing >= 40 or sample_missing_spread >= 25:
-        interpretation = (
-            "Missingness is high or strongly unequal across samples. Samples with much "
-            "higher missingness may have lower detection depth or technical problems and "
-            "should be reviewed before downstream analysis."
+        raise ValueError(
+            "Abundance columns contain non-missing values that cannot be parsed as "
+            f"numeric. Examples by sample: {examples}"
         )
-    elif max_sample_missing >= 20 or sample_missing_spread >= 10:
-        interpretation = (
-            "Missingness is moderate or somewhat unequal across samples. Review the "
-            "sample-level plot and determine whether missingness follows disease group, "
-            "batch, or individual samples."
+    infinite_count = int(np.isinf(abundance_df.to_numpy(dtype=float)).sum())
+    if infinite_count:
+        raise ValueError(
+            f"Abundance columns contain {infinite_count} infinite values."
         )
-    else:
-        interpretation = (
-            "Sample-level missingness appears relatively low and comparable. Missingness "
-            "alone does not identify a clear problematic sample."
-        )
-
-    print("\n=== Missing-value assessment ===")
-    print(sample_missingness.sort_values("missing_percent", ascending=False))
-    print(f"Median sample missingness: {median_sample_missing:.2f}%")
-    print(f"Maximum sample missingness: {max_sample_missing:.2f}%")
-    print(f"Range of sample missingness: {sample_missing_spread:.2f} percentage points")
-    print(
-        "Proteins with >50% missing values: "
-        f"{proteins_over_half_missing} ({proportion_over_half_missing:.1%})"
-    )
-    print(f"Conclusion: {interpretation}")
-
-    diagnostics = {
-        "median_sample_missing_percent": median_sample_missing,
-        "max_sample_missing_percent": max_sample_missing,
-        "sample_missingness_spread": sample_missing_spread,
-        "proteins_over_half_missing": proteins_over_half_missing,
-        "proportion_proteins_over_half_missing": proportion_over_half_missing,
-        "interpretation": interpretation,
-    }
-    return sample_missingness, protein_missingness, diagnostics
+    return abundance_df
 
 
 def assess_distribution(
     df: pd.DataFrame,
+    metadata: pd.DataFrame,
+    output_prefix: str,
 ) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any]]:
-    """Inspect raw abundance distributions without transforming or scaling data."""
+    """Inspect and compare sample distributions on the current abundance scale."""
     import matplotlib.pyplot as plt
 
     _ensure_output_directories()
-    abundance_df = copy_numeric_abundances(df)
+    prefix = _validate_output_prefix(output_prefix)
+    abundance_scale = str(df.attrs.get("abundance_scale", "unknown"))
+    abundance_df = copy_numeric_abundances(df, metadata)
 
     summary = pd.DataFrame(
         {
@@ -239,7 +169,7 @@ def assess_distribution(
         }
     )
     summary.index.name = "sample"
-    summary.to_csv(RESULTS_DIR / "sample_distribution_summary.csv")
+    summary.to_csv(_output_path(RESULTS_DIR, prefix, "sample_distribution_summary.csv"))
 
     figure, axis = plt.subplots(figsize=(16, 7))
     observed_by_sample = [abundance_df[column].dropna() for column in abundance_df.columns]
@@ -257,12 +187,16 @@ def assess_distribution(
             labels=abundance_df.columns,
             showfliers=False,
         )
-    axis.set_title("Raw Protein-Abundance Distributions")
+    axis.set_title(f"Protein-Abundance Distributions ({abundance_scale} scale)")
     axis.set_xlabel("Sample")
-    axis.set_ylabel("Raw abundance")
+    axis.set_ylabel(f"Abundance ({abundance_scale} scale)")
     axis.tick_params(axis="x", labelrotation=60)
     figure.tight_layout()
-    figure.savefig(FIGURES_DIR / "raw_abundance_boxplots.png", dpi=300, bbox_inches="tight")
+    figure.savefig(
+        _output_path(FIGURES_DIR, prefix, "abundance_boxplots.png"),
+        dpi=300,
+        bbox_inches="tight",
+    )
     plt.show()
     plt.close(figure)
 
@@ -282,24 +216,32 @@ def assess_distribution(
             label=column,
         )
         plotted += 1
-    axis.set_title("Raw Protein-Abundance Density Profiles")
-    axis.set_xlabel("Raw abundance")
+    axis.set_title(f"Protein-Abundance Density Profiles ({abundance_scale} scale)")
+    axis.set_xlabel(f"Abundance ({abundance_scale} scale)")
     axis.set_ylabel("Density")
     if plotted:
         axis.legend(loc="upper left", bbox_to_anchor=(1.02, 1), fontsize="small")
     figure.tight_layout()
-    figure.savefig(FIGURES_DIR / "raw_abundance_density.png", dpi=300, bbox_inches="tight")
+    figure.savefig(
+        _output_path(FIGURES_DIR, prefix, "abundance_density.png"),
+        dpi=300,
+        bbox_inches="tight",
+    )
     plt.show()
     plt.close(figure)
 
     figure, axis = plt.subplots(figsize=(14, 6))
     summary["median"].plot(kind="bar", ax=axis)
-    axis.set_title("Median Raw Abundance by Sample")
+    axis.set_title(f"Median Abundance by Sample ({abundance_scale} scale)")
     axis.set_xlabel("Sample")
     axis.set_ylabel("Median abundance")
     axis.tick_params(axis="x", labelrotation=60)
     figure.tight_layout()
-    figure.savefig(FIGURES_DIR / "sample_medians_raw.png", dpi=300, bbox_inches="tight")
+    figure.savefig(
+        _output_path(FIGURES_DIR, prefix, "sample_medians.png"),
+        dpi=300,
+        bbox_inches="tight",
+    )
     plt.show()
     plt.close(figure)
 
@@ -308,49 +250,119 @@ def assess_distribution(
     proportion_strong_skew = float((valid_skewness > 1.0).mean())
 
     valid_medians = summary["median"].dropna()
-    median_cv = (
-        float(valid_medians.std(ddof=1) / valid_medians.mean())
-        if len(valid_medians) > 1 and valid_medians.mean() != 0
-        else float("nan")
-    )
-    median_ratio = (
-        float(valid_medians.max() / valid_medians.min())
-        if not valid_medians.empty and valid_medians.min() > 0
-        else float("nan")
-    )
+    scale_key = abundance_scale.strip().lower()
+    linear_scale = scale_key in {"linear", "linear_scaled"}
+    log2_scale = scale_key == "log2"
+    median_cv = float("nan")
+    median_ratio = float("nan")
+    median_log2_range = float("nan")
+    median_log2_standard_deviation = float("nan")
+    if linear_scale:
+        median_cv = (
+            float(valid_medians.std(ddof=1) / valid_medians.mean())
+            if len(valid_medians) > 1 and valid_medians.mean() != 0
+            else float("nan")
+        )
+        median_ratio = (
+            float(valid_medians.max() / valid_medians.min())
+            if not valid_medians.empty and valid_medians.min() > 0
+            else float("nan")
+        )
+    elif log2_scale:
+        median_log2_range = (
+            float(valid_medians.max() - valid_medians.min())
+            if not valid_medians.empty
+            else float("nan")
+        )
+        median_log2_standard_deviation = (
+            float(valid_medians.std(ddof=1))
+            if len(valid_medians) > 1
+            else float("nan")
+        )
 
-    skew_statement = (
-        "Most samples are strongly right-skewed; a log2 transformation may be worth "
-        "evaluating before PCA and correlation analysis. No transformation was applied."
-        if proportion_strong_skew >= 0.60 and median_skewness > 1.0
-        else "The raw distributions are not consistently strongly right-skewed across samples."
-    )
+    strongly_skewed = proportion_strong_skew >= 0.60 and median_skewness > 1.0
+    if strongly_skewed and scale_key in {"linear", "linear_scaled"}:
+        skew_statement = (
+            "Most samples are strongly right-skewed; a log2 transformation may be "
+            "worth evaluating before PCA and correlation analysis. No transformation "
+            "was applied by this diagnostic function."
+        )
+    elif strongly_skewed:
+        skew_statement = (
+            f"Most samples remain strongly right-skewed on the {abundance_scale} "
+            "scale; review the distributions without assuming another transformation "
+            "is appropriate."
+        )
+    else:
+        skew_statement = (
+            "The distributions are not consistently strongly right-skewed across "
+            "samples."
+        )
 
-    shift_statement = (
-        "Sample medians differ substantially, which may indicate a global intensity shift. "
-        "This plot alone cannot distinguish technical bias from a true global biological effect."
-        if np.isfinite(median_cv)
-        and np.isfinite(median_ratio)
-        and median_cv >= 0.15
-        and median_ratio >= 1.50
-        else "Sample medians are broadly comparable, with no clear large global shift by these diagnostics."
-    )
+    if linear_scale:
+        substantial_shift = (
+            np.isfinite(median_cv)
+            and np.isfinite(median_ratio)
+            and median_cv >= 0.15
+            and median_ratio >= 1.50
+        )
+        shift_statement = (
+            "Sample medians differ substantially, which may indicate a global "
+            "intensity shift. This plot alone cannot distinguish technical bias "
+            "from a true global biological effect."
+            if substantial_shift
+            else "Sample medians are broadly comparable, with no clear large global "
+            "shift by these diagnostics."
+        )
+    elif log2_scale:
+        # A one-unit range on a log2 scale corresponds to a twofold span between
+        # the smallest and largest sample medians.
+        substantial_shift = (
+            np.isfinite(median_log2_range) and median_log2_range >= 1.0
+        )
+        shift_statement = (
+            "Sample medians span at least 1 log2 unit, indicating a twofold-or-larger "
+            "range that should be reviewed for technical and biological structure."
+            if substantial_shift
+            else "Sample medians span less than 1 log2 unit, with no clear large "
+            "global shift by this diagnostic."
+        )
+    else:
+        shift_statement = (
+            "The abundance scale is unknown, so sample-median differences are "
+            "reported descriptively without applying linear- or log2-scale shift "
+            "thresholds."
+        )
 
     interpretation = f"{skew_statement} {shift_statement}"
 
     print("\n=== Distribution assessment ===")
+    print(f"Abundance scale: {abundance_scale}")
     print(summary)
     print(f"Median sample skewness: {median_skewness:.3f}")
     print(f"Samples with skewness > 1: {proportion_strong_skew:.1%}")
-    print(f"Coefficient of variation of sample medians: {median_cv:.4f}")
-    print(f"Maximum-to-minimum median ratio: {median_ratio:.4f}")
+    if linear_scale:
+        print(f"Coefficient of variation of sample medians: {median_cv:.4f}")
+        print(f"Maximum-to-minimum median ratio: {median_ratio:.4f}")
+    elif log2_scale:
+        print(f"Range of sample medians (log2 units): {median_log2_range:.4f}")
+        print(
+            "Standard deviation of sample medians (log2 units): "
+            f"{median_log2_standard_deviation:.4f}"
+        )
+    else:
+        print("Scale-dependent sample-median shift thresholds were not applied.")
     print(f"Conclusion: {interpretation}")
 
     diagnostics = {
+        "abundance_scale": abundance_scale,
+        "output_prefix": prefix,
         "median_skewness": median_skewness,
         "proportion_strongly_skewed": proportion_strong_skew,
         "median_cv": median_cv,
         "median_ratio": median_ratio,
+        "median_log2_range": median_log2_range,
+        "median_log2_standard_deviation": median_log2_standard_deviation,
         "interpretation": interpretation,
     }
     return abundance_df, summary, diagnostics
@@ -378,6 +390,7 @@ def _prepare_multivariate_matrix(
     sample_by_protein = sample_by_protein.loc[:, retained]
     removed_for_missingness = initial_features - sample_by_protein.shape[1]
 
+    temporarily_imputed_values = int(sample_by_protein.isna().sum().sum())
     medians = sample_by_protein.median(axis=0)
     sample_by_protein = sample_by_protein.fillna(medians)
 
@@ -391,6 +404,7 @@ def _prepare_multivariate_matrix(
     info = {
         "initial_features": int(initial_features),
         "features_used": int(sample_by_protein.shape[1]),
+        "temporarily_imputed_values": temporarily_imputed_values,
         "removed_for_missingness": int(removed_for_missingness),
         "removed_zero_variance": removed_zero_variance,
     }
@@ -399,7 +413,8 @@ def _prepare_multivariate_matrix(
 
 def assess_pca(
     df: pd.DataFrame,
-    metadata: pd.DataFrame | None = None,
+    metadata: pd.DataFrame,
+    output_prefix: str,
     *,
     minimum_observed_fraction: float = 0.50,
 ) -> tuple[pd.DataFrame, Any, dict[str, Any]]:
@@ -409,7 +424,8 @@ def assess_pca(
     from sklearn.decomposition import PCA
 
     _ensure_output_directories()
-    abundance_df = copy_numeric_abundances(df)
+    prefix = _validate_output_prefix(output_prefix)
+    abundance_df = copy_numeric_abundances(df, metadata)
     sample_matrix, prep_info = _prepare_multivariate_matrix(
         abundance_df,
         minimum_observed_fraction=minimum_observed_fraction,
@@ -424,18 +440,20 @@ def assess_pca(
     )
     coordinates.index.name = "sample"
 
-    if metadata is None:
-        metadata = create_sample_metadata(df)
-    metadata = metadata.reindex(coordinates.index)
-    coordinates = coordinates.join(metadata[[c for c in ["disease", "batch"] if c in metadata]])
-    coordinates.to_csv(RESULTS_DIR / "pca_coordinates.csv")
+    indexed_metadata = metadata.set_index("sample_id", drop=False).reindex(
+        coordinates.index
+    )
+    coordinates = coordinates.join(
+        indexed_metadata[[c for c in ["group", "batch"] if c in indexed_metadata]]
+    )
+    coordinates.to_csv(_output_path(RESULTS_DIR, prefix, "pca_coordinates.csv"))
 
     figure, axis = plt.subplots(figsize=(10, 8))
-    disease_values = coordinates["disease"].dropna().astype(str).unique().tolist() if "disease" in coordinates else []
+    group_values = coordinates["group"].dropna().astype(str).unique().tolist() if "group" in coordinates else []
     batch_values = coordinates["batch"].dropna().astype(str).unique().tolist() if "batch" in coordinates else []
     color_map_object = plt.get_cmap("tab10")
-    colors = color_map_object(np.linspace(0, 1, max(len(disease_values), 1)))
-    color_map = dict(zip(disease_values, colors, strict=False))
+    colors = color_map_object(np.linspace(0, 1, max(len(group_values), 1)))
+    color_map = dict(zip(group_values, colors, strict=False))
     marker_options = ["o", "s", "^", "D", "P", "X"]
     marker_map = {
         value: marker_options[index % len(marker_options)]
@@ -443,21 +461,21 @@ def assess_pca(
     }
 
     for sample, row in coordinates.iterrows():
-        disease = str(row["disease"]) if "disease" in row and pd.notna(row["disease"]) else "Unknown"
+        group = str(row["group"]) if "group" in row and pd.notna(row["group"]) else "Unknown"
         batch = str(row["batch"]) if "batch" in row and pd.notna(row["batch"]) else "Unknown"
         axis.scatter(
             row["PC1"],
             row["PC2"],
             s=85,
-            color=color_map.get(disease, "gray"),
+            color=color_map.get(group, "gray"),
             marker=marker_map.get(batch, "o"),
         )
-        axis.annotate(sample.removeprefix("Abundance."), (row["PC1"], row["PC2"]), xytext=(4, 4), textcoords="offset points", fontsize=8)
+        axis.annotate(sample, (row["PC1"], row["PC2"]), xytext=(4, 4), textcoords="offset points", fontsize=8)
 
     legend_handles: list[Line2D] = []
     legend_handles.extend(
-        Line2D([0], [0], marker="o", color="none", markerfacecolor=color_map[value], label=f"Disease: {value}", markersize=8)
-        for value in disease_values
+        Line2D([0], [0], marker="o", color="none", markerfacecolor=color_map[value], label=f"Group: {value}", markersize=8)
+        for value in group_values
     )
     legend_handles.extend(
         Line2D([0], [0], marker=marker_map[value], color="black", linestyle="none", label=f"Batch: {value}", markersize=8)
@@ -472,13 +490,17 @@ def assess_pca(
     axis.set_xlabel(f"PC1 ({pc1_variance:.1%} variance explained)")
     axis.set_ylabel(f"PC2 ({pc2_variance:.1%} variance explained)")
     figure.tight_layout()
-    figure.savefig(FIGURES_DIR / "pca_samples.png", dpi=300, bbox_inches="tight")
+    figure.savefig(
+        _output_path(FIGURES_DIR, prefix, "pca_samples.png"),
+        dpi=300,
+        bbox_inches="tight",
+    )
     plt.show()
     plt.close(figure)
 
     interpretation = (
         "PCA displays the dominant sample-level variation. Review whether separation "
-        "follows disease, batch, or individual samples. PCA alone does not prove that "
+        "follows biological group, batch, or individual samples. PCA alone does not prove that "
         "batch correction is required."
     )
 
@@ -489,6 +511,7 @@ def assess_pca(
     )
     print(f"Proteins initially available: {prep_info['initial_features']}")
     print(f"Proteins used for PCA: {prep_info['features_used']}")
+    print(f"Values temporarily median-imputed: {prep_info['temporarily_imputed_values']}")
     print(f"Removed for excessive missingness: {prep_info['removed_for_missingness']}")
     print(f"Removed for zero variance: {prep_info['removed_zero_variance']}")
     print(f"PC1 variance explained: {pc1_variance:.2%}")
@@ -497,6 +520,7 @@ def assess_pca(
 
     diagnostics = {
         **prep_info,
+        "output_prefix": prefix,
         "pc1_variance": pc1_variance,
         "pc2_variance": pc2_variance,
         "interpretation": interpretation,
@@ -506,6 +530,8 @@ def assess_pca(
 
 def assess_correlation_heatmap(
     df: pd.DataFrame,
+    metadata: pd.DataFrame,
+    output_prefix: str,
     *,
     method: str = "pearson",
     minimum_pairwise_observations: int = 10,
@@ -514,23 +540,32 @@ def assess_correlation_heatmap(
     import matplotlib.pyplot as plt
 
     _ensure_output_directories()
+    prefix = _validate_output_prefix(output_prefix)
     if method not in {"pearson", "spearman"}:
         raise ValueError("method must be 'pearson' or 'spearman'.")
 
-    abundance_df = copy_numeric_abundances(df)
+    abundance_df = copy_numeric_abundances(df, metadata)
     correlation = abundance_df.corr(method=method, min_periods=minimum_pairwise_observations)
-    correlation.to_csv(RESULTS_DIR / f"sample_correlation_{method}.csv")
+    correlation.to_csv(
+        _output_path(RESULTS_DIR, prefix, f"sample_correlation_{method}.csv")
+    )
 
     figure, axis = plt.subplots(figsize=(12, 10))
     image = axis.imshow(correlation.to_numpy(), vmin=-1, vmax=1, cmap="coolwarm")
-    short_labels = [column.removeprefix("Abundance.") for column in correlation.columns]
+    short_labels = correlation.columns.tolist()
     axis.set_xticks(range(len(short_labels)), labels=short_labels, rotation=90, fontsize=8)
     axis.set_yticks(range(len(short_labels)), labels=short_labels, fontsize=8)
     axis.set_title(f"Sample Correlation Heatmap ({method.title()})")
     colorbar = figure.colorbar(image, ax=axis)
     colorbar.set_label("Correlation")
     figure.tight_layout()
-    figure.savefig(FIGURES_DIR / f"sample_correlation_heatmap_{method}.png", dpi=300, bbox_inches="tight")
+    figure.savefig(
+        _output_path(
+            FIGURES_DIR, prefix, f"sample_correlation_heatmap_{method}.png"
+        ),
+        dpi=300,
+        bbox_inches="tight",
+    )
     plt.show()
     plt.close(figure)
 
@@ -542,7 +577,9 @@ def assess_correlation_heatmap(
         ~np.eye(len(correlation), dtype=bool)
     ).median(axis=1)
     sample_median_correlations.name = "median_correlation_to_other_samples"
-    sample_median_correlations.to_csv(RESULTS_DIR / "sample_median_correlations.csv")
+    sample_median_correlations.to_csv(
+        _output_path(RESULTS_DIR, prefix, "sample_median_correlations.csv")
+    )
 
     # Calculate median absolute deviation manually because Series.mad() was
     # removed from modern pandas and represented mean absolute deviation rather
@@ -580,12 +617,12 @@ def assess_correlation_heatmap(
     elif median_correlation >= 0.75:
         interpretation = (
             "Overall sample correlation is moderate to high, but the heatmap should be "
-            "reviewed for disease-, batch-, or sample-specific patterns."
+            "reviewed for biological-group-, batch-, or sample-specific patterns."
         )
     else:
         interpretation = (
             "Overall correlations are relatively low. This may reflect strong biology, "
-            "unequal missingness, raw-scale skewness, or technical variation."
+            "unequal missingness, scale-dependent skewness, or technical variation."
         )
 
     print("\n=== Correlation assessment ===")
@@ -603,6 +640,7 @@ def assess_correlation_heatmap(
     print(f"Conclusion: {interpretation}")
 
     diagnostics = {
+        "output_prefix": prefix,
         "method": method,
         "median_pairwise_correlation": median_correlation,
         "minimum_pairwise_correlation": minimum_correlation,
@@ -618,7 +656,8 @@ def assess_correlation_heatmap(
 
 def assess_hierarchical_clustering(
     df: pd.DataFrame,
-    metadata: pd.DataFrame | None = None,
+    metadata: pd.DataFrame,
+    output_prefix: str,
     *,
     minimum_observed_fraction: float = 0.50,
     metric: str = "correlation",
@@ -630,7 +669,8 @@ def assess_hierarchical_clustering(
     from scipy.spatial.distance import pdist
 
     _ensure_output_directories()
-    abundance_df = copy_numeric_abundances(df)
+    prefix = _validate_output_prefix(output_prefix)
+    abundance_df = copy_numeric_abundances(df, metadata)
     sample_matrix, prep_info = _prepare_multivariate_matrix(
         abundance_df,
         minimum_observed_fraction=minimum_observed_fraction,
@@ -649,13 +689,13 @@ def assess_hierarchical_clustering(
 
     linkage_matrix = linkage(distances, method=linkage_method)
 
-    # Use metadata in the displayed leaf labels so disease and batch patterns can
+    # Use metadata in the displayed leaf labels so biological-group and batch patterns can
     # be assessed directly from the dendrogram.
-    if metadata is None:
-        metadata = create_sample_metadata(df)
-    matched_metadata = metadata.reindex(sample_matrix.index)
+    matched_metadata = metadata.set_index("sample_id", drop=False).reindex(
+        sample_matrix.index
+    )
     missing_metadata_samples = matched_metadata.index[
-        matched_metadata[[c for c in ["disease", "batch"] if c in matched_metadata]].isna().all(axis=1)
+        matched_metadata[[c for c in ["group", "batch"] if c in matched_metadata]].isna().all(axis=1)
     ].tolist() if not matched_metadata.empty else list(sample_matrix.index)
     if missing_metadata_samples:
         warnings.warn(
@@ -666,11 +706,11 @@ def assess_hierarchical_clustering(
 
     labels: list[str] = []
     for sample in sample_matrix.index:
-        short_name = sample.removeprefix("Abundance.")
-        disease = (
-            str(matched_metadata.at[sample, "disease"])
-            if "disease" in matched_metadata.columns
-            and pd.notna(matched_metadata.at[sample, "disease"])
+        short_name = sample
+        group = (
+            str(matched_metadata.at[sample, "group"])
+            if "group" in matched_metadata.columns
+            and pd.notna(matched_metadata.at[sample, "group"])
             else "?"
         )
         batch = (
@@ -679,7 +719,7 @@ def assess_hierarchical_clustering(
             and pd.notna(matched_metadata.at[sample, "batch"])
             else "?"
         )
-        labels.append(f"{short_name} [{disease}, {batch}]")
+        labels.append(f"{short_name} [{group}, {batch}]")
 
     figure, axis = plt.subplots(figsize=(16, 8))
     dendrogram(linkage_matrix, labels=labels, leaf_rotation=75, ax=axis)
@@ -689,12 +729,16 @@ def assess_hierarchical_clustering(
     axis.set_xlabel("Sample")
     axis.set_ylabel("Distance")
     figure.tight_layout()
-    figure.savefig(FIGURES_DIR / "hierarchical_clustering_dendrogram.png", dpi=300, bbox_inches="tight")
+    figure.savefig(
+        _output_path(FIGURES_DIR, prefix, "hierarchical_clustering_dendrogram.png"),
+        dpi=300,
+        bbox_inches="tight",
+    )
     plt.show()
     plt.close(figure)
 
     interpretation = (
-        "Review whether samples cluster primarily by disease, by batch, or whether one "
+        "Review whether samples cluster primarily by biological group, by batch, or whether one "
         "sample branches separately from all others. Clustering is descriptive and does "
         "not by itself establish a batch effect or justify sample removal."
     )
@@ -703,11 +747,19 @@ def assess_hierarchical_clustering(
     print(f"Distance metric: {metric}")
     print(f"Linkage method: {linkage_method}")
     print(f"Proteins used: {prep_info['features_used']}")
-    print("Dendrogram label format: sample [disease, batch]")
+    print(f"Values temporarily median-imputed: {prep_info['temporarily_imputed_values']}")
+    print(f"Removed for excessive missingness: {prep_info['removed_for_missingness']}")
+    print(f"Removed for zero variance: {prep_info['removed_zero_variance']}")
+    print(
+        "These preprocessing steps were temporary for clustering visualization; "
+        "the original dataframe was not modified."
+    )
+    print("Dendrogram label format: sample [group, batch]")
     print(f"Conclusion: {interpretation}")
 
     diagnostics = {
         **prep_info,
+        "output_prefix": prefix,
         "metric": metric,
         "linkage_method": linkage_method,
         "interpretation": interpretation,
@@ -717,6 +769,8 @@ def assess_hierarchical_clustering(
 
 def assess_outliers(
     df: pd.DataFrame,
+    metadata: pd.DataFrame,
+    output_prefix: str,
     pca_coordinates: pd.DataFrame | None = None,
     correlation_matrix: pd.DataFrame | None = None,
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
@@ -726,22 +780,25 @@ def assess_outliers(
     criteria are met:
       1. unusually high missingness,
       2. unusually low median correlation to other samples,
-      3. unusually large robust distance from the PCA center.
+      3. unusually large robust distance from the PCA center,
+      4. unusually high or low sample median abundance.
 
     Flags require scientific review and do not justify automatic sample removal.
     """
     import matplotlib.pyplot as plt
 
     _ensure_output_directories()
-    abundance_df = copy_numeric_abundances(df)
+    prefix = _validate_output_prefix(output_prefix)
+    abundance_df = copy_numeric_abundances(df, metadata)
 
     if pca_coordinates is None:
-        pca_coordinates, _, _ = assess_pca(df)
+        pca_coordinates, _, _ = assess_pca(df, metadata, prefix)
     if correlation_matrix is None:
-        correlation_matrix, _ = assess_correlation_heatmap(df)
+        correlation_matrix, _ = assess_correlation_heatmap(df, metadata, prefix)
 
     sample_names = abundance_df.columns
     missing_percent = abundance_df.isna().mean(axis=0) * 100
+    sample_median_abundance = abundance_df.median(axis=0)
 
     corr_no_diagonal = correlation_matrix.copy()
     np.fill_diagonal(corr_no_diagonal.values, np.nan)
@@ -769,29 +826,45 @@ def assess_outliers(
         robust_z = 0.6745 * (series - median) / mad
         return robust_z < threshold
 
+    def robust_two_sided_flag(
+        series: pd.Series, threshold: float = 3.5
+    ) -> pd.Series:
+        median = series.median()
+        mad = (series - median).abs().median()
+        if mad == 0 or pd.isna(mad):
+            return pd.Series(False, index=series.index)
+        robust_z = 0.6745 * (series - median) / mad
+        return robust_z.abs() > threshold
+
     high_missingness = robust_high_flag(missing_percent)
     low_correlation = robust_low_flag(median_correlation)
     high_pca_distance = robust_pca_distance > 3.5
+    abnormal_median_abundance = robust_two_sided_flag(sample_median_abundance)
 
     outlier_table = pd.DataFrame(
         {
             "missing_percent": missing_percent,
             "median_correlation_to_others": median_correlation,
             "robust_pca_distance": robust_pca_distance,
+            "sample_median_abundance": sample_median_abundance,
             "high_missingness_flag": high_missingness,
             "low_correlation_flag": low_correlation,
             "high_pca_distance_flag": high_pca_distance,
+            "abnormal_median_abundance_flag": abnormal_median_abundance,
         }
     )
     flag_columns = [
         "high_missingness_flag",
         "low_correlation_flag",
         "high_pca_distance_flag",
+        "abnormal_median_abundance_flag",
     ]
     outlier_table["number_of_flags"] = outlier_table[flag_columns].sum(axis=1)
     outlier_table["potential_outlier"] = outlier_table["number_of_flags"] >= 2
     outlier_table.index.name = "sample"
-    outlier_table.to_csv(RESULTS_DIR / "sample_outlier_diagnostics.csv")
+    outlier_table.to_csv(
+        _output_path(RESULTS_DIR, prefix, "sample_outlier_diagnostics.csv")
+    )
 
     figure, axis = plt.subplots(figsize=(10, 8))
     for sample, row in pca_xy.iterrows():
@@ -802,12 +875,16 @@ def assess_outliers(
             s=130 if is_outlier else 70,
             marker="X" if is_outlier else "o",
         )
-        axis.annotate(sample.removeprefix("Abundance."), (row["PC1"], row["PC2"]), xytext=(4, 4), textcoords="offset points", fontsize=8)
+        axis.annotate(sample, (row["PC1"], row["PC2"]), xytext=(4, 4), textcoords="offset points", fontsize=8)
     axis.set_title("PCA with Potential Outlier Flags")
     axis.set_xlabel("PC1")
     axis.set_ylabel("PC2")
     figure.tight_layout()
-    figure.savefig(FIGURES_DIR / "pca_outlier_flags.png", dpi=300, bbox_inches="tight")
+    figure.savefig(
+        _output_path(FIGURES_DIR, prefix, "pca_outlier_flags.png"),
+        dpi=300,
+        bbox_inches="tight",
+    )
     plt.show()
     plt.close(figure)
 
@@ -815,7 +892,8 @@ def assess_outliers(
     if flagged_samples:
         interpretation = (
             "One or more samples were flagged by at least two independent diagnostics. "
-            "Review their raw data, missingness, batch, and experimental notes before "
+            "Review their abundance profiles, missingness, batch, and experimental "
+            "notes before "
             "considering exclusion. Do not remove samples automatically."
         )
     else:
@@ -831,32 +909,41 @@ def assess_outliers(
     print(f"Conclusion: {interpretation}")
 
     diagnostics = {
+        "output_prefix": prefix,
         "flagged_samples": flagged_samples,
         "number_flagged": len(flagged_samples),
-        "flag_rule": "At least 2 of 3 diagnostic flags",
+        "flag_rule": "At least 2 of 4 diagnostic flags",
         "interpretation": interpretation,
     }
     return outlier_table, diagnostics
 
 
-def run_diagnostic_workflow(
+def run_normalization_diagnostics(
     df: pd.DataFrame,
-    metadata: pd.DataFrame | None = None,
+    metadata: pd.DataFrame,
+    output_prefix: str,
 ) -> dict[str, Any]:
-    """Run all diagnosis-only steps in the requested order."""
-    print("\nStarting proteomics diagnostic workflow.")
+    """Run the complete normalization-diagnostic workflow without modifying data."""
+    prefix = _validate_output_prefix(output_prefix)
+    abundance_scale = str(df.attrs.get("abundance_scale", "unknown"))
+    print("\nStarting normalization diagnostic workflow.")
+    print(f"Output prefix: {prefix}")
+    print(f"Abundance scale: {abundance_scale}")
     print("No transformation, normalization, scaling, or batch correction will be applied.\n")
 
-    if metadata is None:
-        metadata = create_sample_metadata(df)
-
-    missing_results = check_missing_values(df)
-    distribution_results = assess_distribution(df)
-    pca_results = assess_pca(df, metadata=metadata)
-    correlation_results = assess_correlation_heatmap(df, method="pearson")
-    clustering_results = assess_hierarchical_clustering(df, metadata=metadata)
+    resolve_abundance_columns(df, metadata)
+    distribution_results = assess_distribution(df, metadata, prefix)
+    pca_results = assess_pca(df, metadata=metadata, output_prefix=prefix)
+    correlation_results = assess_correlation_heatmap(
+        df, metadata=metadata, output_prefix=prefix, method="pearson"
+    )
+    clustering_results = assess_hierarchical_clustering(
+        df, metadata=metadata, output_prefix=prefix
+    )
     outlier_results = assess_outliers(
         df,
+        metadata=metadata,
+        output_prefix=prefix,
         pca_coordinates=pca_results[0],
         correlation_matrix=correlation_results[0],
     )
@@ -867,8 +954,9 @@ def run_diagnostic_workflow(
     print("No data modifications were performed.")
 
     return {
+        "output_prefix": prefix,
+        "abundance_scale": abundance_scale,
         "metadata": metadata,
-        "missing_values": missing_results,
         "distribution": distribution_results,
         "pca": pca_results,
         "correlation": correlation_results,
@@ -877,30 +965,12 @@ def run_diagnostic_workflow(
     }
 
 
-def run_preprocessing_diagnostics(
-    df: pd.DataFrame,
-    metadata: pd.DataFrame | None = None,
-) -> dict[str, Any]:
-    """Backward-compatible name for the diagnosis-only workflow.
-
-    This function intentionally performs no log2 transformation, scaling, or
-    batch correction. Those execution functions were removed to keep this file
-    focused on quality-control diagnosis, as requested.
-    """
-    return run_diagnostic_workflow(df, metadata=metadata)
-
-
 def main() -> None:
-    """Load the Excel file, promote the header, and run all diagnostics."""
-    data = load_raw_data(RAW_DATA_PATH)
-    data = promote_first_row_to_header(data)
-    print_data_overview(data)
-
-    metadata = create_sample_metadata(data)
-    print("\nParsed sample metadata:")
-    print(metadata)
-
-    run_diagnostic_workflow(data, metadata=metadata)
+    """Load QC-approved artifacts and run normalization diagnostics."""
+    data, metadata = load_qc_data()
+    run_normalization_diagnostics(
+        data, metadata=metadata, output_prefix="qc_linear"
+    )
 
 
 if __name__ == "__main__":
