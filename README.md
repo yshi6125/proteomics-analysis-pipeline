@@ -55,10 +55,11 @@ results/     Processed tables and analysis outputs
 * Protein-intensity visualization
 * Normalization assessment
 
-## Run the Initial Normalization Diagnostics
+## Run QC and Normalization Diagnostics
 
 ```bash
-/opt/anaconda3/bin/python src/initial_normalization_diagnostics.py
+/opt/anaconda3/bin/python src/qc.py
+/opt/anaconda3/bin/python src/normalization_diagnostics.py
 ```
 
 ## Planned Analyses

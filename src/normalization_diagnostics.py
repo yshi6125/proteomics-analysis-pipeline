@@ -528,6 +528,419 @@ def assess_pca(
     return coordinates, pca, diagnostics
 
 
+def assess_batch_effects(
+    pca_coordinates: pd.DataFrame,
+    metadata: pd.DataFrame,
+    output_prefix: str,
+    *,
+    pc1_variance: float,
+    pc2_variance: float,
+    abundance_scale: str = "unknown",
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Assess exploratory PCA associations with batch and biological group.
+
+    For PC1 and PC2, nested least-squares models provide partial F tests and the
+    unique increment in R-squared contributed by batch after group and by group
+    after batch. The weighted summaries describe only the PC1/PC2 subspace. These
+    diagnostics support review; they do not alter the data or automatically apply
+    batch correction.
+    """
+    import matplotlib.pyplot as plt
+    from scipy.stats import f as f_distribution
+
+    _ensure_output_directories()
+    prefix = _validate_output_prefix(output_prefix)
+    resolve_abundance_columns(
+        pd.DataFrame(columns=metadata["sample_id"].tolist()), metadata
+    )
+
+    required_coordinate_columns = {"PC1", "PC2"}
+    missing_coordinate_columns = sorted(
+        required_coordinate_columns.difference(pca_coordinates.columns)
+    )
+    if missing_coordinate_columns:
+        raise ValueError(
+            "PCA coordinates are missing required columns: "
+            f"{missing_coordinate_columns}"
+        )
+
+    indexed_metadata = metadata.set_index("sample_id", drop=False)
+    sample_ids = metadata["sample_id"].tolist()
+    missing_samples = [
+        sample_id for sample_id in sample_ids if sample_id not in pca_coordinates.index
+    ]
+    if missing_samples:
+        raise ValueError(
+            f"PCA coordinates are missing metadata samples: {missing_samples}"
+        )
+    matched = indexed_metadata.loc[sample_ids, ["group", "batch"]].copy()
+    matched[["PC1", "PC2"]] = pca_coordinates.loc[
+        sample_ids, ["PC1", "PC2"]
+    ].to_numpy()
+
+    group_labels = matched["group"].astype(str)
+    batch_labels = matched["batch"].astype(str)
+    number_of_groups = int(group_labels.nunique())
+    number_of_batches = int(batch_labels.nunique())
+
+    if number_of_batches < 2 or number_of_groups < 2:
+        if number_of_batches < 2:
+            recommendation = (
+                "Batch effect cannot be assessed: only one batch is present"
+            )
+            rationale = (
+                "At least two batch levels are required to estimate or test a batch "
+                "effect. No regression models or statistical tests were constructed."
+            )
+        else:
+            recommendation = (
+                "Batch effect cannot be assessed reliably: only one biological group "
+                "is present"
+            )
+            rationale = (
+                "At least two biological groups are required to evaluate batch effects "
+                "while adjusting for biological group. No regression models or nested-"
+                "model tests were constructed."
+            )
+        assessment = pd.DataFrame(
+            [
+                {
+                    "assessment_status": "not_assessed",
+                    "number_of_groups": number_of_groups,
+                    "number_of_batches": number_of_batches,
+                    "recommendation": recommendation,
+                    "rationale": rationale,
+                }
+            ]
+        )
+        assessment.to_csv(
+            _output_path(RESULTS_DIR, prefix, "batch_assessment.csv"), index=False
+        )
+        print("\n=== Batch assessment ===")
+        print(f"Recommendation: {recommendation}")
+        print(f"Rationale: {rationale}")
+        diagnostics: dict[str, Any] = {
+            "output_prefix": prefix,
+            "abundance_scale": abundance_scale,
+            "number_of_batches": number_of_batches,
+            "number_of_groups": number_of_groups,
+            "full_model_estimable": False,
+            "weighted_unique_group_r_squared_pc1_pc2_subspace": None,
+            "weighted_unique_batch_r_squared_pc1_pc2_subspace": None,
+            "minimum_holm_adjusted_batch_partial_p_value": None,
+            "batch_partial_p_value_adjustment": "Not applied",
+            "recommendation": recommendation,
+            "rationale": rationale,
+        }
+        return assessment, diagnostics
+
+    if isinstance(pc1_variance, bool) or isinstance(pc2_variance, bool):
+        raise ValueError(
+            "PC1 and PC2 explained-variance weights must be finite, nonnegative "
+            "numbers."
+        )
+    try:
+        component_weights = np.array(
+            [pc1_variance, pc2_variance], dtype=float
+        )
+    except (TypeError, ValueError) as error:
+        raise ValueError(
+            "PC1 and PC2 explained-variance weights must be finite, nonnegative "
+            "numbers."
+        ) from error
+    if not np.isfinite(component_weights).all() or (component_weights < 0).any():
+        raise ValueError(
+            "PC1 and PC2 explained-variance weights must be finite, nonnegative "
+            "numbers."
+        )
+    weight_sum = float(component_weights.sum())
+    if weight_sum <= 0:
+        raise ValueError(
+            "PC1 and PC2 explained-variance weights must sum to a positive value."
+        )
+    component_weights = component_weights / weight_sum
+
+    group_design = pd.get_dummies(
+        group_labels, prefix="group", prefix_sep="__", drop_first=True, dtype=float
+    )
+    batch_design = pd.get_dummies(
+        batch_labels, prefix="batch", prefix_sep="__", drop_first=True, dtype=float
+    )
+    intercept = pd.DataFrame(
+        {"intercept": np.ones(len(matched))}, index=matched.index
+    )
+    group_model = pd.concat([intercept, group_design], axis=1).to_numpy(dtype=float)
+    batch_model = pd.concat([intercept, batch_design], axis=1).to_numpy(dtype=float)
+    full_model = pd.concat(
+        [intercept, group_design, batch_design], axis=1
+    ).to_numpy(dtype=float)
+    full_model_estimable = bool(
+        np.linalg.matrix_rank(full_model) == full_model.shape[1]
+    )
+    residual_degrees_of_freedom = len(matched) - int(
+        np.linalg.matrix_rank(full_model)
+    )
+    if full_model_estimable and residual_degrees_of_freedom <= 0:
+        recommendation = (
+            "Batch effect cannot be assessed reliably: insufficient residual degrees "
+            "of freedom"
+        )
+        rationale = (
+            "The full group-plus-batch model leaves no residual degrees of freedom, "
+            "so partial F tests cannot be performed. No models were fitted and no "
+            "batch-correction recommendation was made."
+        )
+        assessment = pd.DataFrame(
+            [
+                {
+                    "assessment_status": "not_assessed",
+                    "number_of_groups": number_of_groups,
+                    "number_of_batches": number_of_batches,
+                    "residual_degrees_of_freedom": residual_degrees_of_freedom,
+                    "recommendation": recommendation,
+                    "rationale": rationale,
+                }
+            ]
+        )
+        assessment.to_csv(
+            _output_path(RESULTS_DIR, prefix, "batch_assessment.csv"), index=False
+        )
+        print("\n=== Batch assessment ===")
+        print(f"Recommendation: {recommendation}")
+        print(f"Rationale: {rationale}")
+        diagnostics = {
+            "output_prefix": prefix,
+            "abundance_scale": abundance_scale,
+            "number_of_batches": number_of_batches,
+            "number_of_groups": number_of_groups,
+            "full_model_estimable": True,
+            "residual_degrees_of_freedom": residual_degrees_of_freedom,
+            "weighted_unique_group_r_squared_pc1_pc2_subspace": None,
+            "weighted_unique_batch_r_squared_pc1_pc2_subspace": None,
+            "minimum_holm_adjusted_batch_partial_p_value": None,
+            "batch_partial_p_value_adjustment": "Not applied",
+            "recommendation": recommendation,
+            "rationale": rationale,
+        }
+        return assessment, diagnostics
+
+    def residual_sum_squares(design: np.ndarray, values: np.ndarray) -> float:
+        coefficients, _, _, _ = np.linalg.lstsq(design, values, rcond=None)
+        residuals = values - design @ coefficients
+        return float(residuals @ residuals)
+
+    def partial_f_test(
+        reduced_design: np.ndarray,
+        full_design: np.ndarray,
+        values: np.ndarray,
+    ) -> tuple[float, float]:
+        """Compare nested models and return the partial F statistic and p-value."""
+        reduced_rank = int(np.linalg.matrix_rank(reduced_design))
+        full_rank = int(np.linalg.matrix_rank(full_design))
+        numerator_degrees_of_freedom = full_rank - reduced_rank
+        denominator_degrees_of_freedom = len(values) - full_rank
+        if numerator_degrees_of_freedom <= 0 or denominator_degrees_of_freedom <= 0:
+            return float("nan"), float("nan")
+        reduced_sse = residual_sum_squares(reduced_design, values)
+        full_sse = residual_sum_squares(full_design, values)
+        improvement = max(0.0, reduced_sse - full_sse)
+        if full_sse <= np.finfo(float).eps:
+            return (
+                (float("inf"), 0.0)
+                if improvement > np.finfo(float).eps
+                else (float("nan"), float("nan"))
+            )
+        f_statistic = (
+            improvement / numerator_degrees_of_freedom
+        ) / (full_sse / denominator_degrees_of_freedom)
+        p_value = float(
+            f_distribution.sf(
+                f_statistic,
+                numerator_degrees_of_freedom,
+                denominator_degrees_of_freedom,
+            )
+        )
+        return float(f_statistic), p_value
+
+    rows: list[dict[str, Any]] = []
+    for component in ("PC1", "PC2"):
+        values = matched[component].to_numpy(dtype=float)
+        total_sum_squares = float(np.sum((values - values.mean()) ** 2))
+        if full_model_estimable and total_sum_squares > 0:
+            full_sse = residual_sum_squares(full_model, values)
+            group_sse = residual_sum_squares(group_model, values)
+            batch_sse = residual_sum_squares(batch_model, values)
+            batch_partial_f, batch_partial_p_value = partial_f_test(
+                group_model, full_model, values
+            )
+            group_partial_f, group_partial_p_value = partial_f_test(
+                batch_model, full_model, values
+            )
+            unique_batch_r_squared = max(
+                0.0, (group_sse - full_sse) / total_sum_squares
+            )
+            unique_group_r_squared = max(
+                0.0, (batch_sse - full_sse) / total_sum_squares
+            )
+        else:
+            batch_partial_f = float("nan")
+            batch_partial_p_value = float("nan")
+            group_partial_f = float("nan")
+            group_partial_p_value = float("nan")
+            unique_batch_r_squared = float("nan")
+            unique_group_r_squared = float("nan")
+        rows.append(
+            {
+                "component": component,
+                "group_partial_f_statistic": group_partial_f,
+                "group_partial_p_value": group_partial_p_value,
+                "batch_partial_f_statistic": batch_partial_f,
+                "batch_partial_p_value": batch_partial_p_value,
+                "unique_group_r_squared": unique_group_r_squared,
+                "unique_batch_r_squared": unique_batch_r_squared,
+            }
+        )
+
+    assessment = pd.DataFrame(rows)
+    batch_p_values = assessment["batch_partial_p_value"].to_numpy(dtype=float)
+    adjusted_batch_p_values = np.full(len(batch_p_values), np.nan, dtype=float)
+    finite_positions = np.flatnonzero(np.isfinite(batch_p_values))
+    if len(finite_positions):
+        ordered_positions = finite_positions[
+            np.argsort(batch_p_values[finite_positions])
+        ]
+        running_adjusted = 0.0
+        number_of_tests = len(ordered_positions)
+        for rank, position in enumerate(ordered_positions):
+            adjusted = min(
+                1.0, (number_of_tests - rank) * batch_p_values[position]
+            )
+            running_adjusted = max(running_adjusted, adjusted)
+            adjusted_batch_p_values[position] = running_adjusted
+    assessment["batch_partial_p_value_holm"] = adjusted_batch_p_values
+    assessment.to_csv(
+        _output_path(RESULTS_DIR, prefix, "batch_assessment.csv"), index=False
+    )
+
+    weighted_unique_batch_r_squared = float(
+        np.sum(component_weights * assessment["unique_batch_r_squared"].to_numpy())
+    )
+    weighted_unique_group_r_squared = float(
+        np.sum(component_weights * assessment["unique_group_r_squared"].to_numpy())
+    )
+    minimum_adjusted_batch_p_value = float(
+        assessment["batch_partial_p_value_holm"].min()
+    )
+
+    if not full_model_estimable:
+        recommendation = "Batch effect cannot be assessed reliably"
+        rationale = (
+            "Batch and biological group are not separately estimable. Review the "
+            "experimental design before considering batch correction."
+        )
+    elif not np.isfinite(minimum_adjusted_batch_p_value):
+        recommendation = "Batch effect cannot be assessed reliably"
+        rationale = (
+            "No valid batch partial p-value was available for PC1 or PC2. Review "
+            "the model fit and experimental design before considering batch "
+            "correction."
+        )
+    elif (
+        minimum_adjusted_batch_p_value < 0.01
+        and weighted_unique_batch_r_squared >= 0.20
+    ):
+        recommendation = "Batch correction recommended"
+        rationale = (
+            "Batch is strongly associated with at least one leading component and "
+            "uniquely explains at least 20% of the weighted variation within the "
+            "PC1/PC2 subspace."
+        )
+    elif (
+        minimum_adjusted_batch_p_value < 0.05
+        or weighted_unique_batch_r_squared >= 0.10
+    ):
+        recommendation = "Consider batch correction"
+        rationale = (
+            "Batch shows statistical association with a leading component or uniquely "
+            "explains at least 10% of the weighted variation within the PC1/PC2 "
+            "subspace."
+        )
+    else:
+        recommendation = "No batch correction"
+        rationale = (
+            "Batch is not significantly associated with PC1/PC2 and uniquely explains "
+            "less than 10% of the weighted variation within the PC1/PC2 subspace."
+        )
+
+    plot_values = assessment.set_index("component")[
+        ["unique_group_r_squared", "unique_batch_r_squared"]
+    ]
+    axis = plot_values.plot(kind="bar", figsize=(9, 6))
+    axis.set_title("Unique PCA Variance Associated with Group and Batch")
+    axis.set_xlabel("Principal component")
+    axis.set_ylabel("Incremental R-squared")
+    axis.set_ylim(bottom=0)
+    axis.legend(["Biological group", "Batch"])
+    figure = axis.get_figure()
+    figure.tight_layout()
+    figure.savefig(
+        _output_path(FIGURES_DIR, prefix, "batch_assessment.png"),
+        dpi=300,
+        bbox_inches="tight",
+    )
+    plt.show()
+    plt.close(figure)
+
+    print("\n=== Batch assessment ===")
+    print(assessment.to_string(index=False))
+    print(
+        "Weighted unique variance explained by biological group within the PC1/PC2 "
+        "subspace: "
+        f"{weighted_unique_group_r_squared:.1%}"
+    )
+    print(
+        "Weighted unique variance explained by batch within the PC1/PC2 subspace: "
+        f"{weighted_unique_batch_r_squared:.1%}"
+    )
+    print(f"Recommendation: {recommendation}")
+    print(f"Rationale: {rationale}")
+    normalized_scale = abundance_scale.strip().lower()
+    if normalized_scale in {"linear", "linear_scaled"}:
+        print(
+            "Warning: this PCA-based batch assessment is being run on linear-scale "
+            "abundance data. Because strong right skew can influence PCA, repeat the "
+            "assessment after log2 transformation before making the final batch-"
+            "correction decision."
+        )
+    print(
+        "This exploratory PCA-based assessment should be interpreted together with "
+        "the PCA visualization, correlation heatmap, and hierarchical clustering. "
+        "It does not itself modify the dataframe."
+    )
+
+    diagnostics: dict[str, Any] = {
+        "output_prefix": prefix,
+        "abundance_scale": abundance_scale,
+        "number_of_batches": number_of_batches,
+        "number_of_groups": number_of_groups,
+        "full_model_estimable": full_model_estimable,
+        "residual_degrees_of_freedom": residual_degrees_of_freedom,
+        "weighted_unique_group_r_squared_pc1_pc2_subspace": (
+            weighted_unique_group_r_squared
+        ),
+        "weighted_unique_batch_r_squared_pc1_pc2_subspace": (
+            weighted_unique_batch_r_squared
+        ),
+        "minimum_holm_adjusted_batch_partial_p_value": (
+            minimum_adjusted_batch_p_value
+        ),
+        "batch_partial_p_value_adjustment": "Holm adjustment across PC1 and PC2",
+        "recommendation": recommendation,
+        "rationale": rationale,
+    }
+    return assessment, diagnostics
+
+
 def assess_correlation_heatmap(
     df: pd.DataFrame,
     metadata: pd.DataFrame,
@@ -934,6 +1347,14 @@ def run_normalization_diagnostics(
     resolve_abundance_columns(df, metadata)
     distribution_results = assess_distribution(df, metadata, prefix)
     pca_results = assess_pca(df, metadata=metadata, output_prefix=prefix)
+    batch_results = assess_batch_effects(
+        pca_results[0],
+        metadata=metadata,
+        output_prefix=prefix,
+        pc1_variance=pca_results[2]["pc1_variance"],
+        pc2_variance=pca_results[2]["pc2_variance"],
+        abundance_scale=abundance_scale,
+    )
     correlation_results = assess_correlation_heatmap(
         df, metadata=metadata, output_prefix=prefix, method="pearson"
     )
@@ -959,6 +1380,7 @@ def run_normalization_diagnostics(
         "metadata": metadata,
         "distribution": distribution_results,
         "pca": pca_results,
+        "batch_assessment": batch_results,
         "correlation": correlation_results,
         "hierarchical_clustering": clustering_results,
         "outliers": outlier_results,
