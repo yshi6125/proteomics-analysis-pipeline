@@ -1,0 +1,142 @@
+{
+  "metadata": {
+    "comparison": "DM_vs_NDM",
+    "analysis_type": "primary_fdr",
+    "pipeline_version": "v1",
+    "jaccard_threshold": 0.25,
+    "minimum_candidate_genes": 2,
+    "adjusted_p_threshold": 0.05,
+    "louvain_seed": 42,
+    "generated_at": "2026-08-13T23:50:26.232161+00:00"
+  },
+  "number_of_clusters": 3,
+  "clusters": [
+    {
+      "cluster_id": "C001",
+      "analysis_type": "primary_fdr",
+      "direction": "decreased",
+      "representative_pathway": {
+        "library": "GO_Biological_Process_2023",
+        "name": "Gene Expression (GO:0010467)"
+      },
+      "member_pathways": [
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "Gene Expression (GO:0010467)"
+        }
+      ],
+      "cluster_size": 1,
+      "genes": [
+        {
+          "gene": "MRPL12",
+          "level": 1
+        },
+        {
+          "gene": "HSPD1",
+          "level": 3
+        }
+      ],
+      "n_genes": 2,
+      "level_counts": {
+        "1": 1,
+        "2": 0,
+        "3": 1,
+        "4": 0,
+        "5": 0
+      },
+      "best_adjusted_p": 0.0464680270675297,
+      "representative_gene_ratio": 0.1818181818181818,
+      "is_singleton": true
+    },
+    {
+      "cluster_id": "C002",
+      "analysis_type": "primary_fdr",
+      "direction": "decreased",
+      "representative_pathway": {
+        "library": "GO_Biological_Process_2023",
+        "name": "Regulation Of Signal Transduction (GO:0009966)"
+      },
+      "member_pathways": [
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "Regulation Of Signal Transduction (GO:0009966)"
+        }
+      ],
+      "cluster_size": 1,
+      "genes": [
+        {
+          "gene": "GAS1",
+          "level": 1
+        },
+        {
+          "gene": "POFUT1",
+          "level": 1
+        }
+      ],
+      "n_genes": 2,
+      "level_counts": {
+        "1": 2,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      },
+      "best_adjusted_p": 0.0464680270675297,
+      "representative_gene_ratio": 0.1818181818181818,
+      "is_singleton": true
+    },
+    {
+      "cluster_id": "C003",
+      "analysis_type": "primary_fdr",
+      "direction": "increased",
+      "representative_pathway": {
+        "library": "GO_Biological_Process_2023",
+        "name": "Regulation Of Nucleic Acid-Templated Transcription (GO:1903506)"
+      },
+      "member_pathways": [
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "Regulation Of DNA-templated Transcription (GO:0006355)"
+        },
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "Regulation Of Nucleic Acid-Templated Transcription (GO:1903506)"
+        },
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "mRNA Splicing, Via Spliceosome (GO:0000398)"
+        }
+      ],
+      "cluster_size": 3,
+      "genes": [
+        {
+          "gene": "PRMT5",
+          "level": 1
+        },
+        {
+          "gene": "SRRM2",
+          "level": 1
+        },
+        {
+          "gene": "STAT5B",
+          "level": 1
+        },
+        {
+          "gene": "ZNHIT3",
+          "level": 1
+        }
+      ],
+      "n_genes": 4,
+      "level_counts": {
+        "1": 4,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      },
+      "best_adjusted_p": 0.0292192823748117,
+      "representative_gene_ratio": 0.3333333333333333,
+      "is_singleton": false
+    }
+  ]
+}

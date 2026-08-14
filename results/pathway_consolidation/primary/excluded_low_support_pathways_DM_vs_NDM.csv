@@ -1,0 +1,155 @@
+analysis_type,direction,pathway_library,pathway,enrichment_adjusted_p_value,candidate_gene_count,candidate_genes_reconstructed
+primary_fdr,increased,GO_Biological_Process_2023,Box C/D snoRNP Assembly (GO:0000492),0.0292192823748117,1,ZNHIT3
+primary_fdr,increased,GO_Biological_Process_2023,Cellular Response To Epidermal Growth Factor Stimulus (GO:0071364),0.0292192823748117,1,STAT5B
+primary_fdr,increased,GO_Biological_Process_2023,Cellular Response To Organic Substance (GO:0071310),0.0477495081592813,1,STAT5B
+primary_fdr,increased,GO_Biological_Process_2023,DNA-templated Transcription Termination (GO:0006353),0.0292192823748117,1,PRMT5
+primary_fdr,increased,GO_Biological_Process_2023,Endoderm Formation (GO:0001706),0.0292192823748117,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Endodermal Cell Differentiation (GO:0035987),0.0292192823748117,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Golgi Ribbon Formation (GO:0090161),0.0292192823748117,1,PRMT5
+primary_fdr,increased,GO_Biological_Process_2023,Growth Hormone Receptor Signaling Pathway (GO:0060396),0.0292192823748117,1,STAT5B
+primary_fdr,increased,GO_Biological_Process_2023,Growth Hormone Receptor Signaling Pathway Via JAK-STAT (GO:0060397),0.0292192823748117,1,STAT5B
+primary_fdr,increased,GO_Biological_Process_2023,Histone Arginine Methylation (GO:0034969),0.0292192823748117,1,PRMT5
+primary_fdr,increased,GO_Biological_Process_2023,Histone Methylation (GO:0016571),0.0292192823748117,1,PRMT5
+primary_fdr,increased,GO_Biological_Process_2023,Maturation Of LSU-rRNA (GO:0000470),0.0292192823748117,1,ZNHIT3
+primary_fdr,increased,GO_Biological_Process_2023,"Maturation Of LSU-rRNA From Tricistronic rRNA Transcript (SSU-rRNA, 5.8S rRNA, LSU-rRNA) (GO:0000463)",0.0292192823748117,1,ZNHIT3
+primary_fdr,increased,GO_Biological_Process_2023,Microtubule Cytoskeleton Organization Involved In Mitosis (GO:1902850),0.0379920377873991,1,DCTN6
+primary_fdr,increased,GO_Biological_Process_2023,Mitotic Spindle Organization (GO:0007052),0.0487216458364432,1,DCTN6
+primary_fdr,increased,GO_Biological_Process_2023,Negative Regulation Of Blood Coagulation (GO:0030195),0.0292192823748117,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Negative Regulation Of Coagulation (GO:0050819),0.0292192823748117,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Negative Regulation Of Endopeptidase Activity (GO:0010951),0.0410642304468434,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Negative Regulation Of Fibrinolysis (GO:0051918),0.0292192823748117,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Negative Regulation Of Hemostasis (GO:1900047),0.0292192823748117,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Negative Regulation Of Peptidase Activity (GO:0010466),0.0379920377873991,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Negative Regulation Of Wound Healing (GO:0061045),0.0292192823748117,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Peptidyl-Arginine Modification (GO:0018195),0.0292192823748117,1,PRMT5
+primary_fdr,increased,GO_Biological_Process_2023,Positive Regulation Of Blood Coagulation (GO:0030194),0.0292192823748117,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Positive Regulation Of Endocytosis (GO:0045807),0.0474871825116651,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Positive Regulation Of Erythrocyte Differentiation (GO:0045648),0.0292192823748117,1,STAT5B
+primary_fdr,increased,GO_Biological_Process_2023,Positive Regulation Of G Protein-Coupled Receptor Signaling Pathway (GO:0045745),0.0292192823748117,1,PRMT5
+primary_fdr,increased,GO_Biological_Process_2023,Positive Regulation Of Myeloid Cell Differentiation (GO:0045639),0.0292192823748117,1,STAT5B
+primary_fdr,increased,GO_Biological_Process_2023,Positive Regulation Of Protein Binding (GO:0032092),0.0379920377873991,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Positive Regulation Of RNA Splicing (GO:0033120),0.0292192823748117,1,PRMT5
+primary_fdr,increased,GO_Biological_Process_2023,Positive Regulation Of Receptor-Mediated Endocytosis (GO:0048260),0.0315074342287049,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Positive Regulation Of Response To Wounding (GO:1903036),0.0292192823748117,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Positive Regulation Of Smooth Muscle Cell Migration (GO:0014911),0.0292192823748117,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Positive Regulation Of Vascular Endothelial Growth Factor Receptor Signaling Pathway (GO:0030949),0.0292192823748117,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Positive Regulation Of Wound Healing (GO:0090303),0.0298991813754517,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Positive Regulation Of mRNA Processing (GO:0050685),0.0292192823748117,1,PRMT5
+primary_fdr,increased,GO_Biological_Process_2023,"Positive Regulation Of mRNA Splicing, Via Spliceosome (GO:0048026)",0.0292192823748117,1,PRMT5
+primary_fdr,increased,GO_Biological_Process_2023,Protein Methylation (GO:0006479),0.0292192823748117,1,PRMT5
+primary_fdr,increased,GO_Biological_Process_2023,RNA Biosynthetic Process (GO:0032774),0.0292192823748117,1,PRMT5
+primary_fdr,increased,GO_Biological_Process_2023,Receptor Signaling Pathway Via JAK-STAT (GO:0007259),0.0292192823748117,1,STAT5B
+primary_fdr,increased,GO_Biological_Process_2023,Receptor Signaling Pathway Via STAT (GO:0097696),0.0292192823748117,1,STAT5B
+primary_fdr,increased,GO_Biological_Process_2023,Regulation Of Blood Coagulation (GO:0030193),0.0292192823748117,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Regulation Of Developmental Growth (GO:0048638),0.0292192823748117,1,STAT5B
+primary_fdr,increased,GO_Biological_Process_2023,Regulation Of Endopeptidase Activity (GO:0052548),0.0422168184299069,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Regulation Of Erythrocyte Differentiation (GO:0045646),0.0292192823748117,1,STAT5B
+primary_fdr,increased,GO_Biological_Process_2023,Regulation Of Fibrinolysis (GO:0051917),0.0292192823748117,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Regulation Of Mitotic Nuclear Division (GO:0007088),0.0379920377873991,1,PRMT5
+primary_fdr,increased,GO_Biological_Process_2023,Regulation Of Multicellular Organism Growth (GO:0040014),0.0292192823748117,1,STAT5B
+primary_fdr,increased,GO_Biological_Process_2023,Regulation Of Nuclear Division (GO:0051783),0.0292192823748117,1,PRMT5
+primary_fdr,increased,GO_Biological_Process_2023,Regulation Of Receptor-Mediated Endocytosis (GO:0048259),0.0297397928346572,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Regulation Of Signal Transduction By P53 Class Mediator (GO:1901796),0.0331403147215448,1,PRMT5
+primary_fdr,increased,GO_Biological_Process_2023,Regulation Of Smooth Muscle Cell Migration (GO:0014910),0.0292192823748117,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Regulation Of Vascular Endothelial Growth Factor Receptor Signaling Pathway (GO:0030947),0.0292192823748117,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Regulation Of Wound Healing (GO:0061041),0.0331403147215448,1,VTN
+primary_fdr,increased,GO_Biological_Process_2023,Response To Epidermal Growth Factor (GO:0070849),0.0292192823748117,1,STAT5B
+primary_fdr,increased,GO_Biological_Process_2023,Response To Estradiol (GO:0032355),0.0292192823748117,1,STAT5B
+primary_fdr,increased,GO_Biological_Process_2023,Response To Organic Cyclic Compound (GO:0014070),0.0379920377873991,1,STAT5B
+primary_fdr,increased,GO_Biological_Process_2023,Response To Peptide (GO:1901652),0.0295736349290624,1,STAT5B
+primary_fdr,increased,GO_Biological_Process_2023,Response To Peptide Hormone (GO:0043434),0.0379920377873991,1,STAT5B
+primary_fdr,increased,GO_Biological_Process_2023,Small Nucleolar Ribonucleoprotein Complex Assembly (GO:0000491),0.0292192823748117,1,ZNHIT3
+primary_fdr,increased,GO_Biological_Process_2023,Spliceosomal snRNP Assembly (GO:0000387),0.0294002844998844,1,PRMT5
+primary_fdr,increased,GO_Biological_Process_2023,Taurine Metabolic Process (GO:0019530),0.0292192823748117,1,STAT5B
+primary_fdr,increased,GO_Biological_Process_2023,snoRNA Localization (GO:0048254),0.0292192823748117,1,ZNHIT3
+primary_fdr,increased,Reactome_2022,COPI-independent Golgi-to-ER Retrograde Traffic R-HSA-6811436,0.0449789036402694,1,DCTN6
+primary_fdr,increased,Reactome_2022,Complement Cascade R-HSA-166658,0.0480107810801056,1,VTN
+primary_fdr,increased,Reactome_2022,Downstream Signal Transduction R-HSA-186763,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,ECM Proteoglycans R-HSA-3000178,0.0480107810801056,1,VTN
+primary_fdr,increased,Reactome_2022,Elastic Fibre Formation R-HSA-1566948,0.0449789036402694,1,VTN
+primary_fdr,increased,Reactome_2022,Erythropoietin Activates STAT5 R-HSA-9027283,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,FGFR1 Mutant Receptor Activation R-HSA-1839124,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,FLT3 Signaling In Disease R-HSA-9682385,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,FLT3 Signaling R-HSA-9607240,0.0449789036402694,1,STAT5B
+primary_fdr,increased,Reactome_2022,Growth Hormone Receptor Signaling R-HSA-982772,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,HSP90 Chaperone Cycle For Steroid Hormone Receptors (SHR) In Presence Of Ligand R-HSA-3371497,0.0449789036402694,1,DCTN6
+primary_fdr,increased,Reactome_2022,Inactivation Of CSF3 (G-CSF) Signaling R-HSA-9705462,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,Interleukin-15 Signaling R-HSA-8983432,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,Interleukin-2 Family Signaling R-HSA-451927,0.0449789036402694,1,STAT5B
+primary_fdr,increased,Reactome_2022,Interleukin-2 Signaling R-HSA-9020558,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,Interleukin-20 Family Signaling R-HSA-8854691,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,Interleukin-21 Signaling R-HSA-9020958,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,"Interleukin-3, Interleukin-5 And GM-CSF Signaling R-HSA-512988",0.0449789036402694,1,STAT5B
+primary_fdr,increased,Reactome_2022,Interleukin-7 Signaling R-HSA-1266695,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,Interleukin-9 Signaling R-HSA-8985947,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,Metabolism Of Non-Coding RNA R-HSA-194441,0.0478084118089394,1,PRMT5
+primary_fdr,increased,Reactome_2022,Molecules Associated With Elastic Fibres R-HSA-2129379,0.0421005851346799,1,VTN
+primary_fdr,increased,Reactome_2022,Non-integrin membrane-ECM Interactions R-HSA-3000171,0.0449789036402694,1,VTN
+primary_fdr,increased,Reactome_2022,Prolactin Receptor Signaling R-HSA-1170546,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,RMTs Methylate Histone Arginines R-HSA-3214858,0.0475802418994404,1,PRMT5
+primary_fdr,increased,Reactome_2022,Regulation Of Complement Cascade R-HSA-977606,0.0449789036402694,1,VTN
+primary_fdr,increased,Reactome_2022,Regulation Of TP53 Activity Thru Methylation R-HSA-6804760,0.0421005851346799,1,PRMT5
+primary_fdr,increased,Reactome_2022,STAT5 Activation Downstream Of FLT3 ITD Mutants R-HSA-9702518,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,STAT5 Activation R-HSA-9645135,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,Signaling By CSF3 (G-CSF) R-HSA-9674555,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,Signaling By Cytosolic FGFR1 Fusion Mutants R-HSA-1839117,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,Signaling By Erythropoietin R-HSA-9006335,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,Signaling By FGFR1 In Disease R-HSA-5655302,0.0449789036402694,1,STAT5B
+primary_fdr,increased,Reactome_2022,Signaling By FLT3 Fusion Proteins R-HSA-9703465,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,Signaling By FLT3 ITD And TKD Mutants R-HSA-9703648,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,Signaling By KIT In Disease R-HSA-9669938,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,Signaling By Leptin R-HSA-2586552,0.0421005851346799,1,STAT5B
+primary_fdr,increased,Reactome_2022,Signaling By PDGF R-HSA-186797,0.0478084118089394,1,STAT5B
+primary_fdr,increased,Reactome_2022,Signaling By SCF-KIT R-HSA-1433557,0.0449789036402694,1,STAT5B
+primary_fdr,increased,Reactome_2022,Syndecan Interactions R-HSA-3000170,0.0421005851346799,1,VTN
+primary_fdr,decreased,GO_Biological_Process_2023,Apoptotic Mitochondrial Changes (GO:0008637),0.0464680270675297,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,B Cell Proliferation (GO:0042100),0.0464680270675297,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Cellular Response To Unfolded Protein (GO:0034620),0.0464680270675297,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Cellular Response To Vascular Endothelial Growth Factor Stimulus (GO:0035924),0.0464680270675297,1,GAS1
+primary_fdr,decreased,GO_Biological_Process_2023,Chaperone-Mediated Protein Complex Assembly (GO:0051131),0.0464680270675297,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Cholesterol Biosynthetic Process (GO:0006695),0.0464680270675297,1,TM7SF2
+primary_fdr,decreased,GO_Biological_Process_2023,Establishment Of Protein Localization To Mitochondrion (GO:0072655),0.048010042856707,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Intracellular Protein Transmembrane Transport (GO:0065002),0.0480368755489959,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Isotype Switching (GO:0045190),0.0464680270675297,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Lymphocyte Proliferation (GO:0046651),0.048010042856707,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,"Mitochondrial Electron Transport, NADH To Ubiquinone (GO:0006120)",0.0464680270675297,1,NDUFA10
+primary_fdr,decreased,GO_Biological_Process_2023,Mitochondrial RNA Metabolic Process (GO:0000959),0.0464680270675297,1,MRPL12
+primary_fdr,decreased,GO_Biological_Process_2023,Mitochondrial Respiratory Chain Complex I Assembly (GO:0032981),0.0490111404347283,1,NDUFA10
+primary_fdr,decreased,GO_Biological_Process_2023,Mitochondrial Transcription (GO:0006390),0.0464680270675297,1,MRPL12
+primary_fdr,decreased,GO_Biological_Process_2023,MyD88-dependent Toll-Like Receptor Signaling Pathway (GO:0002755),0.0464680270675297,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,NADH Dehydrogenase Complex Assembly (GO:0010257),0.0490111404347283,1,NDUFA10
+primary_fdr,decreased,GO_Biological_Process_2023,Negative Regulation Of Mitotic Cell Cycle (GO:0045930),0.0464680270675297,1,GAS1
+primary_fdr,decreased,GO_Biological_Process_2023,Negative Regulation Of Protein Maturation (GO:1903318),0.0464680270675297,1,GAS1
+primary_fdr,decreased,GO_Biological_Process_2023,Negative Regulation Of Protein Processing (GO:0010955),0.0464680270675297,1,GAS1
+primary_fdr,decreased,GO_Biological_Process_2023,Negative Regulation Of Proteolysis (GO:0045861),0.048010042856707,1,GAS1
+primary_fdr,decreased,GO_Biological_Process_2023,Notch Signaling Pathway (GO:0007219),0.048010042856707,1,POFUT1
+primary_fdr,decreased,GO_Biological_Process_2023,O-glycan Processing (GO:0016266),0.048010042856707,1,POFUT1
+primary_fdr,decreased,GO_Biological_Process_2023,Positive Regulation Of Autophagosome Maturation (GO:1901098),0.0464680270675297,1,FYCO1
+primary_fdr,decreased,GO_Biological_Process_2023,Positive Regulation Of Immune Response To Tumor Cell (GO:0002839),0.0464680270675297,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Positive Regulation Of Interferon-Alpha Production (GO:0032727),0.0464680270675297,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Positive Regulation Of Interleukin-10 Production (GO:0032733),0.0464680270675297,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Positive Regulation Of Interleukin-12 Production (GO:0032735),0.0464680270675297,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Positive Regulation Of Leukocyte Activation (GO:0002696),0.0464680270675297,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Positive Regulation Of Leukocyte Cell-Cell Adhesion (GO:1903039),0.048010042856707,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Positive Regulation Of Lymphocyte Activation (GO:0051251),0.0480488309392367,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Positive Regulation Of Macrophage Activation (GO:0043032),0.0464680270675297,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Positive Regulation Of Organelle Organization (GO:0010638),0.0464680270675297,1,FYCO1
+primary_fdr,decreased,GO_Biological_Process_2023,Positive Regulation Of Protein-Containing Complex Disassembly (GO:0043243),0.0464680270675297,1,FYCO1
+primary_fdr,decreased,GO_Biological_Process_2023,Positive Regulation Of T Cell Mediated Immune Response To Tumor Cell (GO:0002842),0.0464680270675297,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Positive Regulation Of T Cell Mediated Immunity (GO:0002711),0.048010042856707,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Protein Transmembrane Import Into Intracellular Organelle (GO:0044743),0.0464680270675297,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Proton Motive Force-Driven Mitochondrial ATP Synthesis (GO:0042776),0.0490111404347283,1,NDUFA10
+primary_fdr,decreased,GO_Biological_Process_2023,Regulation Of Autophagosome Maturation (GO:1901096),0.0464680270675297,1,FYCO1
+primary_fdr,decreased,GO_Biological_Process_2023,Regulation Of Interferon-Alpha Production (GO:0032647),0.0464680270675297,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Regulation Of Interleukin-10 Production (GO:0032653),0.0480368755489959,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Regulation Of Interleukin-12 Production (GO:0032655),0.0490111404347283,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Regulation Of Intracellular Transport (GO:0032386),0.048010042856707,1,GAS1
+primary_fdr,decreased,GO_Biological_Process_2023,Regulation Of Macrophage Activation (GO:0043030),0.0464680270675297,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Regulation Of Protein Processing (GO:0070613),0.0464680270675297,1,GAS1
+primary_fdr,decreased,GO_Biological_Process_2023,Regulation Of Smoothened Signaling Pathway (GO:0008589),0.0490111404347283,1,GAS1
+primary_fdr,decreased,GO_Biological_Process_2023,Regulation Of T Cell Mediated Immune Response To Tumor Cell (GO:0002840),0.0464680270675297,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Response To Unfolded Protein (GO:0006986),0.048010042856707,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Secondary Alcohol Biosynthetic Process (GO:1902653),0.0464680270675297,1,TM7SF2
+primary_fdr,decreased,GO_Biological_Process_2023,Sterol Biosynthetic Process (GO:0016126),0.0464680270675297,1,TM7SF2
+primary_fdr,decreased,GO_Biological_Process_2023,Toll-Like Receptor Signaling Pathway (GO:0002224),0.0464680270675297,1,HSPD1
+primary_fdr,decreased,GO_Biological_Process_2023,Vesicle Transport Along Microtubule (GO:0047496),0.0464680270675297,1,FYCO1

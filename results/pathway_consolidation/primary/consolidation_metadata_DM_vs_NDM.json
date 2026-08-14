@@ -1,0 +1,12 @@
+{
+  "comparison": "DM_vs_NDM",
+  "analysis_type": "primary_fdr",
+  "jaccard_threshold": 0.25,
+  "minimum_candidate_genes": 2,
+  "adjusted_p_threshold": 0.05,
+  "louvain_seed": 42,
+  "significant_pathways_before_support_filter": 159,
+  "excluded_low_support_pathways": 154,
+  "retained_pathways": 5,
+  "number_of_clusters": 3
+}
