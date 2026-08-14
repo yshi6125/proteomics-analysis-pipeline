@@ -106,6 +106,51 @@ Separate primary and exploratory pathway figures are saved in
 `figures/pathway_analysis/`. Pathway priority describes the strongest underlying
 protein evidence and does not modify enrichment p-values.
 
+## Generate Disease-Specific Pathway Reports
+
+The reporting layer reads the frozen pathway-evidence JSON files and is separate
+from pathway analysis, consolidation, and evidence building. It queries PubMed for
+the preceding five years and uses the OpenAI Responses API to produce cautious
+scientific prose. Dataset evidence strength and literature-based disease relevance
+are assigned by deterministic rules in Python.
+
+Set `OPENAI_API_KEY` and, preferably, `NCBI_EMAIL`, then run both branches:
+
+```bash
+python src/generate_pathway_report.py \
+  --comparison DM_vs_NDM \
+  --disease "Type 2 diabetes" \
+  --branch both
+```
+
+Reports are written to `results/pathway_reports/primary/` and
+`results/pathway_reports/exploratory/`. Use `--branch primary` or
+`--branch exploratory` to generate one report. `NCBI_API_KEY` is optional and can
+be set to obtain the higher NCBI request limit.
+
+OpenAI remains the default provider. To preview the exact queries using Gemini,
+set `GEMINI_API_KEY` and select a supported Gemini model:
+
+```bash
+python src/generate_pathway_report.py \
+  --comparison DM_vs_NDM \
+  --disease "Type 2 diabetes" \
+  --branch exploratory \
+  --provider gemini \
+  --model <supported Gemini model> \
+  --preview-queries
+```
+
+Literature assessments are batched four clusters at a time by default. Adjust
+this with `--literature-batch-size`; use `--refresh-cache` to bypass cached
+biological themes and disease-specific literature assessments.
+
+Final reports are scientifically reviewed by default. The reviewer audits the
+complete draft against the supplied deterministic and PubMed evidence, requests
+at most one automatic revision, and saves provenance under each branch's
+`review/` directory. Use `--reviewer-model` to choose a different model with the
+same provider, or `--skip-review` only for development and debugging.
+
 The current committed pathway outputs were generated with GSEApy's local
 over-representation engine using downloaded Enrichr GO, Reactome, and KEGG
 libraries because the live Enrichr submission endpoint returned HTTP 429.
