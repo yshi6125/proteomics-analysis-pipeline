@@ -7,7 +7,8 @@ LLM is used only to name themes, assess retrieved papers, and write cautious pro
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from datetime import date
+from datetime import date, datetime, timezone
+from email.utils import parsedate_to_datetime
 import hashlib
 import json
 import logging
@@ -15,6 +16,7 @@ import os
 from pathlib import Path
 import re
 import time
+import threading
 from typing import Any, Callable, Iterable, Protocol
 from urllib import error, parse, request
 import xml.etree.ElementTree as ET
@@ -25,6 +27,10 @@ LOGGER = logging.getLogger(__name__)
 GEMINI_TRANSIENT_STATUS_CODES = frozenset({429, 500, 502, 503, 504})
 GEMINI_RETRY_DELAYS = (2, 4, 8, 16)
 DEFAULT_ABSTRACT_MAX_CHARS = 6000
+NCBI_RETRY_DELAYS = (2, 4, 8, 16)
+NCBI_TRANSIENT_STATUS_CODES = frozenset({429, 500, 502, 503, 504})
+NCBI_DELAY_WITHOUT_KEY = 0.4
+NCBI_DELAY_WITH_KEY = 0.1
 REQUIRED_CLUSTER_FIELDS = {
     "cluster_id", "direction", "representative_pathway", "member_pathways",
     "genes", "level_counts", "best_adjusted_p", "representative_gene_ratio",
@@ -125,12 +131,55 @@ def disease_relevance(annotations: Iterable[dict[str, Any]]) -> str:
 class PubMedClient:
     """Small dependency-free PubMed E-utilities client."""
 
-    def __init__(self, *, email: str | None = None, api_key: str | None = None,
-                 timeout: float = 30.0, opener: Callable[..., Any] = request.urlopen):
+    def __init__(
+        self,
+        *,
+        email: str | None = None,
+        api_key: str | None = None,
+        timeout: float = 30.0,
+        opener: Callable[..., Any] = request.urlopen,
+        sleep: Callable[[float], None] = time.sleep,
+        monotonic: Callable[[], float] = time.monotonic,
+    ):
         self.email = email or os.getenv("NCBI_EMAIL")
         self.api_key = api_key or os.getenv("NCBI_API_KEY")
         self.timeout = timeout
         self._opener = opener
+        self._sleep = sleep
+        self._monotonic = monotonic
+        self._minimum_interval = (
+            NCBI_DELAY_WITH_KEY if self.api_key else NCBI_DELAY_WITHOUT_KEY
+        )
+        self._last_request_at: float | None = None
+        self._request_lock = threading.Lock()
+
+    def _throttle(self) -> None:
+        """Space every E-utilities request according to NCBI rate guidance."""
+        with self._request_lock:
+            now = self._monotonic()
+            if self._last_request_at is not None:
+                remaining = self._minimum_interval - (now - self._last_request_at)
+                if remaining > 0:
+                    self._sleep(remaining)
+                    now = self._monotonic()
+            self._last_request_at = now
+
+    @staticmethod
+    def _retry_after_seconds(exc: error.HTTPError) -> float | None:
+        value = exc.headers.get("Retry-After") if exc.headers is not None else None
+        if not value:
+            return None
+        try:
+            return max(0.0, float(value))
+        except ValueError:
+            try:
+                retry_at = parsedate_to_datetime(value)
+                if retry_at.tzinfo is None:
+                    retry_at = retry_at.replace(tzinfo=timezone.utc)
+                now = datetime.now(retry_at.tzinfo)
+                return max(0.0, (retry_at - now).total_seconds())
+            except (TypeError, ValueError, OverflowError):
+                return None
 
     def _get(self, endpoint: str, params: dict[str, Any]) -> bytes:
         params = {**params, "tool": "proteomics_pathway_report"}
@@ -139,11 +188,42 @@ class PubMedClient:
         if self.api_key:
             params["api_key"] = self.api_key
         url = f"{PUBMED_EUTILS}/{endpoint}?{parse.urlencode(params)}"
-        try:
-            with self._opener(url, timeout=self.timeout) as response:
-                return response.read()
-        except error.URLError as exc:
-            raise RuntimeError(f"PubMed request failed: {exc}") from exc
+        for attempt in range(len(NCBI_RETRY_DELAYS) + 1):
+            self._throttle()
+            try:
+                with self._opener(url, timeout=self.timeout) as response:
+                    return response.read()
+            except error.HTTPError as exc:
+                if (
+                    exc.code not in NCBI_TRANSIENT_STATUS_CODES
+                    or attempt == len(NCBI_RETRY_DELAYS)
+                ):
+                    suffix = (
+                        " after 4 retries" if exc.code in NCBI_TRANSIENT_STATUS_CODES
+                        else ""
+                    )
+                    raise RuntimeError(
+                        f"PubMed request failed{suffix}: HTTP {exc.code} {exc.reason}"
+                    ) from exc
+                delay = float(NCBI_RETRY_DELAYS[attempt])
+                retry_after = self._retry_after_seconds(exc)
+                if retry_after is not None:
+                    delay = max(delay, retry_after)
+                retry_number = attempt + 1
+                if exc.code == 429:
+                    LOGGER.warning(
+                        "PubMed rate limited (429); retry %d/%d in %g seconds.",
+                        retry_number, len(NCBI_RETRY_DELAYS), delay,
+                    )
+                else:
+                    LOGGER.warning(
+                        "PubMed request failed with %d; retry %d/%d in %g seconds.",
+                        exc.code, retry_number, len(NCBI_RETRY_DELAYS), delay,
+                    )
+                self._sleep(delay)
+            except error.URLError as exc:
+                raise RuntimeError(f"PubMed request failed: {exc}") from exc
+        raise AssertionError("Unreachable PubMed retry state.")
 
     @staticmethod
     def build_query(theme: str, disease: str, today: date | None = None) -> str:

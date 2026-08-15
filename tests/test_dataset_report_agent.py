@@ -1,5 +1,6 @@
 from datetime import date
 import json
+from urllib import error, parse
 
 import pytest
 
@@ -37,6 +38,147 @@ def test_pubmed_query_is_exact_five_year_window():
     query = PubMedClient.build_query("fatty acid oxidation", "type 2 diabetes", date(2026, 8, 14))
     assert '"2021/08/14"[Date - Publication] : "2026/08/14"[Date - Publication]' in query
     assert '"fatty acid oxidation"[Title/Abstract]' in query
+
+
+class FakeClock:
+    def __init__(self):
+        self.now = 0.0
+        self.sleeps = []
+
+    def monotonic(self):
+        return self.now
+
+    def sleep(self, seconds):
+        self.sleeps.append(seconds)
+        self.now += seconds
+
+
+class HTTPResponse:
+    def __init__(self, body=b"ok"):
+        self.body = body
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_args):
+        return None
+
+    def read(self):
+        return self.body
+
+
+def http_error(code, retry_after=None):
+    headers = {} if retry_after is None else {"Retry-After": str(retry_after)}
+    return error.HTTPError("https://ncbi.test", code, "failure", headers, None)
+
+
+def test_pubmed_normal_requests_are_throttled_without_api_key(monkeypatch):
+    monkeypatch.delenv("NCBI_API_KEY", raising=False)
+    clock = FakeClock()
+    client = PubMedClient(
+        opener=lambda *_args, **_kwargs: HTTPResponse(),
+        sleep=clock.sleep, monotonic=clock.monotonic,
+    )
+    client._get("esearch.fcgi", {"db": "pubmed"})
+    client._get("efetch.fcgi", {"db": "pubmed"})
+    assert clock.sleeps == pytest.approx([0.4])
+
+
+def test_pubmed_429_retries_then_succeeds(caplog, monkeypatch):
+    monkeypatch.delenv("NCBI_API_KEY", raising=False)
+    outcomes = [http_error(429), HTTPResponse()]
+    clock = FakeClock()
+
+    def opener(*_args, **_kwargs):
+        outcome = outcomes.pop(0)
+        if isinstance(outcome, Exception):
+            raise outcome
+        return outcome
+
+    client = PubMedClient(
+        opener=opener, sleep=clock.sleep, monotonic=clock.monotonic,
+    )
+    assert client._get("esearch.fcgi", {}) == b"ok"
+    assert clock.sleeps == [2.0]
+    assert "PubMed rate limited (429); retry 1/4 in 2 seconds." in caplog.text
+
+
+def test_pubmed_retry_after_overrides_shorter_backoff(monkeypatch):
+    monkeypatch.delenv("NCBI_API_KEY", raising=False)
+    outcomes = [http_error(429, retry_after=7), HTTPResponse()]
+    clock = FakeClock()
+
+    def opener(*_args, **_kwargs):
+        outcome = outcomes.pop(0)
+        if isinstance(outcome, Exception):
+            raise outcome
+        return outcome
+
+    client = PubMedClient(
+        opener=opener, sleep=clock.sleep, monotonic=clock.monotonic,
+    )
+    client._get("esearch.fcgi", {})
+    assert clock.sleeps == [7.0]
+
+
+def test_pubmed_transient_retries_exhausted(monkeypatch):
+    monkeypatch.delenv("NCBI_API_KEY", raising=False)
+    calls = 0
+    clock = FakeClock()
+
+    def opener(*_args, **_kwargs):
+        nonlocal calls
+        calls += 1
+        raise http_error(503)
+
+    client = PubMedClient(
+        opener=opener, sleep=clock.sleep, monotonic=clock.monotonic,
+    )
+    with pytest.raises(RuntimeError, match="after 4 retries"):
+        client._get("efetch.fcgi", {})
+    assert calls == 5
+    assert clock.sleeps == [2.0, 4.0, 8.0, 16.0]
+
+
+@pytest.mark.parametrize("status_code", [400, 401, 403, 404])
+def test_pubmed_permanent_http_error_fails_immediately(status_code, monkeypatch):
+    monkeypatch.delenv("NCBI_API_KEY", raising=False)
+    calls = 0
+    clock = FakeClock()
+
+    def opener(*_args, **_kwargs):
+        nonlocal calls
+        calls += 1
+        raise http_error(status_code)
+
+    client = PubMedClient(
+        opener=opener, sleep=clock.sleep, monotonic=clock.monotonic,
+    )
+    with pytest.raises(RuntimeError, match=f"HTTP {status_code}"):
+        client._get("esearch.fcgi", {})
+    assert calls == 1
+    assert clock.sleeps == []
+
+
+def test_pubmed_api_key_enables_higher_rate_and_is_sent(monkeypatch):
+    monkeypatch.setenv("NCBI_API_KEY", "secret-key")
+    clock = FakeClock()
+    urls = []
+
+    def opener(url, **_kwargs):
+        urls.append(url)
+        return HTTPResponse()
+
+    client = PubMedClient(
+        opener=opener, sleep=clock.sleep, monotonic=clock.monotonic,
+    )
+    client._get("esearch.fcgi", {})
+    client._get("efetch.fcgi", {})
+    assert clock.sleeps == pytest.approx([0.1])
+    assert all(
+        parse.parse_qs(parse.urlparse(url).query)["api_key"] == ["secret-key"]
+        for url in urls
+    )
 
 
 @pytest.mark.parametrize("publication_type", [
