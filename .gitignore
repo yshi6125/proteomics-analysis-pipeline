@@ -15,8 +15,7 @@ env/
 data/raw/*
 !data/raw/.gitkeep
 
-# Generated AI reports, review records, and API-response caches
-results/pathway_reports/*/dataset_report_*.md
+# Generated AI drafts, review records, and API-response caches
 results/pathway_reports/*/draft_dataset_report_*.md
 results/pathway_reports/*/cache/
 results/pathway_reports/*/review/

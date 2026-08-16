@@ -126,6 +126,8 @@ Do not commit environment-variable values or local credential files.
 - `results/pathway_reports/<branch>/`: generated reports and reviewer provenance
   at runtime.
 
+Example output: [exploratory Type 2 diabetes pathway report](results/pathway_reports/exploratory/dataset_report_DM_vs_NDM.md).
+
 ## Limitations
 
 - Many exploratory pathways may be supported mainly by lower-tier candidates.
