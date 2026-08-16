@@ -1,0 +1,22 @@
+# macOS and editor settings
+.DS_Store
+.vscode/
+
+# Python caches and environments
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.mypy_cache/
+.pytest_cache/
+.venv/
+env/
+
+# Local raw datasets
+data/raw/*
+!data/raw/.gitkeep
+
+# Generated AI reports, review records, and API-response caches
+results/pathway_reports/*/dataset_report_*.md
+results/pathway_reports/*/draft_dataset_report_*.md
+results/pathway_reports/*/cache/
+results/pathway_reports/*/review/

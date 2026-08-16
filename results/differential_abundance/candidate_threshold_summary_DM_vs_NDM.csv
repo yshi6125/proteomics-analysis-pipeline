@@ -1,0 +1,6 @@
+level,label,p_threshold,q_threshold,log2fc_threshold,interpretation,number_of_candidates
+1,Level 1,,0.05,1.0,FDR-significant and at least 2-fold change.,10
+2,Level 2,,0.05,0.585,FDR-significant and at least approximately 1.5-fold change.,15
+3,Level 3,,0.05,,FDR-significant regardless of fold-change threshold.,17
+4,Level 4 — Exploratory,0.05,,0.585,Nominally significant with at least approximately 1.5-fold change.,190
+5,Level 5 — Exploratory,0.05,,,Nominal significance only.,254
