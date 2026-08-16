@@ -2,134 +2,80 @@
 
 ## Overview
 
-This project demonstrates a reproducible Python workflow for quality control,
-normalization assessment, differential protein-abundance analysis, and pathway
-enrichment of quantitative proteomics data.
+This repository contains a reproducible V1 workflow for quantitative proteomics,
+from input quality control through disease-specific, evidence-grounded pathway
+reports. Deterministic analysis produces structured pathway evidence before any
+LLM is used.
 
-The pipeline is designed to convert a protein-level data table into analysis-ready data and interpretable quality-control outputs.
-
-## Objectives
-
-The workflow addresses the following questions:
-
-1. What is the structure and quality of the input dataset?
-2. Are there duplicated proteins, missing values, or invalid measurements?
-3. How are peptide counts and protein intensities distributed?
-4. Is normalization needed across samples?
-5. Which proteins differ between biological groups?
-6. Which biological pathways are represented by those proteins?
-
-## Workflow
+## End-to-End Workflow
 
 ```text
-raw workbook
-    -> QC and standardized metadata
-    -> normalization diagnostics and approved preprocessing
-    -> differential protein-abundance analysis
-    -> candidate-based pathway enrichment
+Proteomics input
+  -> QC and normalization diagnostics
+  -> diagnosis-driven normalization and batch correction
+  -> differential protein analysis
+  -> candidate prioritization (Levels 1-5)
+  -> pathway enrichment
+  -> pathway support filtering
+  -> Jaccard network construction and Louvain redundancy reduction
+  -> evidence aggregation
+  -> separate primary and exploratory branches
+  -> disease-specific PubMed retrieval (previous five years)
+  -> batched LLM literature assessment and interpretation
+  -> deterministic dataset-evidence and disease-relevance classification
+  -> scientific reviewer and bounded correction pass
+  -> final pathway report
 ```
 
-## Repository Structure
+The analysis writes processed data and audit tables under `data/processed/` and
+`results/`, with diagnostic figures under `figures/`. Primary evidence uses
+Levels 1-3; the exploratory branch additionally includes Levels 4-5. Pathway
+redundancy is reduced independently within each branch using candidate-gene
+Jaccard similarity, a pathway network, and seeded Louvain clustering. The
+resulting evidence JSON is the fixed input to the reporting layer.
 
-```text
-data/        Example or public input data
-src/         Python analysis scripts
-notebooks/   Step-by-step exploratory analysis
-figures/     Quality-control and result figures
-results/     Processed tables and analysis outputs
-```
+## Design Principles
 
-## Tools
+- Preprocessing is diagnosis-driven: diagnostics inform explicit normalization
+  and batch-correction decisions rather than applying automatic transformations.
+- QC, differential analysis, enrichment, clustering, and evidence aggregation
+  remain deterministic and precede LLM interpretation.
+- Primary and exploratory evidence are never combined or used to upgrade one
+  another.
+- Dataset Evidence Strength is independent of literature-based Disease Relevance;
+  both classifications are computed in Python using fixed rules.
+- Enrichment and protein abundance do not imply pathway activation, inhibition,
+  metabolic flux, or causality.
+- AI interpretation is restricted to supplied evidence and checked by a bounded
+  Scientific Reviewer Agent before the final report is saved.
 
-- Python
-- pandas
-- NumPy
-- matplotlib
-- SciPy
-- scikit-learn
-- statsmodels
-- GSEApy
-
-## Current Analyses
-
-- Data structure and abundance-value QC
-- Missing-value, duplicate, and peptide-count assessment
-- Normalization diagnostics before and after preprocessing
-- Per-protein linear models with Benjamini-Hochberg FDR correction
-- Volcano plots and prioritized protein heatmaps
-- Primary FDR-supported and secondary exploratory pathway enrichment
-
-## Run QC and Normalization Diagnostics
+## Installation
 
 ```bash
-/opt/anaconda3/bin/python src/qc.py
-/opt/anaconda3/bin/python src/normalization_diagnostics.py
+python -m pip install -r requirements.txt
 ```
 
-## Run Differential Abundance
+## Usage
+
+Run the deterministic stages in order. `normalization.py` provides explicit
+preprocessing functions; apply the approved transformations after reviewing the
+diagnostics, then save the final analysis matrix used downstream.
 
 ```bash
-/opt/anaconda3/bin/python src/differential_abundance.py
+python src/qc.py
+python src/normalization_diagnostics.py
+python src/differential_abundance.py
+python src/pathway_analysis.py
+python src/pathway_consolidation.py
+python src/evidence_builder.py
 ```
 
-Differential-abundance tables are saved in `results/differential_abundance/`,
-and the volcano plot and protein heatmap are saved in
-`figures/differential_abundance/`.
+The final two commands create independent primary and exploratory cluster tables
+and `pathway_evidence_<comparison>.json` files. Their default comparison is
+`DM_vs_NDM`.
 
-## Run Pathway Analysis
-
-```bash
-/opt/anaconda3/bin/python src/pathway_analysis.py
-```
-
-The pathway workflow uses unique, normalized gene symbols and analyzes increased
-and decreased genes separately. It supports configurable GO Biological Process,
-Reactome, and KEGG libraries. Pathway significance is based on
-`enrichment_adjusted_p_value < 0.05`.
-
-Outputs in `results/pathway_analysis/` include:
-
-- `primary_fdr_pathways_<comparison>.csv`: pathways from protein candidates that
-  passed protein-level FDR (Levels 1–3). Filter the pathway adjusted p-value at
-  0.05 for the primary significant-pathway list.
-- `exploratory_all_candidates_pathways_<comparison>.csv`: pathways from all
-  Levels 1–5, including nominal protein candidates. Significant pathways in this
-  table remain exploratory.
-- `pathway_candidate_members_<comparison>.csv`: long-format gene-level evidence
-  linking pathways to contributing proteins, candidate origins, fold changes,
-  statistics, accessions, and source row positions.
-- `pathway_priority_summary_<comparison>.csv`: combined primary and exploratory
-  pathway summary with overlap, Gene Ratio, Level 1–5 evidence counts, strongest
-  candidate origin, and pathway priority.
-
-Separate primary and exploratory pathway figures are saved in
-`figures/pathway_analysis/`. Pathway priority describes the strongest underlying
-protein evidence and does not modify enrichment p-values.
-
-## Generate Disease-Specific Pathway Reports
-
-The reporting layer reads the frozen pathway-evidence JSON files and is separate
-from pathway analysis, consolidation, and evidence building. It queries PubMed for
-the preceding five years and uses the OpenAI Responses API to produce cautious
-scientific prose. Dataset evidence strength and literature-based disease relevance
-are assigned by deterministic rules in Python.
-
-Set `OPENAI_API_KEY` and, preferably, `NCBI_EMAIL`, then run both branches:
-
-```bash
-python src/generate_pathway_report.py \
-  --comparison DM_vs_NDM \
-  --disease "Type 2 diabetes" \
-  --branch both
-```
-
-Reports are written to `results/pathway_reports/primary/` and
-`results/pathway_reports/exploratory/`. Use `--branch primary` or
-`--branch exploratory` to generate one report. `NCBI_API_KEY` is optional and can
-be set to obtain the higher NCBI request limit.
-
-OpenAI remains the default provider. To preview the exact queries using Gemini,
-set `GEMINI_API_KEY` and select a supported Gemini model:
+Preview the disease-specific PubMed queries without searching PubMed, generating
+a report, or invoking the reviewer:
 
 ```bash
 python src/generate_pathway_report.py \
@@ -137,29 +83,60 @@ python src/generate_pathway_report.py \
   --disease "Type 2 diabetes" \
   --branch exploratory \
   --provider gemini \
-  --model <supported Gemini model> \
+  --model <supported-gemini-model> \
   --preview-queries
 ```
 
-Literature assessments are batched four clusters at a time by default. Adjust
-this with `--literature-batch-size`; use `--refresh-cache` to bypass cached
-biological themes and disease-specific literature assessments.
+Generate a reviewed report with Gemini and four clusters per literature batch:
 
-Final reports are scientifically reviewed by default. The reviewer audits the
-complete draft against the supplied deterministic and PubMed evidence, requests
-at most one automatic revision, and saves provenance under each branch's
-`review/` directory. Use `--reviewer-model` to choose a different model with the
-same provider, or `--skip-review` only for development and debugging.
+```bash
+python src/generate_pathway_report.py \
+  --comparison DM_vs_NDM \
+  --disease "Type 2 diabetes" \
+  --branch exploratory \
+  --provider gemini \
+  --model <supported-gemini-model> \
+  --literature-batch-size 4
+```
 
-The current committed pathway outputs were generated with GSEApy's local
-over-representation engine using downloaded Enrichr GO, Reactome, and KEGG
-libraries because the live Enrichr submission endpoint returned HTTP 429.
+Use `--provider openai --model <openai-model>` for OpenAI. `--refresh-cache`
+bypasses cached themes, literature assessments, and reviews. `--skip-review`
+disables scientific review for development or debugging. Reports are written to
+`results/pathway_reports/<branch>/`; generated reports, review records, and caches
+are intentionally not tracked.
 
-## Planned Analysis
+## Environment Variables
 
-- Preranked GSEA using all tested proteins ranked by differential-abundance
-  `t_statistic`
+- `GEMINI_API_KEY`: required when `--provider gemini` is selected.
+- `OPENAI_API_KEY`: required when `--provider openai` is selected.
+- `NCBI_EMAIL`: optional contact address included in NCBI E-utilities requests.
+- `NCBI_API_KEY`: optional; enables the higher NCBI request rate. Without it,
+  requests are conservatively throttled to comply with the lower public rate.
+
+Do not commit environment-variable values or local credential files.
+
+## Key Outputs
+
+- `results/differential_abundance/`: protein statistics and Level 1-5 candidate
+  summaries.
+- `results/pathway_analysis/`: primary and exploratory enrichment results plus
+  pathway-member evidence.
+- `results/pathway_consolidation/<branch>/`: support-filtered clusters,
+  consolidation metadata, and pathway evidence JSON.
+- `results/pathway_reports/<branch>/`: generated reports and reviewer provenance
+  at runtime.
+
+## Limitations
+
+- Many exploratory pathways may be supported mainly by lower-tier candidates.
+- Literature retrieval depends on the biological theme and disease terminology
+  used in PubMed queries.
+- Protein abundance and enrichment do not establish pathway activity, metabolic
+  flux, or causality.
+- AI-generated interpretations are evidence-grounded and reviewer-checked, but
+  still require expert scientific review.
 
 ## Data Availability
 
-The repository uses an anonymized, simulated, or publicly available example dataset. Proprietary or unpublished research data are not included.
+The repository uses an anonymized, simulated, or publicly available example
+dataset. Proprietary or unpublished research data are not included.
