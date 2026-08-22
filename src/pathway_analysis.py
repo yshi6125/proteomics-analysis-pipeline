@@ -463,7 +463,7 @@ def create_pathway_summary_plot(
         floor = positive.min() / 10 if not positive.empty else np.finfo(float).tiny
         strength = -np.log10(adjusted.clip(lower=floor, upper=1.0))
         priority_numbers = selected["strongest_candidate_origin"].map(ORIGIN_PRIORITY).fillna(6)
-        colors = plt.cm.viridis_r((priority_numbers - 1) / 5)
+        colors = plt.get_cmap("viridis_r")((priority_numbers - 1) / 5)
         labels = (
             selected["pathway"].astype(str)
             + " [" + selected["direction"].astype(str) + "]"

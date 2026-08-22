@@ -65,7 +65,12 @@ def _validate_inputs(pathways: pd.DataFrame, members: pd.DataFrame) -> None:
 
 
 def _pathway_identity(row: pd.Series) -> tuple[str, str, str, str]:
-    return tuple(str(row[column]) for column in PATHWAY_KEY_COLUMNS)
+    return (
+        str(row["analysis_type"]),
+        str(row["direction"]),
+        str(row["pathway_library"]),
+        str(row["pathway"]),
+    )
 
 
 def reconstruct_pathway_gene_sets(

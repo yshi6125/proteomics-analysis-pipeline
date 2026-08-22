@@ -509,3 +509,26 @@ def test_cache_avoids_intermediate_calls_and_refresh_bypasses_it(tmp_path):
         "biological_themes": 1, "literature_assessment": 1, "report_writing": 1,
         "revision": 0,
     }
+
+
+def test_changed_pathway_evidence_invalidates_theme_cache(tmp_path):
+    evidence = report_evidence(2)
+    first = DatasetReportAgent(
+        BatchLLM(), BatchPubMed(), "prompt", literature_batch_size=2,
+        cache_dir=tmp_path, cache_key="comparison_disease",
+    )
+    first.generate(evidence, "Disease")
+
+    changed = json.loads(json.dumps(evidence))
+    changed["clusters"][0]["genes"].append({"gene": "NEW_GENE", "level": 4})
+    changed_llm = BatchLLM()
+    changed_agent = DatasetReportAgent(
+        changed_llm, BatchPubMed(), "prompt", literature_batch_size=2,
+        cache_dir=tmp_path, cache_key="comparison_disease",
+    )
+    changed_agent.generate(changed, "Disease")
+
+    assert changed_agent.request_counts["biological_themes"] == 1
+    # Literature assessment may remain reusable when the newly generated theme,
+    # PubMed query, and retrieved records are byte-for-byte unchanged.
+    assert changed_agent.request_counts["literature_assessment"] == 0

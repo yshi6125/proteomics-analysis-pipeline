@@ -338,7 +338,7 @@ def build_pathway_evidence(
         branch: build_branch_evidence(
             comparison=comparison,
             branch=branch,
-            analysis_type=configuration["analysis_type"],
+            analysis_type=str(configuration["analysis_type"]),
             allowed_levels=list(configuration["allowed_levels"]),
             consolidation_results_dir=consolidation_results_dir,
             pathway_results_dir=pathway_results_dir,

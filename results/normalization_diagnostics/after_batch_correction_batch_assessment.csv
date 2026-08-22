@@ -1,3 +1,0 @@
-component,group_partial_f_statistic,group_partial_p_value,batch_partial_f_statistic,batch_partial_p_value,unique_group_r_squared,unique_batch_r_squared,batch_partial_p_value_holm
-PC1,50.888646764698365,1.6753404596357279e-06,0.0,1.0,0.749589941615394,0.0,1.0
-PC2,0.45697732221185683,0.5081329445790148,6.0212574757459595e-15,0.9999999316849143,0.026177345240084,3.4491982000140716e-16,1.0

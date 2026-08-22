@@ -2,7 +2,7 @@
 
 This module prepares the raw workbook for normalization diagnostics and approved
 preprocessing. It does not perform normalization, imputation, PCA, clustering,
-correlation analysis, or batch correction.
+correlation analysis, or downstream statistical-model specification.
 """
 
 from __future__ import annotations

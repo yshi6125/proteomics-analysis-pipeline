@@ -7,9 +7,9 @@
     "minimum_candidate_genes": 2,
     "adjusted_p_threshold": 0.05,
     "louvain_seed": 42,
-    "generated_at": "2026-08-13T23:50:26.286571+00:00"
+    "generated_at": "2026-08-21T23:39:22.831134+00:00"
   },
-  "number_of_clusters": 16,
+  "number_of_clusters": 17,
   "clusters": [
     {
       "cluster_id": "C001",
@@ -17,7 +17,563 @@
       "direction": "decreased",
       "representative_pathway": {
         "library": "GO_Biological_Process_2023",
-        "name": "Cellular Respiration (GO:0045333)"
+        "name": "CD40 Signaling Pathway (GO:0023035)"
+      },
+      "member_pathways": [
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "CD40 Signaling Pathway (GO:0023035)"
+        }
+      ],
+      "cluster_size": 1,
+      "genes": [
+        {
+          "gene": "ITGB1",
+          "level": 4
+        },
+        {
+          "gene": "PHB2",
+          "level": 4
+        }
+      ],
+      "n_genes": 2,
+      "level_counts": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 2,
+        "5": 0
+      },
+      "best_adjusted_p": 0.0456790270420036,
+      "representative_gene_ratio": 0.014388489208633,
+      "is_singleton": true
+    },
+    {
+      "cluster_id": "C002",
+      "analysis_type": "exploratory_all_candidates",
+      "direction": "decreased",
+      "representative_pathway": {
+        "library": "GO_Biological_Process_2023",
+        "name": "Fatty Acid Beta-Oxidation Using acyl-CoA Dehydrogenase (GO:0033539)"
+      },
+      "member_pathways": [
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "Electron Transport Chain (GO:0022900)"
+        },
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "Fatty Acid Beta-Oxidation Using acyl-CoA Dehydrogenase (GO:0033539)"
+        },
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "Respiratory Electron Transport Chain (GO:0022904)"
+        }
+      ],
+      "cluster_size": 3,
+      "genes": [
+        {
+          "gene": "ACADS",
+          "level": 4
+        },
+        {
+          "gene": "ETFB",
+          "level": 4
+        },
+        {
+          "gene": "ETFDH",
+          "level": 4
+        },
+        {
+          "gene": "SDHA",
+          "level": 4
+        }
+      ],
+      "n_genes": 4,
+      "level_counts": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 4,
+        "5": 0
+      },
+      "best_adjusted_p": 0.0031032614034833,
+      "representative_gene_ratio": 0.0215827338129496,
+      "is_singleton": false
+    },
+    {
+      "cluster_id": "C003",
+      "analysis_type": "exploratory_all_candidates",
+      "direction": "decreased",
+      "representative_pathway": {
+        "library": "GO_Biological_Process_2023",
+        "name": "Formation Of Cytoplasmic Translation Initiation Complex (GO:0001732)"
+      },
+      "member_pathways": [
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "Cytoplasmic Translational Initiation (GO:0002183)"
+        },
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "Formation Of Cytoplasmic Translation Initiation Complex (GO:0001732)"
+        },
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "Positive Regulation Of RNA Binding (GO:1905216)"
+        },
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "Positive Regulation Of mRNA Binding (GO:1902416)"
+        },
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "Regulation Of mRNA Binding (GO:1902415)"
+        },
+        {
+          "library": "KEGG_2021_Human",
+          "name": "RNA transport"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Formation Of Ternary Complex, And Subsequently, 43S Complex R-HSA-72695"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Ribosomal Scanning And Start Codon Recognition R-HSA-72702"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Translation Initiation Complex Formation R-HSA-72649"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "mRNA Activation Upon Binding Of Cap-Binding Complex And eIFs, Subsequent Binding To 43S R-HSA-72662"
+        }
+      ],
+      "cluster_size": 10,
+      "genes": [
+        {
+          "gene": "EIF3D",
+          "level": 4
+        },
+        {
+          "gene": "EIF3E",
+          "level": 4
+        },
+        {
+          "gene": "EIF3I",
+          "level": 4
+        },
+        {
+          "gene": "EIF6",
+          "level": 4
+        },
+        {
+          "gene": "RANGAP1",
+          "level": 4
+        },
+        {
+          "gene": "RPS2",
+          "level": 4
+        },
+        {
+          "gene": "EIF4E2",
+          "level": 5
+        },
+        {
+          "gene": "SEC13",
+          "level": 5
+        }
+      ],
+      "n_genes": 8,
+      "level_counts": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 6,
+        "5": 2
+      },
+      "best_adjusted_p": 0.000259271141533,
+      "representative_gene_ratio": 0.0287769784172661,
+      "is_singleton": false
+    },
+    {
+      "cluster_id": "C004",
+      "analysis_type": "exploratory_all_candidates",
+      "direction": "decreased",
+      "representative_pathway": {
+        "library": "GO_Biological_Process_2023",
+        "name": "Mitochondrion Organization (GO:0007005)"
+      },
+      "member_pathways": [
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "Mitochondrion Organization (GO:0007005)"
+        }
+      ],
+      "cluster_size": 1,
+      "genes": [
+        {
+          "gene": "HSPD1",
+          "level": 3
+        },
+        {
+          "gene": "BCAP31",
+          "level": 4
+        },
+        {
+          "gene": "COX7A2",
+          "level": 4
+        },
+        {
+          "gene": "PHB2",
+          "level": 4
+        },
+        {
+          "gene": "SLC25A4",
+          "level": 4
+        },
+        {
+          "gene": "VPS13C",
+          "level": 4
+        },
+        {
+          "gene": "PRDX3",
+          "level": 5
+        }
+      ],
+      "n_genes": 7,
+      "level_counts": {
+        "1": 0,
+        "2": 0,
+        "3": 1,
+        "4": 5,
+        "5": 1
+      },
+      "best_adjusted_p": 0.007618969816774,
+      "representative_gene_ratio": 0.0503597122302158,
+      "is_singleton": true
+    },
+    {
+      "cluster_id": "C005",
+      "analysis_type": "exploratory_all_candidates",
+      "direction": "decreased",
+      "representative_pathway": {
+        "library": "GO_Biological_Process_2023",
+        "name": "Purine Nucleobase Biosynthetic Process (GO:0009113)"
+      },
+      "member_pathways": [
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "GMP Biosynthetic Process (GO:0006177)"
+        },
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "GMP Metabolic Process (GO:0046037)"
+        },
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "Nucleobase Biosynthetic Process (GO:0046112)"
+        },
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "Purine Nucleobase Biosynthetic Process (GO:0009113)"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Purine Ribonucleoside Monophosphate Biosynthesis R-HSA-73817"
+        }
+      ],
+      "cluster_size": 5,
+      "genes": [
+        {
+          "gene": "GMPS",
+          "level": 4
+        },
+        {
+          "gene": "PAICS",
+          "level": 4
+        }
+      ],
+      "n_genes": 2,
+      "level_counts": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 2,
+        "5": 0
+      },
+      "best_adjusted_p": 0.0210495328620624,
+      "representative_gene_ratio": 0.014388489208633,
+      "is_singleton": false
+    },
+    {
+      "cluster_id": "C006",
+      "analysis_type": "exploratory_all_candidates",
+      "direction": "decreased",
+      "representative_pathway": {
+        "library": "KEGG_2021_Human",
+        "name": "Citrate cycle (TCA cycle)"
+      },
+      "member_pathways": [
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "Dicarboxylic Acid Metabolic Process (GO:0043648)"
+        },
+        {
+          "library": "KEGG_2021_Human",
+          "name": "Citrate cycle (TCA cycle)"
+        },
+        {
+          "library": "KEGG_2021_Human",
+          "name": "Cysteine and methionine metabolism"
+        },
+        {
+          "library": "KEGG_2021_Human",
+          "name": "Glycolysis / Gluconeogenesis"
+        },
+        {
+          "library": "KEGG_2021_Human",
+          "name": "Glyoxylate and dicarboxylate metabolism"
+        },
+        {
+          "library": "KEGG_2021_Human",
+          "name": "Pyruvate metabolism"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Citric Acid Cycle (TCA Cycle) R-HSA-71403"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Mitochondrial Protein Import R-HSA-1268020"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Protein Localization R-HSA-9609507"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Pyruvate Metabolism And Citric Acid (TCA) Cycle R-HSA-71406"
+        }
+      ],
+      "cluster_size": 10,
+      "genes": [
+        {
+          "gene": "HSPD1",
+          "level": 3
+        },
+        {
+          "gene": "ALDH5A1",
+          "level": 4
+        },
+        {
+          "gene": "CS",
+          "level": 4
+        },
+        {
+          "gene": "DLAT",
+          "level": 4
+        },
+        {
+          "gene": "DLD",
+          "level": 4
+        },
+        {
+          "gene": "ENOPH1",
+          "level": 4
+        },
+        {
+          "gene": "MRPS36",
+          "level": 4
+        },
+        {
+          "gene": "PEX19",
+          "level": 4
+        },
+        {
+          "gene": "SDHA",
+          "level": 4
+        },
+        {
+          "gene": "SLC25A4",
+          "level": 4
+        },
+        {
+          "gene": "ACO2",
+          "level": 5
+        },
+        {
+          "gene": "ALDH2",
+          "level": 5
+        },
+        {
+          "gene": "ECH1",
+          "level": 5
+        },
+        {
+          "gene": "GRHPR",
+          "level": 5
+        },
+        {
+          "gene": "LDHB",
+          "level": 5
+        },
+        {
+          "gene": "MDH2",
+          "level": 5
+        }
+      ],
+      "n_genes": 16,
+      "level_counts": {
+        "1": 0,
+        "2": 0,
+        "3": 1,
+        "4": 9,
+        "5": 6
+      },
+      "best_adjusted_p": 2.027802752953447e-06,
+      "representative_gene_ratio": 0.0431654676258992,
+      "is_singleton": false
+    },
+    {
+      "cluster_id": "C007",
+      "analysis_type": "exploratory_all_candidates",
+      "direction": "decreased",
+      "representative_pathway": {
+        "library": "KEGG_2021_Human",
+        "name": "Fatty acid biosynthesis"
+      },
+      "member_pathways": [
+        {
+          "library": "GO_Biological_Process_2023",
+          "name": "Monocarboxylic Acid Metabolic Process (GO:0032787)"
+        },
+        {
+          "library": "KEGG_2021_Human",
+          "name": "Fatty acid biosynthesis"
+        },
+        {
+          "library": "KEGG_2021_Human",
+          "name": "Ferroptosis"
+        },
+        {
+          "library": "KEGG_2021_Human",
+          "name": "Peroxisome"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Fatty acyl-CoA Biosynthesis R-HSA-75105"
+        }
+      ],
+      "cluster_size": 5,
+      "genes": [
+        {
+          "gene": "ACSF2",
+          "level": 4
+        },
+        {
+          "gene": "ACSL1",
+          "level": 4
+        },
+        {
+          "gene": "ACSL3",
+          "level": 4
+        },
+        {
+          "gene": "ECHDC3",
+          "level": 4
+        },
+        {
+          "gene": "FASN",
+          "level": 4
+        },
+        {
+          "gene": "FTH1",
+          "level": 4
+        },
+        {
+          "gene": "PEX19",
+          "level": 4
+        },
+        {
+          "gene": "ECH1",
+          "level": 5
+        },
+        {
+          "gene": "GRHPR",
+          "level": 5
+        },
+        {
+          "gene": "LDHB",
+          "level": 5
+        },
+        {
+          "gene": "SOD1",
+          "level": 5
+        }
+      ],
+      "n_genes": 11,
+      "level_counts": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 7,
+        "5": 4
+      },
+      "best_adjusted_p": 0.0016735024638605,
+      "representative_gene_ratio": 0.0215827338129496,
+      "is_singleton": false
+    },
+    {
+      "cluster_id": "C008",
+      "analysis_type": "exploratory_all_candidates",
+      "direction": "decreased",
+      "representative_pathway": {
+        "library": "KEGG_2021_Human",
+        "name": "Legionellosis"
+      },
+      "member_pathways": [
+        {
+          "library": "KEGG_2021_Human",
+          "name": "Legionellosis"
+        }
+      ],
+      "cluster_size": 1,
+      "genes": [
+        {
+          "gene": "HSPD1",
+          "level": 3
+        },
+        {
+          "gene": "BCL2L13",
+          "level": 4
+        },
+        {
+          "gene": "SAR1A",
+          "level": 5
+        }
+      ],
+      "n_genes": 3,
+      "level_counts": {
+        "1": 0,
+        "2": 0,
+        "3": 1,
+        "4": 1,
+        "5": 1
+      },
+      "best_adjusted_p": 0.0390705887259355,
+      "representative_gene_ratio": 0.0215827338129496,
+      "is_singleton": true
+    },
+    {
+      "cluster_id": "C009",
+      "analysis_type": "exploratory_all_candidates",
+      "direction": "decreased",
+      "representative_pathway": {
+        "library": "Reactome_2022",
+        "name": "Citric Acid (TCA) Cycle And Respiratory Electron Transport R-HSA-1428517"
       },
       "member_pathways": [
         {
@@ -216,199 +772,44 @@
         "4": 15,
         "5": 9
       },
-      "best_adjusted_p": 1.3971876455356703e-09,
-      "representative_gene_ratio": 0.0816326530612244,
+      "best_adjusted_p": 2.1660684279841467e-10,
+      "representative_gene_ratio": 0.1079136690647482,
       "is_singleton": false
     },
     {
-      "cluster_id": "C002",
+      "cluster_id": "C010",
       "analysis_type": "exploratory_all_candidates",
       "direction": "decreased",
       "representative_pathway": {
-        "library": "GO_Biological_Process_2023",
-        "name": "Fatty Acid Beta-Oxidation Using acyl-CoA Dehydrogenase (GO:0033539)"
+        "library": "Reactome_2022",
+        "name": "Metabolism Of Amino Acids And Derivatives R-HSA-71291"
       },
       "member_pathways": [
         {
-          "library": "GO_Biological_Process_2023",
-          "name": "Electron Transport Chain (GO:0022900)"
-        },
-        {
-          "library": "GO_Biological_Process_2023",
-          "name": "Fatty Acid Beta-Oxidation Using acyl-CoA Dehydrogenase (GO:0033539)"
-        },
-        {
-          "library": "GO_Biological_Process_2023",
-          "name": "Respiratory Electron Transport Chain (GO:0022904)"
-        }
-      ],
-      "cluster_size": 3,
-      "genes": [
-        {
-          "gene": "ACADS",
-          "level": 4
-        },
-        {
-          "gene": "ETFB",
-          "level": 4
-        },
-        {
-          "gene": "ETFDH",
-          "level": 4
-        },
-        {
-          "gene": "SDHA",
-          "level": 4
-        }
-      ],
-      "n_genes": 4,
-      "level_counts": {
-        "1": 0,
-        "2": 0,
-        "3": 0,
-        "4": 4,
-        "5": 0
-      },
-      "best_adjusted_p": 0.0039304901500761,
-      "representative_gene_ratio": 0.0204081632653061,
-      "is_singleton": false
-    },
-    {
-      "cluster_id": "C003",
-      "analysis_type": "exploratory_all_candidates",
-      "direction": "decreased",
-      "representative_pathway": {
-        "library": "GO_Biological_Process_2023",
-        "name": "Formation Of Cytoplasmic Translation Initiation Complex (GO:0001732)"
-      },
-      "member_pathways": [
-        {
-          "library": "GO_Biological_Process_2023",
-          "name": "Cytoplasmic Translational Initiation (GO:0002183)"
-        },
-        {
-          "library": "GO_Biological_Process_2023",
-          "name": "Formation Of Cytoplasmic Translation Initiation Complex (GO:0001732)"
-        },
-        {
-          "library": "GO_Biological_Process_2023",
-          "name": "Positive Regulation Of RNA Binding (GO:1905216)"
-        },
-        {
-          "library": "GO_Biological_Process_2023",
-          "name": "Positive Regulation Of mRNA Binding (GO:1902416)"
-        },
-        {
-          "library": "GO_Biological_Process_2023",
-          "name": "Regulation Of mRNA Binding (GO:1902415)"
-        }
-      ],
-      "cluster_size": 5,
-      "genes": [
-        {
-          "gene": "EIF3D",
-          "level": 4
-        },
-        {
-          "gene": "EIF3E",
-          "level": 4
-        },
-        {
-          "gene": "EIF3I",
-          "level": 4
-        },
-        {
-          "gene": "EIF6",
-          "level": 4
-        }
-      ],
-      "n_genes": 4,
-      "level_counts": {
-        "1": 0,
-        "2": 0,
-        "3": 0,
-        "4": 4,
-        "5": 0
-      },
-      "best_adjusted_p": 0.0003511970191567,
-      "representative_gene_ratio": 0.0272108843537414,
-      "is_singleton": false
-    },
-    {
-      "cluster_id": "C004",
-      "analysis_type": "exploratory_all_candidates",
-      "direction": "decreased",
-      "representative_pathway": {
-        "library": "GO_Biological_Process_2023",
-        "name": "Mitochondrion Organization (GO:0007005)"
-      },
-      "member_pathways": [
-        {
-          "library": "GO_Biological_Process_2023",
-          "name": "Mitochondrion Organization (GO:0007005)"
+          "library": "Reactome_2022",
+          "name": "Metabolism Of Amino Acids And Derivatives R-HSA-71291"
         }
       ],
       "cluster_size": 1,
       "genes": [
         {
-          "gene": "HSPD1",
-          "level": 3
-        },
-        {
-          "gene": "BCAP31",
+          "gene": "DLAT",
           "level": 4
         },
         {
-          "gene": "COX7A2",
+          "gene": "ECHS1",
           "level": 4
         },
         {
-          "gene": "PHB2",
+          "gene": "ENOPH1",
           "level": 4
         },
         {
-          "gene": "SLC25A4",
+          "gene": "ETHE1",
           "level": 4
         },
         {
-          "gene": "VPS13C",
-          "level": 4
-        },
-        {
-          "gene": "PRDX3",
-          "level": 5
-        }
-      ],
-      "n_genes": 7,
-      "level_counts": {
-        "1": 0,
-        "2": 0,
-        "3": 1,
-        "4": 5,
-        "5": 1
-      },
-      "best_adjusted_p": 0.0118742251437276,
-      "representative_gene_ratio": 0.0476190476190476,
-      "is_singleton": true
-    },
-    {
-      "cluster_id": "C005",
-      "analysis_type": "exploratory_all_candidates",
-      "direction": "decreased",
-      "representative_pathway": {
-        "library": "GO_Biological_Process_2023",
-        "name": "Positive Regulation Of Ubiquitin-Protein Transferase Activity (GO:0051443)"
-      },
-      "member_pathways": [
-        {
-          "library": "GO_Biological_Process_2023",
-          "name": "Positive Regulation Of Ubiquitin-Protein Transferase Activity (GO:0051443)"
-        }
-      ],
-      "cluster_size": 1,
-      "genes": [
-        {
-          "gene": "PIN1",
+          "gene": "GPT",
           "level": 4
         },
         {
@@ -416,133 +817,7 @@
           "level": 4
         },
         {
-          "gene": "SKP1",
-          "level": 5
-        }
-      ],
-      "n_genes": 3,
-      "level_counts": {
-        "1": 0,
-        "2": 0,
-        "3": 0,
-        "4": 2,
-        "5": 1
-      },
-      "best_adjusted_p": 0.0388122493171869,
-      "representative_gene_ratio": 0.0204081632653061,
-      "is_singleton": true
-    },
-    {
-      "cluster_id": "C006",
-      "analysis_type": "exploratory_all_candidates",
-      "direction": "decreased",
-      "representative_pathway": {
-        "library": "GO_Biological_Process_2023",
-        "name": "Purine Nucleobase Biosynthetic Process (GO:0009113)"
-      },
-      "member_pathways": [
-        {
-          "library": "GO_Biological_Process_2023",
-          "name": "GMP Biosynthetic Process (GO:0006177)"
-        },
-        {
-          "library": "GO_Biological_Process_2023",
-          "name": "Nucleobase Biosynthetic Process (GO:0046112)"
-        },
-        {
-          "library": "GO_Biological_Process_2023",
-          "name": "Purine Nucleobase Biosynthetic Process (GO:0009113)"
-        }
-      ],
-      "cluster_size": 3,
-      "genes": [
-        {
-          "gene": "GMPS",
-          "level": 4
-        },
-        {
-          "gene": "PAICS",
-          "level": 4
-        }
-      ],
-      "n_genes": 2,
-      "level_counts": {
-        "1": 0,
-        "2": 0,
-        "3": 0,
-        "4": 2,
-        "5": 0
-      },
-      "best_adjusted_p": 0.0248889763070487,
-      "representative_gene_ratio": 0.0136054421768707,
-      "is_singleton": false
-    },
-    {
-      "cluster_id": "C007",
-      "analysis_type": "exploratory_all_candidates",
-      "direction": "decreased",
-      "representative_pathway": {
-        "library": "KEGG_2021_Human",
-        "name": "Citrate cycle (TCA cycle)"
-      },
-      "member_pathways": [
-        {
-          "library": "GO_Biological_Process_2023",
-          "name": "Dicarboxylic Acid Metabolic Process (GO:0043648)"
-        },
-        {
-          "library": "KEGG_2021_Human",
-          "name": "Citrate cycle (TCA cycle)"
-        },
-        {
-          "library": "KEGG_2021_Human",
-          "name": "Glyoxylate and dicarboxylate metabolism"
-        },
-        {
-          "library": "KEGG_2021_Human",
-          "name": "Pyruvate metabolism"
-        },
-        {
-          "library": "Reactome_2022",
-          "name": "Citric Acid Cycle (TCA Cycle) R-HSA-71403"
-        },
-        {
-          "library": "Reactome_2022",
-          "name": "Pyruvate Metabolism And Citric Acid (TCA) Cycle R-HSA-71406"
-        }
-      ],
-      "cluster_size": 6,
-      "genes": [
-        {
-          "gene": "ALDH5A1",
-          "level": 4
-        },
-        {
-          "gene": "CS",
-          "level": 4
-        },
-        {
-          "gene": "DLAT",
-          "level": 4
-        },
-        {
-          "gene": "DLD",
-          "level": 4
-        },
-        {
-          "gene": "MRPS36",
-          "level": 4
-        },
-        {
-          "gene": "SDHA",
-          "level": 4
-        },
-        {
-          "gene": "ACO2",
-          "level": 5
-        },
-        {
-          "gene": "ALDH2",
+          "gene": "FAH",
           "level": 5
         },
         {
@@ -550,33 +825,29 @@
           "level": 5
         },
         {
-          "gene": "LDHB",
-          "level": 5
-        },
-        {
-          "gene": "MDH2",
+          "gene": "HIBADH",
           "level": 5
         }
       ],
-      "n_genes": 11,
+      "n_genes": 9,
       "level_counts": {
         "1": 0,
         "2": 0,
         "3": 0,
         "4": 6,
-        "5": 5
+        "5": 3
       },
-      "best_adjusted_p": 4.401184107912802e-05,
-      "representative_gene_ratio": 0.0408163265306122,
-      "is_singleton": false
+      "best_adjusted_p": 0.0224735348776994,
+      "representative_gene_ratio": 0.0647482014388489,
+      "is_singleton": true
     },
     {
-      "cluster_id": "C008",
+      "cluster_id": "C011",
       "analysis_type": "exploratory_all_candidates",
       "direction": "decreased",
       "representative_pathway": {
-        "library": "KEGG_2021_Human",
-        "name": "Fatty acid degradation"
+        "library": "Reactome_2022",
+        "name": "Metabolism R-HSA-1430728"
       },
       "member_pathways": [
         {
@@ -657,15 +928,39 @@
         },
         {
           "library": "Reactome_2022",
+          "name": "Metabolism Of Lipids R-HSA-556833"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Metabolism R-HSA-1430728"
+        },
+        {
+          "library": "Reactome_2022",
           "name": "Mitochondrial Fatty Acid Beta-Oxidation Of Saturated Fatty Acids R-HSA-77286"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Mitochondrial Fatty Acid Beta-Oxidation Of Unsaturated Fatty Acids R-HSA-77288"
         },
         {
           "library": "Reactome_2022",
           "name": "Mitochondrial Fatty Acid Beta-Oxidation R-HSA-77289"
         }
       ],
-      "cluster_size": 21,
+      "cluster_size": 24,
       "genes": [
+        {
+          "gene": "NDUFA10",
+          "level": 2
+        },
+        {
+          "gene": "TM7SF2",
+          "level": 2
+        },
+        {
+          "gene": "ABHD10",
+          "level": 4
+        },
         {
           "gene": "ACADS",
           "level": 4
@@ -687,6 +982,18 @@
           "level": 4
         },
         {
+          "gene": "COX6B1",
+          "level": 4
+        },
+        {
+          "gene": "CS",
+          "level": 4
+        },
+        {
+          "gene": "DLAT",
+          "level": 4
+        },
+        {
           "gene": "DLD",
           "level": 4
         },
@@ -703,6 +1010,10 @@
           "level": 4
         },
         {
+          "gene": "ENOPH1",
+          "level": 4
+        },
+        {
           "gene": "ETFB",
           "level": 4
         },
@@ -711,7 +1022,27 @@
           "level": 4
         },
         {
+          "gene": "ETHE1",
+          "level": 4
+        },
+        {
           "gene": "FASN",
+          "level": 4
+        },
+        {
+          "gene": "GMPS",
+          "level": 4
+        },
+        {
+          "gene": "GNG12",
+          "level": 4
+        },
+        {
+          "gene": "GPT",
+          "level": 4
+        },
+        {
+          "gene": "GYG2",
           "level": 4
         },
         {
@@ -719,7 +1050,15 @@
           "level": 4
         },
         {
+          "gene": "ITPA",
+          "level": 4
+        },
+        {
           "gene": "KMT2A",
+          "level": 4
+        },
+        {
+          "gene": "NDUFA12",
           "level": 4
         },
         {
@@ -727,7 +1066,35 @@
           "level": 4
         },
         {
+          "gene": "PAICS",
+          "level": 4
+        },
+        {
+          "gene": "RPS2",
+          "level": 4
+        },
+        {
+          "gene": "SDHA",
+          "level": 4
+        },
+        {
+          "gene": "UQCRC1",
+          "level": 4
+        },
+        {
+          "gene": "UQCRH",
+          "level": 4
+        },
+        {
+          "gene": "UROD",
+          "level": 4
+        },
+        {
           "gene": "ACAA2",
+          "level": 5
+        },
+        {
+          "gene": "ACO2",
           "level": 5
         },
         {
@@ -736,6 +1103,18 @@
         },
         {
           "gene": "DBI",
+          "level": 5
+        },
+        {
+          "gene": "FAH",
+          "level": 5
+        },
+        {
+          "gene": "GPD1",
+          "level": 5
+        },
+        {
+          "gene": "GRHPR",
           "level": 5
         },
         {
@@ -749,103 +1128,107 @@
         {
           "gene": "LDHB",
           "level": 5
+        },
+        {
+          "gene": "MDH2",
+          "level": 5
+        },
+        {
+          "gene": "SEC13",
+          "level": 5
+        },
+        {
+          "gene": "UQCR11",
+          "level": 5
+        },
+        {
+          "gene": "UQCRC2",
+          "level": 5
         }
       ],
-      "n_genes": 21,
+      "n_genes": 49,
       "level_counts": {
         "1": 0,
-        "2": 0,
+        "2": 2,
         "3": 0,
-        "4": 15,
-        "5": 6
+        "4": 33,
+        "5": 14
       },
-      "best_adjusted_p": 1.9604197393568753e-07,
-      "representative_gene_ratio": 0.0612244897959183,
+      "best_adjusted_p": 2.1660684279841467e-10,
+      "representative_gene_ratio": 0.3237410071942446,
       "is_singleton": false
     },
     {
-      "cluster_id": "C009",
+      "cluster_id": "C012",
       "analysis_type": "exploratory_all_candidates",
       "direction": "decreased",
       "representative_pathway": {
-        "library": "KEGG_2021_Human",
-        "name": "Peroxisome"
+        "library": "Reactome_2022",
+        "name": "Neutrophil Degranulation R-HSA-6798695"
       },
       "member_pathways": [
         {
-          "library": "GO_Biological_Process_2023",
-          "name": "Monocarboxylic Acid Metabolic Process (GO:0032787)"
-        },
-        {
-          "library": "KEGG_2021_Human",
-          "name": "Fatty acid biosynthesis"
-        },
-        {
-          "library": "KEGG_2021_Human",
-          "name": "Peroxisome"
+          "library": "Reactome_2022",
+          "name": "Neutrophil Degranulation R-HSA-6798695"
         }
       ],
-      "cluster_size": 3,
+      "cluster_size": 1,
       "genes": [
         {
-          "gene": "ACSF2",
+          "gene": "FTH1",
           "level": 4
         },
         {
-          "gene": "ACSL1",
+          "gene": "HLA-A",
           "level": 4
         },
         {
-          "gene": "ACSL3",
+          "gene": "RNASET2",
           "level": 4
         },
         {
-          "gene": "ECHDC3",
+          "gene": "STBD1",
           "level": 4
         },
         {
-          "gene": "FASN",
+          "gene": "STK10",
           "level": 4
         },
         {
-          "gene": "PEX19",
-          "level": 4
-        },
-        {
-          "gene": "ECH1",
+          "gene": "ACTR1B",
           "level": 5
         },
         {
-          "gene": "GRHPR",
+          "gene": "CAPN1",
           "level": 5
         },
         {
-          "gene": "LDHB",
+          "gene": "GDI2",
           "level": 5
         },
         {
-          "gene": "PRDX5",
+          "gene": "RAB7A",
           "level": 5
         },
         {
-          "gene": "SOD1",
+          "gene": "RAP1B",
           "level": 5
         }
       ],
-      "n_genes": 11,
+      "n_genes": 10,
       "level_counts": {
         "1": 0,
         "2": 0,
         "3": 0,
-        "4": 6,
+        "4": 5,
         "5": 5
       },
-      "best_adjusted_p": 0.0033797115361891,
-      "representative_gene_ratio": 0.0408163265306122,
-      "is_singleton": false
+      "best_adjusted_p": 0.032855721572688,
+      "representative_gene_ratio": 0.0719424460431654,
+      "is_singleton": true
     },
     {
-      "cluster_id": "C010",
+      "cluster_id": "C013",
       "analysis_type": "exploratory_all_candidates",
       "direction": "decreased",
       "representative_pathway": {
@@ -856,10 +1239,26 @@
         {
           "library": "Reactome_2022",
           "name": "RHOG GTPase Cycle R-HSA-9013408"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Signaling By Rho GTPases R-HSA-194315"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Signaling By Rho GTPases, Miro GTPases And RHOBTB3 R-HSA-9716542"
         }
       ],
-      "cluster_size": 1,
+      "cluster_size": 3,
       "genes": [
+        {
+          "gene": "BCAP31",
+          "level": 4
+        },
+        {
+          "gene": "HINT2",
+          "level": 4
+        },
         {
           "gene": "HSPE1",
           "level": 4
@@ -873,65 +1272,48 @@
           "level": 4
         },
         {
+          "gene": "PPP1R14A",
+          "level": 4
+        },
+        {
+          "gene": "RANGAP1",
+          "level": 4
+        },
+        {
           "gene": "STBD1",
+          "level": 4
+        },
+        {
+          "gene": "STK10",
           "level": 4
         },
         {
           "gene": "RAB7A",
           "level": 5
-        }
-      ],
-      "n_genes": 5,
-      "level_counts": {
-        "1": 0,
-        "2": 0,
-        "3": 0,
-        "4": 4,
-        "5": 1
-      },
-      "best_adjusted_p": 0.0360539855655348,
-      "representative_gene_ratio": 0.0340136054421768,
-      "is_singleton": true
-    },
-    {
-      "cluster_id": "C011",
-      "analysis_type": "exploratory_all_candidates",
-      "direction": "increased",
-      "representative_pathway": {
-        "library": "GO_Biological_Process_2023",
-        "name": "Positive Regulation Of Pinocytosis (GO:0048549)"
-      },
-      "member_pathways": [
-        {
-          "library": "GO_Biological_Process_2023",
-          "name": "Positive Regulation Of Pinocytosis (GO:0048549)"
-        }
-      ],
-      "cluster_size": 1,
-      "genes": [
-        {
-          "gene": "APPL1",
-          "level": 4
         },
         {
-          "gene": "PPT1",
+          "gene": "SEC13",
+          "level": 5
+        },
+        {
+          "gene": "YWHAE",
           "level": 5
         }
       ],
-      "n_genes": 2,
+      "n_genes": 12,
       "level_counts": {
         "1": 0,
         "2": 0,
         "3": 0,
-        "4": 1,
-        "5": 1
+        "4": 9,
+        "5": 3
       },
-      "best_adjusted_p": 0.0445514661793356,
-      "representative_gene_ratio": 0.019047619047619,
-      "is_singleton": true
+      "best_adjusted_p": 0.0055787492942776,
+      "representative_gene_ratio": 0.0359712230215827,
+      "is_singleton": false
     },
     {
-      "cluster_id": "C012",
+      "cluster_id": "C014",
       "analysis_type": "exploratory_all_candidates",
       "direction": "increased",
       "representative_pathway": {
@@ -961,18 +1343,54 @@
         },
         {
           "library": "Reactome_2022",
+          "name": "Formation Of Fibrin Clot (Clotting Cascade) R-HSA-140877"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Hemostasis R-HSA-109582"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Platelet Activation, Signaling And Aggregation R-HSA-76002"
+        },
+        {
+          "library": "Reactome_2022",
           "name": "Platelet Degranulation R-HSA-114608"
         },
         {
           "library": "Reactome_2022",
+          "name": "Prolactin Receptor Signaling R-HSA-1170546"
+        },
+        {
+          "library": "Reactome_2022",
           "name": "Response To Elevated Platelet Cytosolic Ca2+ R-HSA-76005"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Signaling By Cytosolic FGFR1 Fusion Mutants R-HSA-1839117"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Signaling By PDGF R-HSA-186797"
         }
       ],
-      "cluster_size": 7,
+      "cluster_size": 13,
       "genes": [
+        {
+          "gene": "STAT5B",
+          "level": 1
+        },
         {
           "gene": "VTN",
           "level": 2
+        },
+        {
+          "gene": "CENPE",
+          "level": 4
+        },
+        {
+          "gene": "CPSF6",
+          "level": 4
         },
         {
           "gene": "F13A1",
@@ -999,6 +1417,14 @@
           "level": 4
         },
         {
+          "gene": "PROCR",
+          "level": 4
+        },
+        {
+          "gene": "RBX1",
+          "level": 4
+        },
+        {
           "gene": "THBS1",
           "level": 4
         },
@@ -1007,20 +1433,20 @@
           "level": 5
         }
       ],
-      "n_genes": 9,
+      "n_genes": 14,
       "level_counts": {
-        "1": 0,
+        "1": 1,
         "2": 1,
         "3": 0,
-        "4": 7,
+        "4": 11,
         "5": 1
       },
-      "best_adjusted_p": 0.0010742123216896,
-      "representative_gene_ratio": 0.0380952380952381,
+      "best_adjusted_p": 0.0007263841003932,
+      "representative_gene_ratio": 0.0416666666666666,
       "is_singleton": false
     },
     {
-      "cluster_id": "C013",
+      "cluster_id": "C015",
       "analysis_type": "exploratory_all_candidates",
       "direction": "increased",
       "representative_pathway": {
@@ -1066,6 +1492,10 @@
         },
         {
           "library": "Reactome_2022",
+          "name": "Neutrophil Degranulation R-HSA-6798695"
+        },
+        {
+          "library": "Reactome_2022",
           "name": "Regulation Of Complement Cascade R-HSA-977606"
         },
         {
@@ -1073,15 +1503,11 @@
           "name": "Terminal Pathway Of Complement R-HSA-166665"
         }
       ],
-      "cluster_size": 11,
+      "cluster_size": 12,
       "genes": [
         {
           "gene": "STAT5B",
           "level": 1
-        },
-        {
-          "gene": "DCTN6",
-          "level": 2
         },
         {
           "gene": "VTN",
@@ -1125,6 +1551,10 @@
         },
         {
           "gene": "DCTN3",
+          "level": 4
+        },
+        {
+          "gene": "DCTN6",
           "level": 4
         },
         {
@@ -1188,19 +1618,11 @@
           "level": 4
         },
         {
-          "gene": "ARPC2",
-          "level": 5
-        },
-        {
           "gene": "C1S",
           "level": 5
         },
         {
           "gene": "CFB",
-          "level": 5
-        },
-        {
-          "gene": "HSP90B1",
           "level": 5
         },
         {
@@ -1224,20 +1646,20 @@
           "level": 5
         }
       ],
-      "n_genes": 37,
+      "n_genes": 35,
       "level_counts": {
         "1": 1,
-        "2": 2,
+        "2": 1,
         "3": 0,
-        "4": 25,
-        "5": 9
+        "4": 26,
+        "5": 7
       },
-      "best_adjusted_p": 1.239292998867119e-12,
-      "representative_gene_ratio": 0.1238095238095238,
+      "best_adjusted_p": 2.0829738221088427e-14,
+      "representative_gene_ratio": 0.1354166666666666,
       "is_singleton": false
     },
     {
-      "cluster_id": "C014",
+      "cluster_id": "C016",
       "analysis_type": "exploratory_all_candidates",
       "direction": "increased",
       "representative_pathway": {
@@ -1246,20 +1668,12 @@
       },
       "member_pathways": [
         {
-          "library": "GO_Biological_Process_2023",
-          "name": "Actin Nucleation (GO:0045010)"
-        },
-        {
           "library": "KEGG_2021_Human",
           "name": "Tight junction"
         }
       ],
-      "cluster_size": 2,
+      "cluster_size": 1,
       "genes": [
-        {
-          "gene": "LMOD1",
-          "level": 4
-        },
         {
           "gene": "RAB8B",
           "level": 4
@@ -1267,10 +1681,6 @@
         {
           "gene": "YBX3",
           "level": 4
-        },
-        {
-          "gene": "ARPC2",
-          "level": 5
         },
         {
           "gene": "ARPC5L",
@@ -1285,69 +1695,20 @@
           "level": 5
         }
       ],
-      "n_genes": 7,
+      "n_genes": 5,
       "level_counts": {
         "1": 0,
         "2": 0,
         "3": 0,
-        "4": 3,
-        "5": 4
+        "4": 2,
+        "5": 3
       },
-      "best_adjusted_p": 0.0264055584513487,
-      "representative_gene_ratio": 0.0571428571428571,
-      "is_singleton": false
-    },
-    {
-      "cluster_id": "C015",
-      "analysis_type": "exploratory_all_candidates",
-      "direction": "increased",
-      "representative_pathway": {
-        "library": "Reactome_2022",
-        "name": "Golgi-to-ER Retrograde Transport R-HSA-8856688"
-      },
-      "member_pathways": [
-        {
-          "library": "Reactome_2022",
-          "name": "Golgi-to-ER Retrograde Transport R-HSA-8856688"
-        }
-      ],
-      "cluster_size": 1,
-      "genes": [
-        {
-          "gene": "DCTN6",
-          "level": 2
-        },
-        {
-          "gene": "CENPE",
-          "level": 4
-        },
-        {
-          "gene": "COPB2",
-          "level": 4
-        },
-        {
-          "gene": "COPZ1",
-          "level": 4
-        },
-        {
-          "gene": "DCTN3",
-          "level": 4
-        }
-      ],
-      "n_genes": 5,
-      "level_counts": {
-        "1": 0,
-        "2": 1,
-        "3": 0,
-        "4": 4,
-        "5": 0
-      },
-      "best_adjusted_p": 0.0392235166053615,
-      "representative_gene_ratio": 0.0476190476190476,
+      "best_adjusted_p": 0.0269372204878218,
+      "representative_gene_ratio": 0.0520833333333333,
       "is_singleton": true
     },
     {
-      "cluster_id": "C016",
+      "cluster_id": "C017",
       "analysis_type": "exploratory_all_candidates",
       "direction": "increased",
       "representative_pathway": {
@@ -1356,8 +1717,36 @@
       },
       "member_pathways": [
         {
+          "library": "KEGG_2021_Human",
+          "name": "Ferroptosis"
+        },
+        {
+          "library": "KEGG_2021_Human",
+          "name": "HIF-1 signaling pathway"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "COPI-mediated Anterograde Transport R-HSA-6807878"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Disease R-HSA-1643685"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Golgi-to-ER Retrograde Transport R-HSA-8856688"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Intra-Golgi And Retrograde Golgi-to-ER Traffic R-HSA-6811442"
+        },
+        {
           "library": "Reactome_2022",
           "name": "Iron Uptake And Transport R-HSA-917937"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "KEAP1-NFE2L2 Pathway R-HSA-9755511"
         },
         {
           "library": "Reactome_2022",
@@ -1365,21 +1754,53 @@
         },
         {
           "library": "Reactome_2022",
+          "name": "Nuclear Events Mediated By NFE2L2 R-HSA-9759194"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Post-translational Protein Modification R-HSA-597592"
+        },
+        {
+          "library": "Reactome_2022",
           "name": "Post-translational Protein Phosphorylation R-HSA-8957275"
         },
         {
           "library": "Reactome_2022",
+          "name": "Regulation Of Expression Of SLITs And ROBOs R-HSA-9010553"
+        },
+        {
+          "library": "Reactome_2022",
           "name": "Regulation Of IGF Transport And Uptake By IGFBPs R-HSA-381426"
+        },
+        {
+          "library": "Reactome_2022",
+          "name": "Transport Of Small Molecules R-HSA-382551"
         }
       ],
-      "cluster_size": 4,
+      "cluster_size": 15,
       "genes": [
         {
-          "gene": "DCTN6",
-          "level": 2
+          "gene": "STAT5B",
+          "level": 1
+        },
+        {
+          "gene": "ABCF1",
+          "level": 4
+        },
+        {
+          "gene": "APOF",
+          "level": 4
         },
         {
           "gene": "BST1",
+          "level": 4
+        },
+        {
+          "gene": "CENPE",
+          "level": 4
+        },
+        {
+          "gene": "CHMP4B",
           "level": 4
         },
         {
@@ -1391,7 +1812,15 @@
           "level": 4
         },
         {
+          "gene": "CPSF6",
+          "level": 4
+        },
+        {
           "gene": "DCTN3",
+          "level": 4
+        },
+        {
+          "gene": "DCTN6",
           "level": 4
         },
         {
@@ -1399,7 +1828,19 @@
           "level": 4
         },
         {
+          "gene": "ERLIN1",
+          "level": 4
+        },
+        {
           "gene": "FSTL1",
+          "level": 4
+        },
+        {
+          "gene": "HDLBP",
+          "level": 4
+        },
+        {
+          "gene": "HK1",
           "level": 4
         },
         {
@@ -1447,10 +1888,6 @@
           "level": 4
         },
         {
-          "gene": "TBCB",
-          "level": 4
-        },
-        {
           "gene": "THBS1",
           "level": 4
         },
@@ -1459,7 +1896,15 @@
           "level": 5
         },
         {
-          "gene": "HSP90B1",
+          "gene": "GYS1",
+          "level": 5
+        },
+        {
+          "gene": "LCAT",
+          "level": 5
+        },
+        {
+          "gene": "MSN",
           "level": 5
         },
         {
@@ -1467,7 +1912,15 @@
           "level": 5
         },
         {
+          "gene": "PRDX1",
+          "level": 5
+        },
+        {
           "gene": "PSMC6",
+          "level": 5
+        },
+        {
+          "gene": "ROCK1",
           "level": 5
         },
         {
@@ -1479,16 +1932,16 @@
           "level": 5
         }
       ],
-      "n_genes": 26,
+      "n_genes": 38,
       "level_counts": {
-        "1": 0,
-        "2": 1,
+        "1": 1,
+        "2": 0,
         "3": 0,
-        "4": 19,
-        "5": 6
+        "4": 27,
+        "5": 10
       },
-      "best_adjusted_p": 0.0031419709015453,
-      "representative_gene_ratio": 0.0666666666666666,
+      "best_adjusted_p": 0.0023047733484059,
+      "representative_gene_ratio": 0.0625,
       "is_singleton": false
     }
   ]

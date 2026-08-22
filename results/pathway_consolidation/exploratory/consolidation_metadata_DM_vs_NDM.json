@@ -5,8 +5,8 @@
   "minimum_candidate_genes": 2,
   "adjusted_p_threshold": 0.05,
   "louvain_seed": 42,
-  "significant_pathways_before_support_filter": 91,
+  "significant_pathways_before_support_filter": 127,
   "excluded_low_support_pathways": 0,
-  "retained_pathways": 91,
-  "number_of_clusters": 16
+  "retained_pathways": 127,
+  "number_of_clusters": 17
 }

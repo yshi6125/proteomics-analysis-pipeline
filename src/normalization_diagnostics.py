@@ -4,7 +4,7 @@ The same diagnostics can be run before and after approved preprocessing. Sample
 columns are always resolved from ``metadata["sample_id"]`` in metadata row order.
 
 The module performs diagnosis only. It does not transform, normalize, scale,
-impute the analysis dataframe, or batch-correct the abundance values.
+impute the analysis dataframe, or subtract batch effects from abundance values.
 """
 
 from __future__ import annotations
@@ -500,8 +500,8 @@ def assess_pca(
 
     interpretation = (
         "PCA displays the dominant sample-level variation. Review whether separation "
-        "follows biological group, batch, or individual samples. PCA alone does not prove that "
-        "batch correction is required."
+        "follows biological group, batch, or individual samples. Its purpose is to "
+        "identify technical structure and inform downstream model specification."
     )
 
     print("\n=== PCA assessment ===")
@@ -543,7 +543,7 @@ def assess_batch_effects(
     unique increment in R-squared contributed by batch after group and by group
     after batch. The weighted summaries describe only the PC1/PC2 subspace. These
     diagnostics support review; they do not alter the data or automatically apply
-    batch correction.
+    covariate-aware statistical model specification.
     """
     import matplotlib.pyplot as plt
     from scipy.stats import f as f_distribution
@@ -688,7 +688,7 @@ def assess_batch_effects(
         rationale = (
             "The full group-plus-batch model leaves no residual degrees of freedom, "
             "so partial F tests cannot be performed. No models were fitted and no "
-            "batch-correction recommendation was made."
+            "batch-model recommendation was made."
         )
         assessment = pd.DataFrame(
             [
@@ -836,7 +836,7 @@ def assess_batch_effects(
         recommendation = "Batch effect cannot be assessed reliably"
         rationale = (
             "Batch and biological group are not separately estimable. Review the "
-            "experimental design before considering batch correction."
+            "experimental design before fitting group and batch together."
         )
     elif not np.isfinite(minimum_adjusted_batch_p_value):
         recommendation = "Batch effect cannot be assessed reliably"
@@ -849,7 +849,7 @@ def assess_batch_effects(
         minimum_adjusted_batch_p_value < 0.01
         and weighted_unique_batch_r_squared >= 0.20
     ):
-        recommendation = "Batch correction recommended"
+        recommendation = "Include batch as a model covariate"
         rationale = (
             "Batch is strongly associated with at least one leading component and "
             "uniquely explains at least 20% of the weighted variation within the "
@@ -859,14 +859,14 @@ def assess_batch_effects(
         minimum_adjusted_batch_p_value < 0.05
         or weighted_unique_batch_r_squared >= 0.10
     ):
-        recommendation = "Consider batch correction"
+        recommendation = "Include batch as a model covariate"
         rationale = (
             "Batch shows statistical association with a leading component or uniquely "
             "explains at least 10% of the weighted variation within the PC1/PC2 "
             "subspace."
         )
     else:
-        recommendation = "No batch correction"
+        recommendation = "Retain batch metadata for model specification"
         rationale = (
             "Batch is not significantly associated with PC1/PC2 and uniquely explains "
             "less than 10% of the weighted variation within the PC1/PC2 subspace."
@@ -909,8 +909,8 @@ def assess_batch_effects(
         print(
             "Warning: this PCA-based batch assessment is being run on linear-scale "
             "abundance data. Because strong right skew can influence PCA, repeat the "
-            "assessment after log2 transformation before making the final batch-"
-            "correction decision."
+            "assessment after log2 transformation when finalizing the statistical "
+            "model specification."
         )
     print(
         "This exploratory PCA-based assessment should be interpreted together with "
@@ -918,7 +918,7 @@ def assess_batch_effects(
         "It does not itself modify the dataframe."
     )
 
-    diagnostics: dict[str, Any] = {
+    diagnostics = {
         "output_prefix": prefix,
         "abundance_scale": abundance_scale,
         "number_of_batches": number_of_batches,
@@ -1342,7 +1342,7 @@ def run_normalization_diagnostics(
     print("\nStarting normalization diagnostic workflow.")
     print(f"Output prefix: {prefix}")
     print(f"Abundance scale: {abundance_scale}")
-    print("No transformation, normalization, scaling, or batch correction will be applied.\n")
+    print("No transformation, normalization, scaling, or batch subtraction will be applied.\n")
 
     resolve_abundance_columns(df, metadata)
     distribution_results = assess_distribution(df, metadata, prefix)
