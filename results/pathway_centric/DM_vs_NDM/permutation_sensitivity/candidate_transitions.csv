@@ -1,0 +1,4 @@
+permutations,transition,pathway_library,pathway
+50000,leaving_vs_10k,GO_Biological_Process_2023,Protein Secretion (GO:0009306)
+100000,entering_vs_10k,GO_Biological_Process_2023,Fatty Acid Beta-Oxidation Using acyl-CoA Dehydrogenase (GO:0033539)
+100000,leaving_vs_10k,GO_Biological_Process_2023,Protein Secretion (GO:0009306)

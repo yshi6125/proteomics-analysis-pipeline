@@ -1,0 +1,12 @@
+analysis_route,pathway_library,pathway,pathway_size,annotated_size,mean_t,direction,mixed_signs,p_value,q_value,cluster_id,is_representative
+pathway_centric,GO_Biological_Process_2023,Aerobic Electron Transport Chain (GO:0019646),29,68,-1.5542072299344145,negative,True,0.00019998000199980003,0.01616838316168383,C001,True
+pathway_centric,GO_Biological_Process_2023,Energy Derivation By Oxidation Of Organic Compounds (GO:0015980),15,43,-1.791120404369346,negative,False,0.00019998000199980003,0.01616838316168383,C003,True
+pathway_centric,GO_Biological_Process_2023,Fatty Acid Beta-Oxidation (GO:0006635),22,49,-1.857757536953958,negative,True,0.00019998000199980003,0.01616838316168383,C004,True
+pathway_centric,GO_Biological_Process_2023,Fatty Acid Metabolic Process (GO:0006631),25,122,-1.2965634348032176,negative,True,0.00019998000199980003,0.01616838316168383,C005,True
+pathway_centric,GO_Biological_Process_2023,Negative Regulation Of Blood Coagulation (GO:0030195),13,30,1.572698135047142,positive,False,0.00019998000199980003,0.01616838316168383,C008,True
+pathway_centric,GO_Cellular_Component_2023,Collagen-Containing Extracellular Matrix (GO:0062023),128,373,0.426711724169238,positive,True,0.00019998000199980003,0.01616838316168383,C010,True
+pathway_centric,GO_Cellular_Component_2023,Mitochondrial Matrix (GO:0005759),92,355,-1.3630476129558968,negative,True,0.00019998000199980003,0.01616838316168383,C007,True
+pathway_centric,GO_Biological_Process_2023,Respiratory Electron Transport Chain (GO:0022904),5,14,-2.569189776213849,negative,False,0.00039996000399960006,0.02586941305869413,C002,True
+pathway_centric,GO_Cellular_Component_2023,Platelet Alpha Granule (GO:0031091),37,89,0.7576896486953076,positive,True,0.00039996000399960006,0.02586941305869413,C011,True
+pathway_centric,GO_Biological_Process_2023,Protein Secretion (GO:0009306),10,67,1.3332608194387414,positive,False,0.0007999200079992001,0.04619538046195381,C009,True
+pathway_centric,GO_Cellular_Component_2023,Mitochondrial Envelope (GO:0005740),28,146,-1.0309232645011948,negative,True,0.0007999200079992001,0.04619538046195381,C006,True

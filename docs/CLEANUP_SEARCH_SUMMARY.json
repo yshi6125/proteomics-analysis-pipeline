@@ -1,0 +1,41 @@
+{
+  "active_files": [
+    "data/processed/data_log2.csv",
+    "data/processed/data_qc.csv",
+    "results/differential_abundance/analysis_metadata_DM_vs_NDM.json",
+    "results/differential_abundance/candidate_threshold_summary_DM_vs_NDM.csv",
+    "results/differential_abundance/differential_abundance_DM_vs_NDM.csv",
+    "results/differential_abundance/exploratory_only_p005_proteins_DM_vs_NDM.csv",
+    "results/pathway_centric/DM_vs_NDM/all_pathways.csv",
+    "results/pathway_centric/DM_vs_NDM/gene_set_audit.csv",
+    "results/pathway_centric/DM_vs_NDM/gene_sets.json",
+    "results/pathway_centric/DM_vs_NDM/pathway_members.csv",
+    "results/pathway_centric/DM_vs_NDM/protein_eligibility.csv",
+    "results/pathway_protein/DM_vs_NDM/all_pathways.csv",
+    "results/pathway_protein/DM_vs_NDM/gene_sets.json",
+    "results/pathway_protein/DM_vs_NDM/protein_levels.csv",
+    "src/agents/dataset_report_agent.py",
+    "src/differential_abundance.py",
+    "src/normalization_diagnostics.py"
+  ],
+  "classifications": {
+    "ACTIVE": 174,
+    "HISTORICAL/ARCHIVED": 71554,
+    "TEST/REFERENCE": 52
+  },
+  "exclusions": [
+    "docs/CLEANUP_REPORT.md",
+    "docs/CLEANUP_SEARCH_AUDIT.tsv",
+    "docs/CLEANUP_SEARCH_SUMMARY.json"
+  ],
+  "occurrences": 71780,
+  "scope": "All readable text and paths, including archive/dotfiles; excludes Git internals, caches, binaries and generated cleanup audit/report",
+  "terms": [
+    "legacy",
+    "exploratory",
+    "primary",
+    "measured_exploratory",
+    "exploratory_all_candidates"
+  ],
+  "unintended_active_route_a_workflow_occurrences": 0
+}

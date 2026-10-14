@@ -1,0 +1,204 @@
+{
+  "all_pathways": [
+    {
+      "analysis_route": "pathway_centric",
+      "annotated_size": 2,
+      "direction": "positive",
+      "mean_t": 2.5,
+      "mixed_signs": false,
+      "p_value": 0.54,
+      "pathway": "a_only (GO:0000002)",
+      "pathway_library": "GO_2023",
+      "pathway_size": 2,
+      "q_value": 0.72
+    },
+    {
+      "analysis_route": "pathway_centric",
+      "annotated_size": 3,
+      "direction": "negative",
+      "mean_t": -3.0,
+      "mixed_signs": false,
+      "p_value": 0.08,
+      "pathway": "b_only (GO:0000003)",
+      "pathway_library": "GO_2023",
+      "pathway_size": 3,
+      "q_value": 0.32
+    },
+    {
+      "analysis_route": "pathway_centric",
+      "annotated_size": 3,
+      "direction": "positive",
+      "mean_t": 2.55,
+      "mixed_signs": false,
+      "p_value": 0.42,
+      "pathway": "both (GO:0000001)",
+      "pathway_library": "GO_2023",
+      "pathway_size": 2,
+      "q_value": 0.72
+    },
+    {
+      "analysis_route": "pathway_centric",
+      "annotated_size": 1,
+      "direction": "positive",
+      "mean_t": 0.1,
+      "mixed_signs": false,
+      "p_value": 0.94,
+      "pathway": "neutral (GO:0000004)",
+      "pathway_library": "GO_2023",
+      "pathway_size": 1,
+      "q_value": 0.94
+    }
+  ],
+  "candidates": [
+    {
+      "analysis_route": "pathway_centric",
+      "annotated_size": 2,
+      "direction": "positive",
+      "mean_t": 2.5,
+      "mixed_signs": false,
+      "p_value": 0.54,
+      "pathway": "a_only (GO:0000002)",
+      "pathway_library": "GO_2023",
+      "pathway_size": 2,
+      "q_value": 0.72
+    },
+    {
+      "analysis_route": "pathway_centric",
+      "annotated_size": 3,
+      "direction": "negative",
+      "mean_t": -3.0,
+      "mixed_signs": false,
+      "p_value": 0.08,
+      "pathway": "b_only (GO:0000003)",
+      "pathway_library": "GO_2023",
+      "pathway_size": 3,
+      "q_value": 0.32
+    },
+    {
+      "analysis_route": "pathway_centric",
+      "annotated_size": 3,
+      "direction": "positive",
+      "mean_t": 2.55,
+      "mixed_signs": false,
+      "p_value": 0.42,
+      "pathway": "both (GO:0000001)",
+      "pathway_library": "GO_2023",
+      "pathway_size": 2,
+      "q_value": 0.72
+    },
+    {
+      "analysis_route": "pathway_centric",
+      "annotated_size": 1,
+      "direction": "positive",
+      "mean_t": 0.1,
+      "mixed_signs": false,
+      "p_value": 0.94,
+      "pathway": "neutral (GO:0000004)",
+      "pathway_library": "GO_2023",
+      "pathway_size": 1,
+      "q_value": 0.94
+    }
+  ],
+  "clusters": [
+    {
+      "analysis_route": "pathway_centric",
+      "annotated_size": 3,
+      "cluster_id": "C001",
+      "direction": "negative",
+      "is_representative": true,
+      "mean_t": -3.0,
+      "mixed_signs": false,
+      "p_value": 0.08,
+      "pathway": "b_only (GO:0000003)",
+      "pathway_library": "GO_2023",
+      "pathway_size": 3,
+      "q_value": 0.32
+    },
+    {
+      "analysis_route": "pathway_centric",
+      "annotated_size": 3,
+      "cluster_id": "C002",
+      "direction": "positive",
+      "is_representative": true,
+      "mean_t": 2.55,
+      "mixed_signs": false,
+      "p_value": 0.42,
+      "pathway": "both (GO:0000001)",
+      "pathway_library": "GO_2023",
+      "pathway_size": 2,
+      "q_value": 0.72
+    },
+    {
+      "analysis_route": "pathway_centric",
+      "annotated_size": 2,
+      "cluster_id": "C002",
+      "direction": "positive",
+      "is_representative": false,
+      "mean_t": 2.5,
+      "mixed_signs": false,
+      "p_value": 0.54,
+      "pathway": "a_only (GO:0000002)",
+      "pathway_library": "GO_2023",
+      "pathway_size": 2,
+      "q_value": 0.72
+    },
+    {
+      "analysis_route": "pathway_centric",
+      "annotated_size": 1,
+      "cluster_id": "C003",
+      "direction": "positive",
+      "is_representative": true,
+      "mean_t": 0.1,
+      "mixed_signs": false,
+      "p_value": 0.94,
+      "pathway": "neutral (GO:0000004)",
+      "pathway_library": "GO_2023",
+      "pathway_size": 1,
+      "q_value": 0.94
+    }
+  ],
+  "representatives": [
+    {
+      "analysis_route": "pathway_centric",
+      "annotated_size": 3,
+      "cluster_id": "C001",
+      "direction": "negative",
+      "is_representative": true,
+      "mean_t": -3.0,
+      "mixed_signs": false,
+      "p_value": 0.08,
+      "pathway": "b_only (GO:0000003)",
+      "pathway_library": "GO_2023",
+      "pathway_size": 3,
+      "q_value": 0.32
+    },
+    {
+      "analysis_route": "pathway_centric",
+      "annotated_size": 3,
+      "cluster_id": "C002",
+      "direction": "positive",
+      "is_representative": true,
+      "mean_t": 2.55,
+      "mixed_signs": false,
+      "p_value": 0.42,
+      "pathway": "both (GO:0000001)",
+      "pathway_library": "GO_2023",
+      "pathway_size": 2,
+      "q_value": 0.72
+    },
+    {
+      "analysis_route": "pathway_centric",
+      "annotated_size": 1,
+      "cluster_id": "C003",
+      "direction": "positive",
+      "is_representative": true,
+      "mean_t": 0.1,
+      "mixed_signs": false,
+      "p_value": 0.94,
+      "pathway": "neutral (GO:0000004)",
+      "pathway_library": "GO_2023",
+      "pathway_size": 1,
+      "q_value": 0.94
+    }
+  ]
+}

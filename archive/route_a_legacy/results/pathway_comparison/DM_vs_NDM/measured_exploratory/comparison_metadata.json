@@ -1,0 +1,123 @@
+{
+  "candidate_presence_rule": "A retained after p/support filter and consolidation; B saved candidates and consolidation",
+  "common_differential_input_sha256": "f7021c9409c7dbaabb9dd07b85e871979c246f48a4774bbeee55df8646f06b10",
+  "common_input_verified_for_A": true,
+  "comparable_rule": "shared exact library, B term tested, A term present or local membership available; differing known snapshots excluded",
+  "comparison": "DM_vs_NDM",
+  "definition_source_rule": "full evidence from available snapshots; absent definitions yield unknown totals and candidate-only partial evidence",
+  "direction_rule": "compare unique retained A increased/decreased sign to B positive/negative; multiple A signs or B zero not meaningful",
+  "gene_count_rule": "unique symbol per pathway at its strongest protein origin; non-candidate only if no candidate row",
+  "implementation_hashes": {
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/src/pathway_analysis.py": "9ead0dda41daa7b6d8c44edee27ca63cd9e675e38ca80790c7a8e74e8ef5aebe",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/src/pathway_comparison.py": "aeb1430bb60172d5e0751dfdf12b438aa14aef34a5a5a70ac78eaa53b8bab294",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/src/pathway_review_io.py": "04dd1913b2c609c20d4cc127cad7def8a6c3026e0ec1f268e7d03b17b90b796c"
+  },
+  "inputs": {
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/differential_abundance/differential_abundance_DM_vs_NDM.csv": "2fcd4af1e0779b543ebafc0ae6f834a82374639a351f8253cf124b317f1f50df",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_analysis_measured/DM_vs_NDM/analysis_metadata.json": "721fd096e059393ab95f5d60e55dd687dbc896044b0d4c25f84672f2ea11d2d1",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_analysis_measured/DM_vs_NDM/exploratory/all_pathways.csv": "dc6120820d2fcfba4df15114f043b660110e6541d3311841a27daeab62afcdea",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_analysis_measured/DM_vs_NDM/exploratory/candidate_members.csv": "97515802b6f2a336a92a4ddd4aed03dc344bd3547a0cb03aa0a19cd3b527c36a",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_analysis_measured/DM_vs_NDM/exploratory/pathway_clusters.csv": "720ef4bb80fc01d0b7ea0812ba4f7ef3987032ff323b50c3287863ca7b88804a",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_analysis_measured/DM_vs_NDM/gene_sets.json": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/all_pathways.csv": "0a7380f06a2b4d687e509c2057e09b0a1c2fb05455ba0384d95f625da9229ded",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/analysis_metadata.json": "e962780fd3270f8010925102db1ed49d0c45d944a8c901e733aa90bc4bae6f3b",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/gene_sets.json": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/pathway_candidates.csv": "64ed8fcb100f3b2b14ff9750f2c4b0ba429f8b00a8b9d70fd047984d474308e7",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/pathway_clusters.csv": "0d78374dee7681bc4057f365c1aa4d9abbc1e14ca82ea49d7aa85c4b73ee4797"
+  },
+  "matching_rule": "exact versioned library plus GO/Reactome ID if present, otherwise exact full term name; no fuzzy matching",
+  "protein_count_rule": "each successfully tested row_position once per pathway",
+  "protein_level_rules": "exclusive L1 q<.05 absFC>=1; L2 q<.05 .585<=absFC<1; L3 q<.05 absFC<.585; L4 p<.05 q>=.05 absFC>=.585; L5 p<.05 q>=.05 absFC<.585",
+  "route_a_branch": "exploratory",
+  "route_a_metadata": {
+    "absent_library_gene_rule": "excluded from that library universe and submitted list; retained in universe audit",
+    "adjusted_p_threshold": 0.05,
+    "analysis_route": "protein_centric",
+    "branches": {
+      "exploratory": {
+        "candidate_directional_terms": 5,
+        "clusters": 2,
+        "tested_directional_terms": 8846
+      },
+      "primary": {
+        "candidate_directional_terms": 0,
+        "clusters": 0,
+        "tested_directional_terms": 8846
+      }
+    },
+    "comparison": "DM_vs_NDM",
+    "cutoff_operator": "<",
+    "differential_input_sha256": "f7021c9409c7dbaabb9dd07b85e871979c246f48a4774bbeee55df8646f06b10",
+    "duplicate_rule": "universe unique genes; candidates legacy strongest origin, q, p, row position before direction",
+    "gene_sets_sha256": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44",
+    "jaccard_threshold": 0.25,
+    "libraries": [
+      "GO_Biological_Process_2023",
+      "GO_Cellular_Component_2023"
+    ],
+    "louvain_seed": 42,
+    "method": "one-sided upper-tail hypergeometric ORA (Fisher greater equivalent)",
+    "minimum_candidate_genes": 2,
+    "mode": "measured_background",
+    "multiple_testing": "BH per primary/exploratory branch over all nonempty measured terms, libraries and both directions including zero hits",
+    "package_versions": {
+      "networkx": "3.4.2",
+      "pandas": "2.2.3",
+      "scipy": "1.15.3",
+      "statsmodels": "0.14.4"
+    },
+    "source_policy": "local JSON only; versioned library labels are supplied resource names, not verified release dates",
+    "sources": {
+      "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/differential_abundance/differential_abundance_DM_vs_NDM.csv": "2fcd4af1e0779b543ebafc0ae6f834a82374639a351f8253cf124b317f1f50df",
+      "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/gene_sets.json": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44"
+    },
+    "universe_definition": "unique valid symbols in complete successfully tested DA table intersect library annotation union"
+  },
+  "route_a_method": "local measured-background hypergeometric ORA",
+  "route_a_mode": "measured",
+  "route_b_metadata": {
+    "analysis_route": "pathway_centric",
+    "clustering_policy": "separate directions; all measured pathway genes; q then p then library/name representative",
+    "comparison": "DM_vs_NDM",
+    "differential_input_sha256": "f7021c9409c7dbaabb9dd07b85e871979c246f48a4774bbeee55df8646f06b10",
+    "direction_definition": "sign of mean t; mixed_signs flags both signs; not pathway activity",
+    "duplicate_gene_rule": "arithmetic mean of all eligible protein t-statistics",
+    "gene_set_database": [
+      "GO_Biological_Process_2023",
+      "GO_Cellular_Component_2023"
+    ],
+    "gene_sets_sha256": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44",
+    "jaccard_threshold": 0.25,
+    "limitations": "Ordinary, not moderated t. Competitive gene sampling assumes exchangeable genes; does not preserve inter-protein correlation. Signed mean may cancel mixed regulation.",
+    "louvain_seed": 42,
+    "maximum_pathway_size": 500,
+    "minimum_pathway_size": 5,
+    "multiple_testing_method": "BH across all libraries",
+    "number_of_candidate_pathways": 28,
+    "number_of_eligible_genes": 1946,
+    "number_of_eligible_proteins": 1947,
+    "number_of_excluded_proteins": 18,
+    "number_of_redundancy_clusters": 11,
+    "number_of_tested_pathways": 1617,
+    "organism": "Human",
+    "package_versions": {
+      "gseapy": "1.3.1",
+      "networkx": "3.4.2",
+      "numpy": "2.1.3",
+      "pandas": "2.2.3",
+      "statsmodels": "0.14.4"
+    },
+    "pathway_p_cutoff": 1.0,
+    "pathway_q_cutoff": 0.05,
+    "pathway_testing_method": "competitive mean-t gene sampling, two-sided equal-tail Monte Carlo",
+    "permutation_seed": 42,
+    "permutations": 10000,
+    "protein_statistic": "t_statistic (existing fitted group effect)"
+  },
+  "scalar_a_statistic_rule": "lowest adjusted p then p/direction among all saved A directions; full records retained, not a combined p/q",
+  "warnings": [
+    "No automatic evidence integration or AI reporting.",
+    "Category denotes saved candidate support, not validation or causal biology.",
+    "A_ONLY/B_ONLY with directly_comparable=false are coverage differences, not route disagreement."
+  ]
+}

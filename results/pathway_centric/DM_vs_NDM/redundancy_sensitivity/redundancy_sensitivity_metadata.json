@@ -1,0 +1,60 @@
+{
+  "all_frozen_source_hashes_unchanged": true,
+  "candidate_pathways": 28,
+  "canonical_threshold": 0.25,
+  "coherence": "counts/fractions from unique eligible gene means; no effect on testing/clustering/representatives",
+  "comparison": "DM_vs_NDM",
+  "direction": "observed_direction = sign of mean_t; existing direction retained including non_directional for zero",
+  "eligible_genes": 1946,
+  "frozen_inference": "mean t, p, q, candidate identities and measured memberships unchanged; no pathway reselection",
+  "graph_policy": "measured-gene Jaccard; separate observed directions; original seeded Louvain and representative ranking",
+  "group_reporting": "fixed original cluster lists from user examples; used only to subset pairwise reporting, never graph construction",
+  "implementation_hashes": {
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/src/pathway_direction_diagnostics.py": "c189981a34eb3058ba104a702f0ea26a9c89e1f23c98e8e0b58759b840a1f787",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/src/pathway_redundancy_sensitivity.py": "a83a03b164f36370a6ab7a892e45f6e18945877d0cc51e5a44fdb9aec7ad98f2"
+  },
+  "inputs": {
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/differential_abundance/differential_abundance_DM_vs_NDM.csv": "2fcd4af1e0779b543ebafc0ae6f834a82374639a351f8253cf124b317f1f50df",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/all_pathways.csv": "0a7380f06a2b4d687e509c2057e09b0a1c2fb05455ba0384d95f625da9229ded",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/analysis_metadata.json": "e962780fd3270f8010925102db1ed49d0c45d944a8c901e733aa90bc4bae6f3b",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/gene_set_audit.csv": "ddadf1730c8b9275f254af44d76196c27f1c5e5c8924abce5a5216ab878e6a53",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/gene_sets.json": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/pathway_candidates.csv": "64ed8fcb100f3b2b14ff9750f2c4b0ba429f8b00a8b9d70fd047984d474308e7",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/pathway_clusters.csv": "0d78374dee7681bc4057f365c1aa4d9abbc1e14ca82ea49d7aa85c4b73ee4797",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/pathway_members.csv": "139304b9da3d6f8559d1412c0b4c8ede5d61e26099b327d1a074f26ee391e9df",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/protein_eligibility.csv": "885cea485da9d529a0b7f4b059ec56d8486255fd482bccbd2e7967ac22ef5e0c",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/representative_pathways.csv": "9b4a7dd8ceb7fbf6080c84892e918965258f8137037bf7b5e28bc9d60dae12d2",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_comparison/DM_vs_NDM/comparison_metadata.json": "3cd59ef1aa1b4fbe56a11cdf9e767c7d816d7ddeaefa9634e18f85215f20858b",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_comparison/DM_vs_NDM/comparison_summary.json": "60c46a2dff14367202b51dabe22451365e10da308034dee8b2f6898ef20886a6",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_comparison/DM_vs_NDM/pathway_comparison.csv": "097d63687a5d9260e05a252951b7b32a1eec610f4597388128f3bd9e2a67919b",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_comparison/DM_vs_NDM/pathway_protein_evidence.csv": "0dc5071abcec8d2814d0f5c1c03a592b6119d4e74d3388478fddad17b67e98ae",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_comparison/DM_vs_NDM/pathway_review_selection.csv": "e0eec5ad21bf69ff2938b02a419b2f7ec033147119b6c6c08fdb09540849d55a",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_protein/DM_vs_NDM/all_pathways.csv": "bc27c6265b359fc31bad9c65a7355f9463f34f2d91d077b67563c76103fdfa5e",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_protein/DM_vs_NDM/analysis_metadata.json": "b4def1d4111e5371e9964544bbfca2835fcdd49a9922408df1e1e731772f61b7",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_protein/DM_vs_NDM/candidate_members.csv": "b127133fc471b4958f7586d0f1d4a7b08db06ae5b25eacf9f603c61be65ae275",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_protein/DM_vs_NDM/gene_sets.json": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_protein/DM_vs_NDM/pathway_candidates.csv": "b117e7563d1c59719d4c4891b8f7cbba42dfdeee14a73f1830421af1f9c1fc88",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_protein/DM_vs_NDM/pathway_clusters.csv": "440fb31ce0376ea2b3f1a28159ad65bfb7931e7c02737c05c158ac1da23723a5",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_protein/DM_vs_NDM/protein_levels.csv": "195ed99ab650bc38ef6d2face6e462ac1978055237a9911c8721a22db98e045f",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_protein/DM_vs_NDM/representative_pathways.csv": "be4c6e12a9446049a284e37b3ebc138244242ed7738bad5e979253fca5cf6e8c",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_protein/DM_vs_NDM/universe_genes.csv": "6210fae8320c119b7acdaa65d233a4ceba442663b1dfbba1e0cd04fc3f7f09b1"
+  },
+  "louvain_seed": 42,
+  "null_tail": "smaller inclusive empirical tail; equal tails balanced_or_tied; descriptive, not significance or activity",
+  "software_versions": {
+    "networkx": "3.4.2",
+    "numpy": "2.1.3",
+    "pandas": "2.2.3",
+    "scikit-learn": "1.6.1"
+  },
+  "tail_recovery": "exact recorded size-seeded null replay, with frozen p-value agreement check; no p/q replacement",
+  "tested_pathways": 1617,
+  "thresholds": [
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4
+  ]
+}

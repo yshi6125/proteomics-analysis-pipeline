@@ -1,0 +1,39 @@
+{
+  "analysis_route": "pathway_centric",
+  "clustering_policy": "separate directions; all measured pathway genes; q then p then library/name representative",
+  "comparison": "DM_vs_NDM",
+  "differential_input_sha256": "f7021c9409c7dbaabb9dd07b85e871979c246f48a4774bbeee55df8646f06b10",
+  "direction_definition": "sign of mean t; mixed_signs flags both signs; not pathway activity",
+  "duplicate_gene_rule": "arithmetic mean of all eligible protein t-statistics",
+  "gene_set_database": [
+    "GO_Biological_Process_2023",
+    "GO_Cellular_Component_2023"
+  ],
+  "gene_sets_sha256": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44",
+  "jaccard_threshold": 0.25,
+  "limitations": "Ordinary, not moderated t. Competitive gene sampling assumes exchangeable genes; does not preserve inter-protein correlation. Signed mean may cancel mixed regulation.",
+  "louvain_seed": 42,
+  "maximum_pathway_size": 500,
+  "minimum_pathway_size": 5,
+  "multiple_testing_method": "BH across all libraries",
+  "number_of_candidate_pathways": 28,
+  "number_of_eligible_genes": 1946,
+  "number_of_eligible_proteins": 1947,
+  "number_of_excluded_proteins": 18,
+  "number_of_redundancy_clusters": 11,
+  "number_of_tested_pathways": 1617,
+  "organism": "Human",
+  "package_versions": {
+    "gseapy": "1.3.1",
+    "networkx": "3.4.2",
+    "numpy": "2.1.3",
+    "pandas": "2.2.3",
+    "statsmodels": "0.14.4"
+  },
+  "pathway_p_cutoff": 1.0,
+  "pathway_q_cutoff": 0.05,
+  "pathway_testing_method": "competitive mean-t gene sampling, two-sided equal-tail Monte Carlo",
+  "permutation_seed": 42,
+  "permutations": 10000,
+  "protein_statistic": "t_statistic (existing fitted group effect)"
+}

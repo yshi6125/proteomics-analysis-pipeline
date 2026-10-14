@@ -1,0 +1,71 @@
+{
+  "proteins": {
+    "n": 1965,
+    "pearson_t": 0.994838289678002,
+    "spearman_signed_t": 0.9983282254064498,
+    "spearman_absolute_t": 0.9935486722930227,
+    "sign_changes": 0,
+    "large_statistic_changes": 4,
+    "large_rank_changes": 44,
+    "median_absolute_t_change": 0.03577836934630896,
+    "max_absolute_t_change": 2.200793119385298
+  },
+  "genes": {
+    "n": 1946,
+    "pearson_t": 0.9948100836616657,
+    "spearman_signed_t": 0.9983082254626666,
+    "spearman_absolute_t": 0.9934994691292827,
+    "sign_changes": 0,
+    "large_statistic_changes": 4,
+    "large_rank_changes": 44,
+    "median_absolute_t_change": 0.03592987765429423,
+    "max_absolute_t_change": 2.200793119385298
+  },
+  "pathways": {
+    "shared": 28,
+    "ordinary_only": 0,
+    "moderated_only": 4,
+    "tested_pathways": 1617,
+    "ordinary_candidates": 28,
+    "moderated_candidates": 32,
+    "candidate_jaccard": 0.875,
+    "direction_agreement_all": 1565,
+    "direction_agreement_candidate_union": 32,
+    "pearson_mean_t": 0.9954609913589993,
+    "spearman_mean_t": 0.9949623469341964,
+    "pearson_p": 0.9791859460125905,
+    "spearman_p": 0.9810010062782626,
+    "pearson_q": 0.9899482084042811,
+    "spearman_q": 0.9805621999275838,
+    "spearman_p_candidate_union": 0.9522933642679263,
+    "spearman_q_candidate_union": 0.9525282265478143
+  },
+  "eligible_proteins": {
+    "n": 1947,
+    "pearson_t": 0.9948126929076423,
+    "spearman_signed_t": 0.9983075368698449,
+    "spearman_absolute_t": 0.9935004306695345,
+    "sign_changes": 0,
+    "large_statistic_changes": 4,
+    "large_rank_changes": 44,
+    "median_absolute_t_change": 0.035951454836645746,
+    "max_absolute_t_change": 2.200793119385298
+  },
+  "gene_background": {
+    "ordinary": {
+      "mean": -0.11960813331472354,
+      "sd": 1.395672598279739
+    },
+    "moderated": {
+      "mean": -0.10795851309433047,
+      "sd": 1.371834101861092
+    }
+  },
+  "nonsignificant_pathway_direction_changes": {
+    "count": 52,
+    "candidate_in_either_method": 0,
+    "maximum_absolute_mean_t": 0.1859446134464251,
+    "minimum_q_either_method": 0.7256656254398155
+  },
+  "classification": "GENERALLY ROBUST WITH BORDERLINE DIFFERENCES"
+}

@@ -1,0 +1,44 @@
+{
+  "absent_library_gene_rule": "excluded from that library universe and submitted list; retained in universe audit",
+  "adjusted_p_threshold": 0.05,
+  "analysis_route": "protein_centric",
+  "branches": {
+    "exploratory": {
+      "candidate_directional_terms": 5,
+      "clusters": 2,
+      "tested_directional_terms": 8846
+    },
+    "primary": {
+      "candidate_directional_terms": 0,
+      "clusters": 0,
+      "tested_directional_terms": 8846
+    }
+  },
+  "comparison": "DM_vs_NDM",
+  "cutoff_operator": "<",
+  "differential_input_sha256": "f7021c9409c7dbaabb9dd07b85e871979c246f48a4774bbeee55df8646f06b10",
+  "duplicate_rule": "universe unique genes; candidates legacy strongest origin, q, p, row position before direction",
+  "gene_sets_sha256": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44",
+  "jaccard_threshold": 0.25,
+  "libraries": [
+    "GO_Biological_Process_2023",
+    "GO_Cellular_Component_2023"
+  ],
+  "louvain_seed": 42,
+  "method": "one-sided upper-tail hypergeometric ORA (Fisher greater equivalent)",
+  "minimum_candidate_genes": 2,
+  "mode": "measured_background",
+  "multiple_testing": "BH per primary/exploratory branch over all nonempty measured terms, libraries and both directions including zero hits",
+  "package_versions": {
+    "networkx": "3.4.2",
+    "pandas": "2.2.3",
+    "scipy": "1.15.3",
+    "statsmodels": "0.14.4"
+  },
+  "source_policy": "local JSON only; versioned library labels are supplied resource names, not verified release dates",
+  "sources": {
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/differential_abundance/differential_abundance_DM_vs_NDM.csv": "2fcd4af1e0779b543ebafc0ae6f834a82374639a351f8253cf124b317f1f50df",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/gene_sets.json": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44"
+  },
+  "universe_definition": "unique valid symbols in complete successfully tested DA table intersect library annotation union"
+}

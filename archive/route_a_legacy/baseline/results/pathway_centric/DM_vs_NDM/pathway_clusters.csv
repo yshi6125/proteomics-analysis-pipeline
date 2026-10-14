@@ -1,0 +1,29 @@
+analysis_route,pathway_library,pathway,pathway_size,annotated_size,mean_t,direction,mixed_signs,p_value,q_value,cluster_id,is_representative
+pathway_centric,GO_Biological_Process_2023,Aerobic Electron Transport Chain (GO:0019646),29,68,-1.5542072299344145,negative,True,0.00019998000199980003,0.01616838316168383,C001,True
+pathway_centric,GO_Biological_Process_2023,Aerobic Respiration (GO:0009060),22,59,-1.482741576501165,negative,True,0.00019998000199980003,0.01616838316168383,C001,False
+pathway_centric,GO_Biological_Process_2023,Cellular Respiration (GO:0045333),35,85,-1.6898722801848258,negative,True,0.00019998000199980003,0.01616838316168383,C001,False
+pathway_centric,GO_Biological_Process_2023,Energy Derivation By Oxidation Of Organic Compounds (GO:0015980),15,43,-1.791120404369346,negative,False,0.00019998000199980003,0.01616838316168383,C003,True
+pathway_centric,GO_Biological_Process_2023,Fatty Acid Beta-Oxidation (GO:0006635),22,49,-1.857757536953958,negative,True,0.00019998000199980003,0.01616838316168383,C004,True
+pathway_centric,GO_Biological_Process_2023,Fatty Acid Catabolic Process (GO:0009062),20,61,-1.6936324559816547,negative,True,0.00019998000199980003,0.01616838316168383,C004,False
+pathway_centric,GO_Biological_Process_2023,Fatty Acid Metabolic Process (GO:0006631),25,122,-1.2965634348032176,negative,True,0.00019998000199980003,0.01616838316168383,C005,True
+pathway_centric,GO_Biological_Process_2023,Fatty Acid Oxidation (GO:0019395),20,52,-1.6400445927867544,negative,True,0.00019998000199980003,0.01616838316168383,C004,False
+pathway_centric,GO_Biological_Process_2023,Mitochondrial ATP Synthesis Coupled Electron Transport (GO:0042775),30,70,-1.5861641897206666,negative,True,0.00019998000199980003,0.01616838316168383,C001,False
+pathway_centric,GO_Biological_Process_2023,Negative Regulation Of Blood Coagulation (GO:0030195),13,30,1.572698135047142,positive,False,0.00019998000199980003,0.01616838316168383,C008,True
+pathway_centric,GO_Biological_Process_2023,Negative Regulation Of Fibrinolysis (GO:0051918),5,11,2.451767387792678,positive,False,0.00019998000199980003,0.01616838316168383,C008,False
+pathway_centric,GO_Biological_Process_2023,Oxidative Phosphorylation (GO:0006119),22,63,-1.5096117799501263,negative,True,0.00019998000199980003,0.01616838316168383,C001,False
+pathway_centric,GO_Biological_Process_2023,Regulation Of Fibrinolysis (GO:0051917),7,16,2.325711513106376,positive,False,0.00019998000199980003,0.01616838316168383,C008,False
+pathway_centric,GO_Cellular_Component_2023,Collagen-Containing Extracellular Matrix (GO:0062023),128,373,0.426711724169238,positive,True,0.00019998000199980003,0.01616838316168383,C010,True
+pathway_centric,GO_Cellular_Component_2023,Mitochondrial Inner Membrane (GO:0005743),55,370,-1.4580566071568064,negative,True,0.00019998000199980003,0.01616838316168383,C001,False
+pathway_centric,GO_Cellular_Component_2023,Mitochondrial Matrix (GO:0005759),92,355,-1.3630476129558968,negative,True,0.00019998000199980003,0.01616838316168383,C007,True
+pathway_centric,GO_Cellular_Component_2023,Mitochondrial Membrane (GO:0031966),88,540,-1.235717097039231,negative,True,0.00019998000199980003,0.01616838316168383,C001,False
+pathway_centric,GO_Cellular_Component_2023,Mitochondrial Respiratory Chain Complex III (GO:0005750),6,11,-2.5660954498954407,negative,False,0.00019998000199980003,0.01616838316168383,C003,False
+pathway_centric,GO_Cellular_Component_2023,Organelle Inner Membrane (GO:0019866),60,398,-1.3812788846079838,negative,True,0.00019998000199980003,0.01616838316168383,C001,False
+pathway_centric,GO_Cellular_Component_2023,Respiratory Chain Complex III (GO:0045275),6,11,-2.5660954498954407,negative,False,0.00019998000199980003,0.01616838316168383,C003,False
+pathway_centric,GO_Biological_Process_2023,"Mitochondrial Electron Transport, Ubiquinol To Cytochrome C (GO:0006122)",6,12,-2.3154323581886977,negative,False,0.00039996000399960006,0.02586941305869413,C003,False
+pathway_centric,GO_Biological_Process_2023,Positive Regulation Of Blood Coagulation (GO:0030194),10,21,1.4948931890586483,positive,False,0.00039996000399960006,0.02586941305869413,C008,False
+pathway_centric,GO_Biological_Process_2023,Respiratory Electron Transport Chain (GO:0022904),5,14,-2.569189776213849,negative,False,0.00039996000399960006,0.02586941305869413,C002,True
+pathway_centric,GO_Cellular_Component_2023,Platelet Alpha Granule (GO:0031091),37,89,0.7576896486953076,positive,True,0.00039996000399960006,0.02586941305869413,C011,True
+pathway_centric,GO_Cellular_Component_2023,Platelet Alpha Granule Lumen (GO:0031093),31,66,0.8407596633576934,positive,True,0.00039996000399960006,0.02586941305869413,C011,False
+pathway_centric,GO_Biological_Process_2023,Electron Transport Chain (GO:0022900),7,14,-2.230929061943279,negative,False,0.0007999200079992001,0.04619538046195381,C002,False
+pathway_centric,GO_Biological_Process_2023,Protein Secretion (GO:0009306),10,67,1.3332608194387414,positive,False,0.0007999200079992001,0.04619538046195381,C009,True
+pathway_centric,GO_Cellular_Component_2023,Mitochondrial Envelope (GO:0005740),28,146,-1.0309232645011948,negative,True,0.0007999200079992001,0.04619538046195381,C006,True

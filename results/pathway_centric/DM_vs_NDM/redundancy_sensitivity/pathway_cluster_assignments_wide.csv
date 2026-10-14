@@ -1,0 +1,29 @@
+pathway_library,pathway,0.15,0.2,0.25,0.3,0.35,0.4
+GO_Biological_Process_2023,Aerobic Electron Transport Chain (GO:0019646),C001,C001,C001,C001,C001,C001
+GO_Biological_Process_2023,Aerobic Respiration (GO:0009060),C001,C001,C001,C001,C001,C001
+GO_Biological_Process_2023,Cellular Respiration (GO:0045333),C001,C001,C001,C001,C001,C001
+GO_Biological_Process_2023,Electron Transport Chain (GO:0022900),C002,C002,C002,C002,C002,C002
+GO_Biological_Process_2023,Energy Derivation By Oxidation Of Organic Compounds (GO:0015980),C003,C003,C003,C003,C003,C003
+GO_Biological_Process_2023,Fatty Acid Beta-Oxidation (GO:0006635),C004,C004,C004,C004,C004,C004
+GO_Biological_Process_2023,Fatty Acid Catabolic Process (GO:0009062),C004,C004,C004,C004,C004,C004
+GO_Biological_Process_2023,Fatty Acid Metabolic Process (GO:0006631),C004,C005,C005,C005,C005,C005
+GO_Biological_Process_2023,Fatty Acid Oxidation (GO:0019395),C004,C004,C004,C004,C004,C004
+GO_Biological_Process_2023,Mitochondrial ATP Synthesis Coupled Electron Transport (GO:0042775),C001,C001,C001,C001,C001,C001
+GO_Biological_Process_2023,"Mitochondrial Electron Transport, Ubiquinol To Cytochrome C (GO:0006122)",C003,C003,C003,C003,C003,C003
+GO_Biological_Process_2023,Negative Regulation Of Blood Coagulation (GO:0030195),C006,C007,C008,C008,C009,C009
+GO_Biological_Process_2023,Negative Regulation Of Fibrinolysis (GO:0051918),C006,C007,C008,C008,C009,C009
+GO_Biological_Process_2023,Oxidative Phosphorylation (GO:0006119),C001,C001,C001,C001,C001,C001
+GO_Biological_Process_2023,Positive Regulation Of Blood Coagulation (GO:0030194),C006,C007,C008,C008,C009,C009
+GO_Biological_Process_2023,Protein Secretion (GO:0009306),C007,C008,C009,C009,C010,C010
+GO_Biological_Process_2023,Regulation Of Fibrinolysis (GO:0051917),C006,C007,C008,C008,C009,C009
+GO_Biological_Process_2023,Respiratory Electron Transport Chain (GO:0022904),C002,C002,C002,C002,C002,C002
+GO_Cellular_Component_2023,Collagen-Containing Extracellular Matrix (GO:0062023),C008,C009,C010,C010,C011,C011
+GO_Cellular_Component_2023,Mitochondrial Envelope (GO:0005740),C001,C001,C006,C006,C006,C006
+GO_Cellular_Component_2023,Mitochondrial Inner Membrane (GO:0005743),C001,C001,C001,C001,C007,C007
+GO_Cellular_Component_2023,Mitochondrial Matrix (GO:0005759),C005,C006,C007,C007,C008,C008
+GO_Cellular_Component_2023,Mitochondrial Membrane (GO:0031966),C001,C001,C001,C001,C007,C007
+GO_Cellular_Component_2023,Mitochondrial Respiratory Chain Complex III (GO:0005750),C003,C003,C003,C003,C003,C003
+GO_Cellular_Component_2023,Organelle Inner Membrane (GO:0019866),C001,C001,C001,C001,C007,C007
+GO_Cellular_Component_2023,Platelet Alpha Granule (GO:0031091),C009,C010,C011,C011,C012,C012
+GO_Cellular_Component_2023,Platelet Alpha Granule Lumen (GO:0031093),C009,C010,C011,C011,C012,C012
+GO_Cellular_Component_2023,Respiratory Chain Complex III (GO:0045275),C003,C003,C003,C003,C003,C003

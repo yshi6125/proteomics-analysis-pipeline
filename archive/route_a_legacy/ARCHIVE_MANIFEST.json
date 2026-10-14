@@ -1,0 +1,890 @@
+[
+  {
+    "archived_path": "archive/route_a_legacy/src/__init__.py",
+    "operation": "copy",
+    "original_path": "src/__init__.py",
+    "sha256": "526be66b87a2bb789f333c65293054b6c725399959c6b879bd8a34902ae01a01"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/src/agents/__init__.py",
+    "operation": "copy",
+    "original_path": "src/agents/__init__.py",
+    "sha256": "270fc64ae8ff172f7b021a0bb96b6cbf8b052204eff16f42334d052ab2dc5ab3"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/src/agents/dataset_report_agent.py",
+    "operation": "copy",
+    "original_path": "src/agents/dataset_report_agent.py",
+    "sha256": "5371a45e5c60efb33e08294c376da9820029529c2c446c7d3826037fee6ecddd"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/src/agents/scientific_reviewer.py",
+    "operation": "copy",
+    "original_path": "src/agents/scientific_reviewer.py",
+    "sha256": "0af24a0371ed10ef359879e18d266405e599c86976e04e661851ad99c1f54f1a"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/src/diagnosis.py",
+    "operation": "copy",
+    "original_path": "src/diagnosis.py",
+    "sha256": "e43635c344783cd0b3d22dfb47baeb5b6294c8fcb2ac7aa1b8298e97ca0ec60b"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/src/differential_abundance.py",
+    "operation": "copy",
+    "original_path": "src/differential_abundance.py",
+    "sha256": "619e4d3ebb3b209ecc2e24bb36409deaf34eb4ef21ab7fd0eadb55bd7c009600"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/src/evidence_builder.py",
+    "operation": "move",
+    "original_path": "src/evidence_builder.py",
+    "sha256": "0e864eb84f2cf366cec725ffac76f269886222c89d51c6db841391c14dfd6725"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/src/generate_pathway_report.py",
+    "operation": "move",
+    "original_path": "src/generate_pathway_report.py",
+    "sha256": "bff7efecda1da0d341fbd15859cd97d1594930f8ee18967538359ea6ca9f379a"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/src/normalization.py",
+    "operation": "copy",
+    "original_path": "src/normalization.py",
+    "sha256": "120203b4f7c7cf47775c797a073d11a023b7101dd57bef6375561bf92722bf09"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/src/normalization_diagnostics.py",
+    "operation": "copy",
+    "original_path": "src/normalization_diagnostics.py",
+    "sha256": "cd07fe35f027d98fa4001a259ad3ecffedee8d06b477bdfc58a1f6ff39682564"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/src/pathway_analysis.py",
+    "operation": "move",
+    "original_path": "src/pathway_analysis.py",
+    "sha256": "7289b518e54a78fd6e007722b3390b6d5a45066cbd25d11ed4a7e2e68b438065"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/src/pathway_centric.py",
+    "operation": "copy",
+    "original_path": "src/pathway_centric.py",
+    "sha256": "41b24214b1d8612c341a1cec6bff19dba897b7baaae4115a6f04efd6d2fa2572"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/src/pathway_comparison.py",
+    "operation": "copy",
+    "original_path": "src/pathway_comparison.py",
+    "sha256": "f5cdb1bef9d9e82fb2b6fbcea2542c9ada721aa77c95526dbcc3f1c310176dc1"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/src/pathway_consolidation.py",
+    "operation": "move",
+    "original_path": "src/pathway_consolidation.py",
+    "sha256": "69b39075a5b2dac17dace2227a254834304d5bd78438f20ac477fe814403065e"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/src/pathway_measured_ora.py",
+    "operation": "move",
+    "original_path": "src/pathway_measured_ora.py",
+    "sha256": "47d597928780770226c5bf200295b0148b40754bb9064b077ddee26436ddbfca"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/src/pathway_protein.py",
+    "operation": "copy",
+    "original_path": "src/pathway_protein.py",
+    "sha256": "0e5cddcf5c6ea4ccd723a7832b5424fd81502cb5b037434632bee77c2529b51c"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/src/pathway_reference.py",
+    "operation": "move",
+    "original_path": "src/pathway_reference.py",
+    "sha256": "06d9e56fc0813ad8b0a80dadb8ccfd6d30e2b09418c28d3bd7fc29e07e7fc2b4"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/src/pathway_review_io.py",
+    "operation": "copy",
+    "original_path": "src/pathway_review_io.py",
+    "sha256": "04dd1913b2c609c20d4cc127cad7def8a6c3026e0ec1f268e7d03b17b90b796c"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/src/pathway_routes.py",
+    "operation": "copy",
+    "original_path": "src/pathway_routes.py",
+    "sha256": "667e77db7ba15dd1f0af0046bebc044671b1df6f0bd42846df43702feeece31c"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/src/qc.py",
+    "operation": "copy",
+    "original_path": "src/qc.py",
+    "sha256": "1983d91f0348f8f3542c1499715fa797985aebfee8f128a032f1c44f53bb7f59"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/tests/fixtures/pathway_b_regression.json",
+    "operation": "copy",
+    "original_path": "tests/fixtures/pathway_b_regression.json",
+    "sha256": "3c0cd28b919d0c32e2489210fb00e23b213f9c15a1f935a6f3cc6372cbd1e1dd"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/tests/test_canonical_route_a.py",
+    "operation": "move",
+    "original_path": "tests/test_canonical_route_a.py",
+    "sha256": "9755b01579795a955e0a12d6f2c6f1d6f59dc5fcaa4ed7fedb6e601fcf5f25c5"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/tests/test_dataset_report_agent.py",
+    "operation": "copy",
+    "original_path": "tests/test_dataset_report_agent.py",
+    "sha256": "a65176040954767e61d1a9bd289eff30888a3b82e79f06fcb8196f94c206ace2"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/tests/test_diagnosis.py",
+    "operation": "copy",
+    "original_path": "tests/test_diagnosis.py",
+    "sha256": "55ee2205d610713557e3904fa1f010823d8c0c6cbb912035f807eef3ba99cd63"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/tests/test_differential_batch_model.py",
+    "operation": "copy",
+    "original_path": "tests/test_differential_batch_model.py",
+    "sha256": "d89a7e6995b27c4272eae2853d3a59d21d0d8ecdfc7758b6fb064cbc9aaa1848"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/tests/test_differential_visualizations.py",
+    "operation": "copy",
+    "original_path": "tests/test_differential_visualizations.py",
+    "sha256": "757524e1908eebaa06bde000789fcd7374592684918858f928dca1cbcef3f25d"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/tests/test_pathway_centric.py",
+    "operation": "move",
+    "original_path": "tests/test_pathway_centric.py",
+    "sha256": "fd1098cc9bc1da66a5f683a93d86e6966a880eb117e8173613a75fb32145c5c1"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/tests/test_pathway_review.py",
+    "operation": "move",
+    "original_path": "tests/test_pathway_review.py",
+    "sha256": "f36af382898e3d5701fe69136d290e2b9afbe0d416ace41fc6b57fc95e07e753"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/tests/test_scientific_reviewer.py",
+    "operation": "copy",
+    "original_path": "tests/test_scientific_reviewer.py",
+    "sha256": "e3daeaae0336e215ee7e9deee94f5a2559ee9e5d783a9a47e9fdc884c19c9c50"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/docs/CANONICAL_UPDATE_FILE_INVENTORY.md",
+    "operation": "move",
+    "original_path": "docs/CANONICAL_UPDATE_FILE_INVENTORY.md",
+    "sha256": "39f8323a9a3fba8323c38689295fcbdc69d1491c6dbcd3dca123d585c1d6db6e"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/docs/PATHWAY_COMPARISON_GUIDE.md",
+    "operation": "copy",
+    "original_path": "docs/PATHWAY_COMPARISON_GUIDE.md",
+    "sha256": "db86d373a91c9623783e79200b337f286543de0a0d00f2dbf6b9b02544f35eaa"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/docs/PATHWAY_UPDATE_FILE_INVENTORY.md",
+    "operation": "move",
+    "original_path": "docs/PATHWAY_UPDATE_FILE_INVENTORY.md",
+    "sha256": "6738133ee43182cfa5154e8a75fbf5fd87d7e04c5a307558409f49c2a82459d6"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/docs/PIPELINE_ARCHITECTURE.md",
+    "operation": "copy",
+    "original_path": "docs/PIPELINE_ARCHITECTURE.md",
+    "sha256": "4599f65631e91802475f69852988f23c992e17aa89ac0dd594bd15effe5eabd4"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/docs/PIPELINE_ONE_PAGE.md",
+    "operation": "copy",
+    "original_path": "docs/PIPELINE_ONE_PAGE.md",
+    "sha256": "9dfb506a76373bd606dc2475b60b1429ff1f73c5ada4b87918099d7c2b945e4c"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/docs/REFERENCE_WORKFLOWS.md",
+    "operation": "move",
+    "original_path": "docs/REFERENCE_WORKFLOWS.md",
+    "sha256": "dd16c155eeb28f05ffd789632be6756da6dee1ffb550a276f25c660142630470"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/docs/reference/PATHWAY_COMPARISON_GUIDE_PRE_CANONICAL.md",
+    "operation": "move",
+    "original_path": "docs/reference/PATHWAY_COMPARISON_GUIDE_PRE_CANONICAL.md",
+    "sha256": "6b300a9d669da09dc90ae56d5ce055234743bb1159ebaf4c14dd506d64053c3c"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/docs/reference/PIPELINE_ARCHITECTURE_PRE_CANONICAL.md",
+    "operation": "move",
+    "original_path": "docs/reference/PIPELINE_ARCHITECTURE_PRE_CANONICAL.md",
+    "sha256": "c2219a503b9a7821dc48ed52338f850d5362bdfe4fed0bc50e63ae378fa2697d"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/docs/reference/PIPELINE_ONE_PAGE_PRE_CANONICAL.md",
+    "operation": "move",
+    "original_path": "docs/reference/PIPELINE_ONE_PAGE_PRE_CANONICAL.md",
+    "sha256": "eadc2543816cc1409b639829ec84d6a9112fdd6e0099aa87f2bf4b7a6b84a134"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/docs/reference/README_PRE_CANONICAL.md",
+    "operation": "move",
+    "original_path": "docs/reference/README_PRE_CANONICAL.md",
+    "sha256": "ed617ac6139eab45f20000d1c70306d080dfd93b42be648aa625c10a748a9fe0"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/docs/reference/source/SOURCE_MANIFEST.json",
+    "operation": "move",
+    "original_path": "docs/reference/source/SOURCE_MANIFEST.json",
+    "sha256": "46a6aca93c4377e81807976990e2a2a51a2d03a6bedce972c88f7d977c7f36ec"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/docs/reference/source/pathway_analysis.py.txt",
+    "operation": "move",
+    "original_path": "docs/reference/source/pathway_analysis.py.txt",
+    "sha256": "9ead0dda41daa7b6d8c44edee27ca63cd9e675e38ca80790c7a8e74e8ef5aebe"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/docs/reference/source/pathway_comparison.py.txt",
+    "operation": "move",
+    "original_path": "docs/reference/source/pathway_comparison.py.txt",
+    "sha256": "aeb1430bb60172d5e0751dfdf12b438aa14aef34a5a5a70ac78eaa53b8bab294"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/docs/reference/source/pathway_consolidation.py.txt",
+    "operation": "move",
+    "original_path": "docs/reference/source/pathway_consolidation.py.txt",
+    "sha256": "33cba093558e4e270431afcd9068cb280857ce75c840ce688860d76b5db0743d"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/docs/reference/source/pathway_measured_ora.py.txt",
+    "operation": "move",
+    "original_path": "docs/reference/source/pathway_measured_ora.py.txt",
+    "sha256": "29a9695b4856e50001eb0edc36bce7cde4648aa9193a809e37524a178505e92c"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/docs/reference/source/pathway_routes.py.txt",
+    "operation": "move",
+    "original_path": "docs/reference/source/pathway_routes.py.txt",
+    "sha256": "0caac112ad68bc61e400798cf426734bfabbd2246af15e1c3d6eb9f6a91cf66f"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/prompts/dataset_report_prompt.txt",
+    "operation": "copy",
+    "original_path": "prompts/dataset_report_prompt.txt",
+    "sha256": "e785b8e3c91fa8885d7860c822494c4856bb90ce928c93ade90ff6252cc23223"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/prompts/scientific_reviewer_prompt.txt",
+    "operation": "copy",
+    "original_path": "prompts/scientific_reviewer_prompt.txt",
+    "sha256": "81374ad305a57bbeaedd033a88de0653374e7ab4b303b341c5dabeb113e63cf6"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/data/processed/data_log2.csv",
+    "operation": "copy",
+    "original_path": "data/processed/data_log2.csv",
+    "sha256": "48c6e50b9580e6e1023e0c1aaf4255f775da73bc8ccc9572eef59d12d9d8b791"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/data/processed/data_log2.pkl",
+    "operation": "copy",
+    "original_path": "data/processed/data_log2.pkl",
+    "sha256": "095e5044534fcbceadfa7f8c93a54d2459ec4380ae187a4183fe578eb7b8fc01"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/data/processed/data_qc.csv",
+    "operation": "copy",
+    "original_path": "data/processed/data_qc.csv",
+    "sha256": "f5937380502dc91bd138ac311a835888812d15e6649626dbba48995bf35d6c47"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/data/processed/data_qc.pkl",
+    "operation": "copy",
+    "original_path": "data/processed/data_qc.pkl",
+    "sha256": "3c3eba35041af67461100cb699461fa63e75a62cfb0bf0766c36a07b5af80aba"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/data/processed/sample_metadata.csv",
+    "operation": "copy",
+    "original_path": "data/processed/sample_metadata.csv",
+    "sha256": "90b252770380922e2059aa3d7abf61355ffe6423dad36d8d67ef9036fd7b0d33"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/differential_abundance/analysis_metadata_DM_vs_NDM.json",
+    "operation": "copy",
+    "original_path": "results/differential_abundance/analysis_metadata_DM_vs_NDM.json",
+    "sha256": "0f97b96c14cd315940a79821faca510a4aef160c661baf4b605bae5327217b24"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/differential_abundance/candidate_threshold_summary_DM_vs_NDM.csv",
+    "operation": "copy",
+    "original_path": "results/differential_abundance/candidate_threshold_summary_DM_vs_NDM.csv",
+    "sha256": "587fac0b5adc1ba11e186aa58c8af2e3b25303b13f4b226f06b565bb0bd04053"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/differential_abundance/differential_abundance_DM_vs_NDM.csv",
+    "operation": "copy",
+    "original_path": "results/differential_abundance/differential_abundance_DM_vs_NDM.csv",
+    "sha256": "2fcd4af1e0779b543ebafc0ae6f834a82374639a351f8253cf124b317f1f50df"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/differential_abundance/exploratory_only_p005_proteins_DM_vs_NDM.csv",
+    "operation": "copy",
+    "original_path": "results/differential_abundance/exploratory_only_p005_proteins_DM_vs_NDM.csv",
+    "sha256": "be8747a8788388ab43601d43cdac89fc3c0d9b12a2a87f060d68139b1714dcae"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/differential_abundance/fdr_significant_proteins_DM_vs_NDM.csv",
+    "operation": "copy",
+    "original_path": "results/differential_abundance/fdr_significant_proteins_DM_vs_NDM.csv",
+    "sha256": "b041667c391f9544511f443c716df09e21b1fcd7c3e4d0f04496d56732129f43"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/differential_abundance/nominal_p005_proteins_DM_vs_NDM.csv",
+    "operation": "copy",
+    "original_path": "results/differential_abundance/nominal_p005_proteins_DM_vs_NDM.csv",
+    "sha256": "c784f8fe27a35f8006c677b59527d2ad90d10848aaf385d6eceb09400f015dae"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/differential_abundance/untested_proteins_DM_vs_NDM.csv",
+    "operation": "copy",
+    "original_path": "results/differential_abundance/untested_proteins_DM_vs_NDM.csv",
+    "sha256": "c66921bcd2f922f52b47fd31cf7eee20961c84bd8bd56f99bff4c28a76ae7ebc"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/README_PRE_CLEANUP.md",
+    "operation": "copy",
+    "original_path": "README.md",
+    "sha256": "7486a1c3a0a32c1b79c767aef6288fd945bf8af52beb90e9c8e046ca6ba1b91b"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/requirements.txt",
+    "operation": "copy",
+    "original_path": "requirements.txt",
+    "sha256": "e1692c281624e82f7956097cacdbf31d112cbeeb04aa34464849508c37623554"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_protein/DM_vs_NDM/all_pathways.csv",
+    "operation": "copy",
+    "original_path": "results/pathway_protein/DM_vs_NDM/all_pathways.csv",
+    "sha256": "bc27c6265b359fc31bad9c65a7355f9463f34f2d91d077b67563c76103fdfa5e"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_protein/DM_vs_NDM/analysis_metadata.json",
+    "operation": "copy",
+    "original_path": "results/pathway_protein/DM_vs_NDM/analysis_metadata.json",
+    "sha256": "b4def1d4111e5371e9964544bbfca2835fcdd49a9922408df1e1e731772f61b7"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_protein/DM_vs_NDM/candidate_members.csv",
+    "operation": "copy",
+    "original_path": "results/pathway_protein/DM_vs_NDM/candidate_members.csv",
+    "sha256": "b127133fc471b4958f7586d0f1d4a7b08db06ae5b25eacf9f603c61be65ae275"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_protein/DM_vs_NDM/gene_sets.json",
+    "operation": "copy",
+    "original_path": "results/pathway_protein/DM_vs_NDM/gene_sets.json",
+    "sha256": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_protein/DM_vs_NDM/pathway_candidates.csv",
+    "operation": "copy",
+    "original_path": "results/pathway_protein/DM_vs_NDM/pathway_candidates.csv",
+    "sha256": "b117e7563d1c59719d4c4891b8f7cbba42dfdeee14a73f1830421af1f9c1fc88"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_protein/DM_vs_NDM/pathway_clusters.csv",
+    "operation": "copy",
+    "original_path": "results/pathway_protein/DM_vs_NDM/pathway_clusters.csv",
+    "sha256": "440fb31ce0376ea2b3f1a28159ad65bfb7931e7c02737c05c158ac1da23723a5"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_protein/DM_vs_NDM/protein_levels.csv",
+    "operation": "copy",
+    "original_path": "results/pathway_protein/DM_vs_NDM/protein_levels.csv",
+    "sha256": "195ed99ab650bc38ef6d2face6e462ac1978055237a9911c8721a22db98e045f"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_protein/DM_vs_NDM/representative_pathways.csv",
+    "operation": "copy",
+    "original_path": "results/pathway_protein/DM_vs_NDM/representative_pathways.csv",
+    "sha256": "be4c6e12a9446049a284e37b3ebc138244242ed7738bad5e979253fca5cf6e8c"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_protein/DM_vs_NDM/universe_genes.csv",
+    "operation": "copy",
+    "original_path": "results/pathway_protein/DM_vs_NDM/universe_genes.csv",
+    "sha256": "6210fae8320c119b7acdaa65d233a4ceba442663b1dfbba1e0cd04fc3f7f09b1"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_centric/DM_vs_NDM/all_pathways.csv",
+    "operation": "copy",
+    "original_path": "results/pathway_centric/DM_vs_NDM/all_pathways.csv",
+    "sha256": "0a7380f06a2b4d687e509c2057e09b0a1c2fb05455ba0384d95f625da9229ded"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_centric/DM_vs_NDM/analysis_metadata.json",
+    "operation": "copy",
+    "original_path": "results/pathway_centric/DM_vs_NDM/analysis_metadata.json",
+    "sha256": "e962780fd3270f8010925102db1ed49d0c45d944a8c901e733aa90bc4bae6f3b"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_centric/DM_vs_NDM/gene_set_audit.csv",
+    "operation": "copy",
+    "original_path": "results/pathway_centric/DM_vs_NDM/gene_set_audit.csv",
+    "sha256": "ddadf1730c8b9275f254af44d76196c27f1c5e5c8924abce5a5216ab878e6a53"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_centric/DM_vs_NDM/gene_sets.json",
+    "operation": "copy",
+    "original_path": "results/pathway_centric/DM_vs_NDM/gene_sets.json",
+    "sha256": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_centric/DM_vs_NDM/pathway_candidates.csv",
+    "operation": "copy",
+    "original_path": "results/pathway_centric/DM_vs_NDM/pathway_candidates.csv",
+    "sha256": "64ed8fcb100f3b2b14ff9750f2c4b0ba429f8b00a8b9d70fd047984d474308e7"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_centric/DM_vs_NDM/pathway_clusters.csv",
+    "operation": "copy",
+    "original_path": "results/pathway_centric/DM_vs_NDM/pathway_clusters.csv",
+    "sha256": "0d78374dee7681bc4057f365c1aa4d9abbc1e14ca82ea49d7aa85c4b73ee4797"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_centric/DM_vs_NDM/pathway_members.csv",
+    "operation": "copy",
+    "original_path": "results/pathway_centric/DM_vs_NDM/pathway_members.csv",
+    "sha256": "139304b9da3d6f8559d1412c0b4c8ede5d61e26099b327d1a074f26ee391e9df"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_centric/DM_vs_NDM/protein_eligibility.csv",
+    "operation": "copy",
+    "original_path": "results/pathway_centric/DM_vs_NDM/protein_eligibility.csv",
+    "sha256": "885cea485da9d529a0b7f4b059ec56d8486255fd482bccbd2e7967ac22ef5e0c"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_centric/DM_vs_NDM/representative_pathways.csv",
+    "operation": "copy",
+    "original_path": "results/pathway_centric/DM_vs_NDM/representative_pathways.csv",
+    "sha256": "9b4a7dd8ceb7fbf6080c84892e918965258f8137037bf7b5e28bc9d60dae12d2"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_comparison/DM_vs_NDM/comparison_metadata.json",
+    "operation": "copy",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/comparison_metadata.json",
+    "sha256": "3cd59ef1aa1b4fbe56a11cdf9e767c7d816d7ddeaefa9634e18f85215f20858b"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_comparison/DM_vs_NDM/comparison_summary.json",
+    "operation": "copy",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/comparison_summary.json",
+    "sha256": "60c46a2dff14367202b51dabe22451365e10da308034dee8b2f6898ef20886a6"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_comparison/DM_vs_NDM/pathway_comparison.csv",
+    "operation": "copy",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/pathway_comparison.csv",
+    "sha256": "097d63687a5d9260e05a252951b7b32a1eec610f4597388128f3bd9e2a67919b"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_comparison/DM_vs_NDM/pathway_protein_evidence.csv",
+    "operation": "copy",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/pathway_protein_evidence.csv",
+    "sha256": "0dc5071abcec8d2814d0f5c1c03a592b6119d4e74d3388478fddad17b67e98ae"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/baseline/results/pathway_comparison/DM_vs_NDM/pathway_review_selection.csv",
+    "operation": "copy",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/pathway_review_selection.csv",
+    "sha256": "e0eec5ad21bf69ff2938b02a419b2f7ec033147119b6c6c08fdb09540849d55a"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_analysis/exploratory_all_candidates_pathways_DM_vs_NDM.csv",
+    "operation": "move",
+    "original_path": "results/pathway_analysis/exploratory_all_candidates_pathways_DM_vs_NDM.csv",
+    "sha256": "b01ffae7b7653677add463a778bd7cbfbabba5fd3d85b5dddc56399927c51a40"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_analysis/pathway_candidate_members_DM_vs_NDM.csv",
+    "operation": "move",
+    "original_path": "results/pathway_analysis/pathway_candidate_members_DM_vs_NDM.csv",
+    "sha256": "5d5cc348487638ceea52800fa6ef1845b9b584e72aeee3ecfd9956858b27e85d"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_analysis/pathway_priority_summary_DM_vs_NDM.csv",
+    "operation": "move",
+    "original_path": "results/pathway_analysis/pathway_priority_summary_DM_vs_NDM.csv",
+    "sha256": "e74fd5cd80542f1ff239dbe208f4524b56b17da75b3ff51c25a7dd79cc61613f"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_analysis/primary_fdr_pathways_DM_vs_NDM.csv",
+    "operation": "move",
+    "original_path": "results/pathway_analysis/primary_fdr_pathways_DM_vs_NDM.csv",
+    "sha256": "64490e076ed3d072bd147d8d80e311258149c8439e134049139f7aba26d68d97"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_consolidation/.DS_Store",
+    "operation": "move",
+    "original_path": "results/pathway_consolidation/.DS_Store",
+    "sha256": "5577d441f538cd5a4459e2e52da040e4c4ef1ca819c11ad822758f80462c0fb9"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_consolidation/exploratory/consolidation_metadata_DM_vs_NDM.json",
+    "operation": "move",
+    "original_path": "results/pathway_consolidation/exploratory/consolidation_metadata_DM_vs_NDM.json",
+    "sha256": "b20657e131d76dca7ccc720d88db647a06e2d49ec46fde64831cf155a58e4c4e"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_consolidation/exploratory/pathway_clusters_DM_vs_NDM.csv",
+    "operation": "move",
+    "original_path": "results/pathway_consolidation/exploratory/pathway_clusters_DM_vs_NDM.csv",
+    "sha256": "1e87b89d34853efa30d9fae9a1db202cd8b879d2605d055f3daf0c630e109967"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_consolidation/exploratory/pathway_evidence_DM_vs_NDM.json",
+    "operation": "move",
+    "original_path": "results/pathway_consolidation/exploratory/pathway_evidence_DM_vs_NDM.json",
+    "sha256": "bd0341cdd5ddcebb9cd172cee9e9435edfff3d8765979ab2125a9a86b88fb4ab"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_consolidation/primary/consolidation_metadata_DM_vs_NDM.json",
+    "operation": "move",
+    "original_path": "results/pathway_consolidation/primary/consolidation_metadata_DM_vs_NDM.json",
+    "sha256": "0322407c015f4014f58a4b75b3186ec817e72b7d2751da58d90ccf8b99e1308a"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_consolidation/primary/excluded_low_support_pathways_DM_vs_NDM.csv",
+    "operation": "move",
+    "original_path": "results/pathway_consolidation/primary/excluded_low_support_pathways_DM_vs_NDM.csv",
+    "sha256": "c62d2d2363bc0313ea0420902c1f164138448cb2ec563401f8e8c5e8c258b683"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_consolidation/primary/pathway_clusters_DM_vs_NDM.csv",
+    "operation": "move",
+    "original_path": "results/pathway_consolidation/primary/pathway_clusters_DM_vs_NDM.csv",
+    "sha256": "225f9983baf2e43da4bab22b3e87b8aa9072e606ad4237fe1d9c420188b063dd"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_consolidation/primary/pathway_evidence_DM_vs_NDM.json",
+    "operation": "move",
+    "original_path": "results/pathway_consolidation/primary/pathway_evidence_DM_vs_NDM.json",
+    "sha256": "7663fc2624cce12fb7ebd9214783e6d72afc3e5d22326fc2ceb84987539a4707"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_analysis_measured/DM_vs_NDM/analysis_metadata.json",
+    "operation": "move",
+    "original_path": "results/pathway_analysis_measured/DM_vs_NDM/analysis_metadata.json",
+    "sha256": "721fd096e059393ab95f5d60e55dd687dbc896044b0d4c25f84672f2ea11d2d1"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_analysis_measured/DM_vs_NDM/exploratory/all_pathways.csv",
+    "operation": "move",
+    "original_path": "results/pathway_analysis_measured/DM_vs_NDM/exploratory/all_pathways.csv",
+    "sha256": "dc6120820d2fcfba4df15114f043b660110e6541d3311841a27daeab62afcdea"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_analysis_measured/DM_vs_NDM/exploratory/candidate_members.csv",
+    "operation": "move",
+    "original_path": "results/pathway_analysis_measured/DM_vs_NDM/exploratory/candidate_members.csv",
+    "sha256": "97515802b6f2a336a92a4ddd4aed03dc344bd3547a0cb03aa0a19cd3b527c36a"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_analysis_measured/DM_vs_NDM/exploratory/pathway_candidates.csv",
+    "operation": "move",
+    "original_path": "results/pathway_analysis_measured/DM_vs_NDM/exploratory/pathway_candidates.csv",
+    "sha256": "1080858b89afb1e1d745430c4e4a5419da5c952e25e77c9d62b2274d99034a4f"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_analysis_measured/DM_vs_NDM/exploratory/pathway_clusters.csv",
+    "operation": "move",
+    "original_path": "results/pathway_analysis_measured/DM_vs_NDM/exploratory/pathway_clusters.csv",
+    "sha256": "720ef4bb80fc01d0b7ea0812ba4f7ef3987032ff323b50c3287863ca7b88804a"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_analysis_measured/DM_vs_NDM/exploratory/representative_pathways.csv",
+    "operation": "move",
+    "original_path": "results/pathway_analysis_measured/DM_vs_NDM/exploratory/representative_pathways.csv",
+    "sha256": "6b85e3a4bee2b69d0582a140e5685cf0894633edf8a754013f35c62431f60fa2"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_analysis_measured/DM_vs_NDM/exploratory/universe_genes.csv",
+    "operation": "move",
+    "original_path": "results/pathway_analysis_measured/DM_vs_NDM/exploratory/universe_genes.csv",
+    "sha256": "6210fae8320c119b7acdaa65d233a4ceba442663b1dfbba1e0cd04fc3f7f09b1"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_analysis_measured/DM_vs_NDM/gene_sets.json",
+    "operation": "move",
+    "original_path": "results/pathway_analysis_measured/DM_vs_NDM/gene_sets.json",
+    "sha256": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_analysis_measured/DM_vs_NDM/primary/all_pathways.csv",
+    "operation": "move",
+    "original_path": "results/pathway_analysis_measured/DM_vs_NDM/primary/all_pathways.csv",
+    "sha256": "b1935913736568e5985c3d3df11ae2578f0236cbd1d922dafab46e20f9d3162c"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_analysis_measured/DM_vs_NDM/primary/candidate_members.csv",
+    "operation": "move",
+    "original_path": "results/pathway_analysis_measured/DM_vs_NDM/primary/candidate_members.csv",
+    "sha256": "2fca7c60416506ea3ab1b6bd6d95167e2bb3deb4978247d6b6f99c947f61ebde"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_analysis_measured/DM_vs_NDM/primary/pathway_candidates.csv",
+    "operation": "move",
+    "original_path": "results/pathway_analysis_measured/DM_vs_NDM/primary/pathway_candidates.csv",
+    "sha256": "986192fab0e434819dfc24445467395ce958609e95cb1521a19597f236178b5e"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_analysis_measured/DM_vs_NDM/primary/pathway_clusters.csv",
+    "operation": "move",
+    "original_path": "results/pathway_analysis_measured/DM_vs_NDM/primary/pathway_clusters.csv",
+    "sha256": "73f11ef68030a4208e887f40ba1c7cb6063941d66810a50463547ee92f0e7f2b"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_analysis_measured/DM_vs_NDM/primary/representative_pathways.csv",
+    "operation": "move",
+    "original_path": "results/pathway_analysis_measured/DM_vs_NDM/primary/representative_pathways.csv",
+    "sha256": "73f11ef68030a4208e887f40ba1c7cb6063941d66810a50463547ee92f0e7f2b"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_analysis_measured/DM_vs_NDM/primary/universe_genes.csv",
+    "operation": "move",
+    "original_path": "results/pathway_analysis_measured/DM_vs_NDM/primary/universe_genes.csv",
+    "sha256": "6210fae8320c119b7acdaa65d233a4ceba442663b1dfbba1e0cd04fc3f7f09b1"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_analysis_measured/DM_vs_NDM/protein_levels.csv",
+    "operation": "move",
+    "original_path": "results/pathway_analysis_measured/DM_vs_NDM/protein_levels.csv",
+    "sha256": "195ed99ab650bc38ef6d2face6e462ac1978055237a9911c8721a22db98e045f"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_reports/.DS_Store",
+    "operation": "move",
+    "original_path": "results/pathway_reports/.DS_Store",
+    "sha256": "040249fd84fde48354b770783085739bc5ace7a47097895b383bf78ce6a445bb"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_reports/exploratory/.Rhistory",
+    "operation": "move",
+    "original_path": "results/pathway_reports/exploratory/.Rhistory",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_reports/exploratory/.gitkeep",
+    "operation": "move",
+    "original_path": "results/pathway_reports/exploratory/.gitkeep",
+    "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_reports/exploratory/cache/biological_themes_DM_vs_NDM_type_2_diabetes.json",
+    "operation": "move",
+    "original_path": "results/pathway_reports/exploratory/cache/biological_themes_DM_vs_NDM_type_2_diabetes.json",
+    "sha256": "246d8e6bc94bf3f4c4bf3fc93ff6e2cf3b1681cb9c684aaf37fa7677048c84c3"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_reports/exploratory/cache/literature_assessment_DM_vs_NDM_type_2_diabetes.json",
+    "operation": "move",
+    "original_path": "results/pathway_reports/exploratory/cache/literature_assessment_DM_vs_NDM_type_2_diabetes.json",
+    "sha256": "3cb94d7eb742ce4fecdc759e11dd5ec52b34d922267d171c8d38164fa890501c"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_reports/exploratory/cache/scientific_review_DM_vs_NDM_type_2_diabetes_4b9e755f94538cad.json",
+    "operation": "move",
+    "original_path": "results/pathway_reports/exploratory/cache/scientific_review_DM_vs_NDM_type_2_diabetes_4b9e755f94538cad.json",
+    "sha256": "3a5f94b75ed0ca0499e631fae3c7e55c40367a4f3b3ab98770dbbacb873877b7"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_reports/exploratory/dataset_report_DM_vs_NDM.md",
+    "operation": "move",
+    "original_path": "results/pathway_reports/exploratory/dataset_report_DM_vs_NDM.md",
+    "sha256": "86b55fcb2800c5a8aac0a846778d0badbbb9a56128d61eef075fd4c5327010e4"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_reports/exploratory/review/review_result_DM_vs_NDM.json",
+    "operation": "move",
+    "original_path": "results/pathway_reports/exploratory/review/review_result_DM_vs_NDM.json",
+    "sha256": "1a0e79e09670d36a11156535f22a2c8958585e68012f5a64b57a28847be9646b"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_reports/primary/.DS_Store",
+    "operation": "move",
+    "original_path": "results/pathway_reports/primary/.DS_Store",
+    "sha256": "cd3b3f3ffd680db95c561d8fd8495ef93bbcc61d23c702f03e2c7c9478e105a1"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_reports/primary/.gitkeep",
+    "operation": "move",
+    "original_path": "results/pathway_reports/primary/.gitkeep",
+    "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_reports/primary/cache/biological_themes_DM_vs_NDM_type_2_diabetes.json",
+    "operation": "move",
+    "original_path": "results/pathway_reports/primary/cache/biological_themes_DM_vs_NDM_type_2_diabetes.json",
+    "sha256": "a3ebb6cb674ec785117b52153e62c3651ccea9e4453a9a63fa79fbfbe5b38ba9"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_reports/primary/cache/literature_assessment_DM_vs_NDM_type_2_diabetes.json",
+    "operation": "move",
+    "original_path": "results/pathway_reports/primary/cache/literature_assessment_DM_vs_NDM_type_2_diabetes.json",
+    "sha256": "90b7f57b220c1b485fbfbca95d19faf443a8f32669c6eeafddb1ec1648f9927e"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_reports/primary/cache/scientific_review_DM_vs_NDM_type_2_diabetes_89f2a65d85ace753.json",
+    "operation": "move",
+    "original_path": "results/pathway_reports/primary/cache/scientific_review_DM_vs_NDM_type_2_diabetes_89f2a65d85ace753.json",
+    "sha256": "57cfe16bfa941e9d4225ce2eaeba6a397267839949ec2fa4766a539effc64e99"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_reports/primary/dataset_report_DM_vs_NDM.md",
+    "operation": "move",
+    "original_path": "results/pathway_reports/primary/dataset_report_DM_vs_NDM.md",
+    "sha256": "2d68239f1572320958d04b5f670fb22c8d2bb2369c149291760068a20923fc80"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_reports/primary/review/review_result_DM_vs_NDM.json",
+    "operation": "move",
+    "original_path": "results/pathway_reports/primary/review/review_result_DM_vs_NDM.json",
+    "sha256": "5487f8275cad06326d889ef93ca974ea3f0e8271e82e5379df12881421a7f494"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/figures/pathway_analysis/exploratory_all_candidates_pathways_DM_vs_NDM.png",
+    "operation": "move",
+    "original_path": "figures/pathway_analysis/exploratory_all_candidates_pathways_DM_vs_NDM.png",
+    "sha256": "ea5df582e471f9de9efc00d9c1a2cff4a2130daf7e43c44640cfae4499644978"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/figures/pathway_analysis/primary_fdr_pathways_DM_vs_NDM.png",
+    "operation": "move",
+    "original_path": "figures/pathway_analysis/primary_fdr_pathways_DM_vs_NDM.png",
+    "sha256": "7b389529b152879625e02d991e8e78c16d34cde6249a8933b1830d5aa6e1b18f"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/legacy_exploratory/comparison_metadata.json",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/legacy_exploratory/comparison_metadata.json",
+    "sha256": "7e102f8d51c7db313b0e5fd3468aa5795203deec2700e9faa64dc17146fbc5b6"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/legacy_exploratory/comparison_summary.json",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/legacy_exploratory/comparison_summary.json",
+    "sha256": "74be85c2be6cf21e5d7bc9d9245f14c154fee3f8ab8c2c8a92d34f8021f028bd"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/legacy_exploratory/pathway_comparison.csv",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/legacy_exploratory/pathway_comparison.csv",
+    "sha256": "7a5b16cc4edfa944140d98f34612ed0181263216574915f3ce9354e23da7cefb"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/legacy_exploratory/pathway_protein_evidence.csv",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/legacy_exploratory/pathway_protein_evidence.csv",
+    "sha256": "0bc299fa1bfa623f8a2b6ef78e68ee121835fb6e86dfc65ceeb3f40a12bd0634"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/legacy_exploratory/pathway_review_selection.csv",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/legacy_exploratory/pathway_review_selection.csv",
+    "sha256": "514b3afebd042189d91a261193853f51934818fd94e938d1ee28694c111c3b19"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/legacy_primary/comparison_metadata.json",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/legacy_primary/comparison_metadata.json",
+    "sha256": "a7b01cfe19457a51a7bd2553924eb7b8a40ded4b330c0415f521765ed4fde878"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/legacy_primary/comparison_summary.json",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/legacy_primary/comparison_summary.json",
+    "sha256": "5c14b2e4b3104cfad8db79954bf93b5353f4e324640523dcdfa00c539026f547"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/legacy_primary/pathway_comparison.csv",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/legacy_primary/pathway_comparison.csv",
+    "sha256": "5bb1f88b8ac22bdb90579961429034858335924140b0a55aaefd716d6e50a6dc"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/legacy_primary/pathway_protein_evidence.csv",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/legacy_primary/pathway_protein_evidence.csv",
+    "sha256": "e1fb041f29fe5af47ccb44f9a0413e457af4cdff5d48fff1405c1c4043b7f432"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/legacy_primary/pathway_review_selection.csv",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/legacy_primary/pathway_review_selection.csv",
+    "sha256": "1ee97db9ed832ea0e270a904e8e4cb2fe519c534f37f8adae640e80506c329ac"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/measured_exploratory/comparison_metadata.json",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/measured_exploratory/comparison_metadata.json",
+    "sha256": "74bb3b0db6f0ba6feced4f6b941b4c1e25883f30cae201f2795bcb2c91b607a9"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/measured_exploratory/comparison_summary.json",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/measured_exploratory/comparison_summary.json",
+    "sha256": "3824c56462801b160a1f76bdca17d477111379ae4579658f8df4874c8ef867cd"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/measured_exploratory/pathway_comparison.csv",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/measured_exploratory/pathway_comparison.csv",
+    "sha256": "2812f0132c3522e85af8a29f057468df9a7ba6f028136f9860023d34ba0e2005"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/measured_exploratory/pathway_protein_evidence.csv",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/measured_exploratory/pathway_protein_evidence.csv",
+    "sha256": "0dc5071abcec8d2814d0f5c1c03a592b6119d4e74d3388478fddad17b67e98ae"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/measured_exploratory/pathway_review_selection.csv",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/measured_exploratory/pathway_review_selection.csv",
+    "sha256": "d6a8b51da75479bdd36ec1394e095b029a07a1c6a15605a84dd4eb4d7b0b765f"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/measured_primary/comparison_metadata.json",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/measured_primary/comparison_metadata.json",
+    "sha256": "9d94f2a8a0e0b7d28f79cac83647fb6c9f8c4cf243bd70d17c469496691fbd70"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/measured_primary/comparison_summary.json",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/measured_primary/comparison_summary.json",
+    "sha256": "e5feb9045cd4406cd3fa28b85c12ec2b8a1ca882a11a07492427b5e69a6bb2e3"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/measured_primary/pathway_comparison.csv",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/measured_primary/pathway_comparison.csv",
+    "sha256": "12df47a50324bb4f5c46300cfc0df42dce109bf897f62368bfc1ebad72de0e22"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/measured_primary/pathway_protein_evidence.csv",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/measured_primary/pathway_protein_evidence.csv",
+    "sha256": "52abef8a177c25e99570715b2bf78119e2dcb9c10e044977bb82d30820f369c4"
+  },
+  {
+    "archived_path": "archive/route_a_legacy/results/pathway_comparison/DM_vs_NDM/measured_primary/pathway_review_selection.csv",
+    "operation": "move",
+    "original_path": "results/pathway_comparison/DM_vs_NDM/measured_primary/pathway_review_selection.csv",
+    "sha256": "e6a6479d0a785dec4d1626f5b874518ff9de7bcd1086e9f2633547cdfdddee6a"
+  }
+]

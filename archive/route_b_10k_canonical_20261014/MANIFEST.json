@@ -1,0 +1,131 @@
+{
+  "files": [
+    {
+      "archived_path": "archive/route_b_10k_canonical_20261014/results/pathway_centric/DM_vs_NDM/pathway_candidates.csv",
+      "original_path": "results/pathway_centric/DM_vs_NDM/pathway_candidates.csv",
+      "sha256": "64ed8fcb100f3b2b14ff9750f2c4b0ba429f8b00a8b9d70fd047984d474308e7"
+    },
+    {
+      "archived_path": "archive/route_b_10k_canonical_20261014/results/pathway_centric/DM_vs_NDM/pathway_members.csv",
+      "original_path": "results/pathway_centric/DM_vs_NDM/pathway_members.csv",
+      "sha256": "139304b9da3d6f8559d1412c0b4c8ede5d61e26099b327d1a074f26ee391e9df"
+    },
+    {
+      "archived_path": "archive/route_b_10k_canonical_20261014/results/pathway_centric/DM_vs_NDM/protein_eligibility.csv",
+      "original_path": "results/pathway_centric/DM_vs_NDM/protein_eligibility.csv",
+      "sha256": "885cea485da9d529a0b7f4b059ec56d8486255fd482bccbd2e7967ac22ef5e0c"
+    },
+    {
+      "archived_path": "archive/route_b_10k_canonical_20261014/results/pathway_centric/DM_vs_NDM/pathway_clusters.csv",
+      "original_path": "results/pathway_centric/DM_vs_NDM/pathway_clusters.csv",
+      "sha256": "0d78374dee7681bc4057f365c1aa4d9abbc1e14ca82ea49d7aa85c4b73ee4797"
+    },
+    {
+      "archived_path": "archive/route_b_10k_canonical_20261014/results/pathway_centric/DM_vs_NDM/gene_set_audit.csv",
+      "original_path": "results/pathway_centric/DM_vs_NDM/gene_set_audit.csv",
+      "sha256": "ddadf1730c8b9275f254af44d76196c27f1c5e5c8924abce5a5216ab878e6a53"
+    },
+    {
+      "archived_path": "archive/route_b_10k_canonical_20261014/results/pathway_centric/DM_vs_NDM/gene_sets.json",
+      "original_path": "results/pathway_centric/DM_vs_NDM/gene_sets.json",
+      "sha256": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44"
+    },
+    {
+      "archived_path": "archive/route_b_10k_canonical_20261014/results/pathway_centric/DM_vs_NDM/all_pathways.csv",
+      "original_path": "results/pathway_centric/DM_vs_NDM/all_pathways.csv",
+      "sha256": "0a7380f06a2b4d687e509c2057e09b0a1c2fb05455ba0384d95f625da9229ded"
+    },
+    {
+      "archived_path": "archive/route_b_10k_canonical_20261014/results/pathway_centric/DM_vs_NDM/analysis_metadata.json",
+      "original_path": "results/pathway_centric/DM_vs_NDM/analysis_metadata.json",
+      "sha256": "e962780fd3270f8010925102db1ed49d0c45d944a8c901e733aa90bc4bae6f3b"
+    },
+    {
+      "archived_path": "archive/route_b_10k_canonical_20261014/results/pathway_centric/DM_vs_NDM/representative_pathways.csv",
+      "original_path": "results/pathway_centric/DM_vs_NDM/representative_pathways.csv",
+      "sha256": "9b4a7dd8ceb7fbf6080c84892e918965258f8137037bf7b5e28bc9d60dae12d2"
+    },
+    {
+      "archived_path": "archive/route_b_10k_canonical_20261014/results/pathway_comparison/DM_vs_NDM/comparison_summary.json",
+      "original_path": "results/pathway_comparison/DM_vs_NDM/comparison_summary.json",
+      "sha256": "60c46a2dff14367202b51dabe22451365e10da308034dee8b2f6898ef20886a6"
+    },
+    {
+      "archived_path": "archive/route_b_10k_canonical_20261014/results/pathway_comparison/DM_vs_NDM/pathway_comparison.csv",
+      "original_path": "results/pathway_comparison/DM_vs_NDM/pathway_comparison.csv",
+      "sha256": "097d63687a5d9260e05a252951b7b32a1eec610f4597388128f3bd9e2a67919b"
+    },
+    {
+      "archived_path": "archive/route_b_10k_canonical_20261014/results/pathway_comparison/DM_vs_NDM/pathway_review_selection.csv",
+      "original_path": "results/pathway_comparison/DM_vs_NDM/pathway_review_selection.csv",
+      "sha256": "e0eec5ad21bf69ff2938b02a419b2f7ec033147119b6c6c08fdb09540849d55a"
+    },
+    {
+      "archived_path": "archive/route_b_10k_canonical_20261014/results/pathway_comparison/DM_vs_NDM/comparison_metadata.json",
+      "original_path": "results/pathway_comparison/DM_vs_NDM/comparison_metadata.json",
+      "sha256": "3cd59ef1aa1b4fbe56a11cdf9e767c7d816d7ddeaefa9634e18f85215f20858b"
+    },
+    {
+      "archived_path": "archive/route_b_10k_canonical_20261014/results/pathway_comparison/DM_vs_NDM/pathway_protein_evidence.csv",
+      "original_path": "results/pathway_comparison/DM_vs_NDM/pathway_protein_evidence.csv",
+      "sha256": "0dc5071abcec8d2814d0f5c1c03a592b6119d4e74d3388478fddad17b67e98ae"
+    },
+    {
+      "archived_path": "archive/route_b_10k_canonical_20261014/src/pathway_centric.py",
+      "original_path": "src/pathway_centric.py",
+      "sha256": "ba86dca37fbcb03e94e158bf766ae1985f9ca11b39f6d14ef5f8d9fcf58f6011"
+    },
+    {
+      "archived_path": "archive/route_b_10k_canonical_20261014/src/pathway_routes.py",
+      "original_path": "src/pathway_routes.py",
+      "sha256": "fc231ffb999bb330032c800eeacd307d51b83aac4033f9f16b8238612d8802a7"
+    },
+    {
+      "archived_path": "archive/route_b_10k_canonical_20261014/src/pathway_comparison.py",
+      "original_path": "src/pathway_comparison.py",
+      "sha256": "3b2470c5014dd78adc3866af77ca3c92ac581de94ad8fe0c340e64402c4e1e54"
+    }
+  ],
+  "protected_route_a_and_validation_hashes": {
+    "results/pathway_centric/DM_vs_NDM/permutation_sensitivity/all_pathways_10000.csv": "0a7380f06a2b4d687e509c2057e09b0a1c2fb05455ba0384d95f625da9229ded",
+    "results/pathway_centric/DM_vs_NDM/permutation_sensitivity/all_pathways_100000.csv": "8d166d83a172e4bdc6d5c88b945d33d36c4af98c0691dec147737f67ee26cf43",
+    "results/pathway_centric/DM_vs_NDM/permutation_sensitivity/all_pathways_50000.csv": "ff4c48b1f5e6e947b9cfea8f78beee88b06c7424ea2c69bf1ea863076290d7d9",
+    "results/pathway_centric/DM_vs_NDM/permutation_sensitivity/candidate_transitions.csv": "2d97d1b3a8fa4287a42a4044e2778fe6e81afa1bde7d05e90defa737c5f025ff",
+    "results/pathway_centric/DM_vs_NDM/permutation_sensitivity/eligible_gene_statistics.csv": "77b410077db0f9423a8cf200b8be4ffad86b30cc9778d7f25395124caa52f0d5",
+    "results/pathway_centric/DM_vs_NDM/permutation_sensitivity/frozen_gene_memberships.csv": "b10f4a1ec9858ee0de12ce26fafa36fbd0cabcc678d27fd6287b957333d8b31c",
+    "results/pathway_centric/DM_vs_NDM/permutation_sensitivity/near_q_cutoff.csv": "6ac7d0841aeb045413aca22980102e6ddef12c86e32cd8064495ce81691d80ed",
+    "results/pathway_centric/DM_vs_NDM/permutation_sensitivity/nearest_30_to_q_cutoff.csv": "a40f6cebac42e9fa3841db37eb6adb009ce047885f682b11496332661eadad02",
+    "results/pathway_centric/DM_vs_NDM/permutation_sensitivity/pathway_candidates_10000.csv": "64ed8fcb100f3b2b14ff9750f2c4b0ba429f8b00a8b9d70fd047984d474308e7",
+    "results/pathway_centric/DM_vs_NDM/permutation_sensitivity/pathway_candidates_100000.csv": "3c373f006f729bb6c2d65eca97165a8b7ab262d3f1c6a4cba9da37865e6abf29",
+    "results/pathway_centric/DM_vs_NDM/permutation_sensitivity/pathway_candidates_50000.csv": "a31c8bdca6588d2808821c7c9f746b529b5aa39faa6b38cfa111ede50b8309dc",
+    "results/pathway_centric/DM_vs_NDM/permutation_sensitivity/pathway_permutation_comparison.csv": "562a3da76b87225f949c40a4dfae364c861eed121070e8782e8ca6a5ad3c6720",
+    "results/pathway_centric/DM_vs_NDM/permutation_sensitivity/pathway_rank_correlations.csv": "07aee162cbf93c630d455fd8678b5e28e100d625326b57c73eefb7f73ec2a26d",
+    "results/pathway_centric/DM_vs_NDM/permutation_sensitivity/permutation_count_summary.csv": "13306a921c7adde8674264b05fa674f7e66c70f11fe0f0ef7a9430be01578305",
+    "results/pathway_centric/DM_vs_NDM/permutation_sensitivity/permutation_sensitivity_metadata.json": "bd8506681312b99ef3664e40b3520ab3b528a830433666ad70aaabf9894818ba",
+    "results/pathway_centric/DM_vs_NDM/permutation_sensitivity/permutation_sensitivity_report.md": "c68fa915a52ac66636b413e9f060acb3cad6c9c6c1a97e286b5b92a620c0a3bc",
+    "results/pathway_centric/DM_vs_NDM/redundancy_sensitivity/all_pathways_with_direction.csv": "93cb0091010ac9a54701fb04323b18b23fcebae1b3a41c4a9d98acf058f85b1d",
+    "results/pathway_centric/DM_vs_NDM/redundancy_sensitivity/canonical_cluster_transitions.csv": "9061e0368b0485e237b7521c134fc083b67a9b2bc91454d49033b042d9ee8d9f",
+    "results/pathway_centric/DM_vs_NDM/redundancy_sensitivity/cluster_partition_stability.csv": "0f2b6be514c557bc941f65d5e64e3050abac6e5df346bc918571a13f34c341b7",
+    "results/pathway_centric/DM_vs_NDM/redundancy_sensitivity/connected_components_vs_louvain.csv": "7bd6766fd014f4b13629b2a9c4a851ccf4bba93534b2ae058dd0cd139e011ca1",
+    "results/pathway_centric/DM_vs_NDM/redundancy_sensitivity/current_graph_diagnostics.csv": "35c5ee03b850d3a9e1b2e7f226c7a85aab75d3277a2a716e02e357c87663157c",
+    "results/pathway_centric/DM_vs_NDM/redundancy_sensitivity/diagnostic_group_pairwise_jaccard.csv": "8a437c190ae4ae8317ef67e377fb5f6a603338468cfbf4c6af9d9a770a192682",
+    "results/pathway_centric/DM_vs_NDM/redundancy_sensitivity/jaccard_threshold_summary.csv": "386a10a3bfd010fa5a423bab4e84374ea3562c362deea3f26e837359a97ba356",
+    "results/pathway_centric/DM_vs_NDM/redundancy_sensitivity/pathway_candidates_with_direction.csv": "8ef8a4dfa1c2c92d7d2b3ec45352117f5e6ce4c075cea2e7375212b53c6890d5",
+    "results/pathway_centric/DM_vs_NDM/redundancy_sensitivity/pathway_cluster_assignments_wide.csv": "44c88c589687a083a1efa66cf64dfd2e40b0e2b0ccaffd12906cbff453e5ccc2",
+    "results/pathway_centric/DM_vs_NDM/redundancy_sensitivity/pathway_cluster_sensitivity.csv": "64e1192c2910d50c7b91210a6c58ed296fbc0531292e3c42fea948e1e3646621",
+    "results/pathway_centric/DM_vs_NDM/redundancy_sensitivity/pathway_comparison_with_direction.csv": "4c054b2c89ce3e4e86ee00d3ca8549dcc380b4835838d8c19f79096e596d5330",
+    "results/pathway_centric/DM_vs_NDM/redundancy_sensitivity/pathway_pairwise_jaccard.csv": "0e5d86a2a6f8fb87c43c684b1b5f594d6f48f5e81041e553af13692e3b391ca3",
+    "results/pathway_centric/DM_vs_NDM/redundancy_sensitivity/redundancy_sensitivity_metadata.json": "93d2c93d5bae77d34965560af43ae6615ba72dba49f06af51f8e26e348b9d574",
+    "results/pathway_centric/DM_vs_NDM/redundancy_sensitivity/representative_pathways_by_threshold.csv": "daa74b4e9d9c5ab69267c960d99ac3531f6c9356dcb2adcb1650dfdfeb508385",
+    "results/pathway_centric/DM_vs_NDM/redundancy_sensitivity/representative_pathways_with_direction.csv": "13711bb30b4b3e256f9a9b0512662bb10eec5477870cf83351798fc340313c13",
+    "results/pathway_protein/DM_vs_NDM/all_pathways.csv": "bc27c6265b359fc31bad9c65a7355f9463f34f2d91d077b67563c76103fdfa5e",
+    "results/pathway_protein/DM_vs_NDM/analysis_metadata.json": "b4def1d4111e5371e9964544bbfca2835fcdd49a9922408df1e1e731772f61b7",
+    "results/pathway_protein/DM_vs_NDM/candidate_members.csv": "b127133fc471b4958f7586d0f1d4a7b08db06ae5b25eacf9f603c61be65ae275",
+    "results/pathway_protein/DM_vs_NDM/gene_sets.json": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44",
+    "results/pathway_protein/DM_vs_NDM/pathway_candidates.csv": "b117e7563d1c59719d4c4891b8f7cbba42dfdeee14a73f1830421af1f9c1fc88",
+    "results/pathway_protein/DM_vs_NDM/pathway_clusters.csv": "440fb31ce0376ea2b3f1a28159ad65bfb7931e7c02737c05c158ac1da23723a5",
+    "results/pathway_protein/DM_vs_NDM/protein_levels.csv": "195ed99ab650bc38ef6d2face6e462ac1978055237a9911c8721a22db98e045f",
+    "results/pathway_protein/DM_vs_NDM/representative_pathways.csv": "be4c6e12a9446049a284e37b3ebc138244242ed7738bad5e979253fca5cf6e8c",
+    "results/pathway_protein/DM_vs_NDM/universe_genes.csv": "6210fae8320c119b7acdaa65d233a4ceba442663b1dfbba1e0cd04fc3f7f09b1"
+  }
+}

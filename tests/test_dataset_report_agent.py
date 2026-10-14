@@ -8,7 +8,7 @@ from src.agents.dataset_report_agent import (
     DatasetReportAgent, GeminiClient, OpenAIResponsesClient, PubMedClient, Study,
     dataset_evidence_strength, disease_relevance, load_pathway_evidence,
 )
-from src import generate_pathway_report
+from archive.route_a_legacy.src import generate_pathway_report
 
 
 def cluster(l1=0, l2=0, l3=0, l4=0, l5=0):

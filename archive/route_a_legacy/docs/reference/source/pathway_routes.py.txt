@@ -1,0 +1,47 @@
+"""Explicit route dispatcher; legacy entry points remain unchanged."""
+import argparse
+import json
+from pathlib import Path
+
+from src.pathway_analysis import run_pathway_analysis
+from src.pathway_consolidation import consolidate_pathways
+from src.pathway_centric import run_pathway_centric, DEFAULT_LIBRARIES
+
+
+def run_routes(route='protein', comparison='DM_vs_NDM', **pathway_options):
+    if route not in {'protein', 'pathway', 'both'}:
+        raise ValueError('route must be protein, pathway, or both')
+    outputs = {}
+    if route in {'protein', 'both'}:
+        outputs['protein_analysis'] = run_pathway_analysis(comparison=comparison)
+        outputs['protein_consolidation'] = consolidate_pathways(comparison=comparison)
+    if route in {'pathway', 'both'}:
+        outputs['pathway'] = run_pathway_centric(comparison=comparison, **pathway_options)
+    return outputs
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--route', choices=['protein', 'pathway', 'both'], default='protein')
+    parser.add_argument('--comparison', default='DM_vs_NDM')
+    parser.add_argument('--gene-sets', type=Path, help='Offline JSON: library -> term -> gene symbols')
+    parser.add_argument('--libraries', nargs='+', default=list(DEFAULT_LIBRARIES))
+    parser.add_argument('--organism', default='Human')
+    parser.add_argument('--min-size', type=int, default=5)
+    parser.add_argument('--max-size', type=int, default=500)
+    parser.add_argument('--permutations', type=int, default=10000)
+    parser.add_argument('--seed', type=int, default=42)
+    parser.add_argument('--q-cutoff', type=float, default=.05)
+    parser.add_argument('--p-cutoff', type=float, default=1.)
+    parser.add_argument('--jaccard-threshold', type=float, default=.25)
+    parser.add_argument('--louvain-seed', type=int, default=42)
+    args = vars(parser.parse_args())
+    path = args.pop('gene_sets')
+    args['gene_sets'] = json.loads(path.read_text()) if path else None
+    outputs = run_routes(**args)
+    if 'pathway' in outputs:
+        print(json.dumps(outputs['pathway'][1], indent=2))
+
+
+if __name__ == '__main__':
+    main()

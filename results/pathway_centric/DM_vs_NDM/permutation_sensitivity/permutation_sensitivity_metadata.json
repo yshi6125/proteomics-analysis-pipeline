@@ -1,0 +1,101 @@
+{
+  "all_canonical_source_hashes_unchanged": true,
+  "boundary_window": "any run q in [0.025,0.075], plus all entering/leaving terms; nearest 30 also retained",
+  "candidate_rule": "q < 0.05 as requested; canonical uses <=, exact-boundary cases separately reported; 10k identities verified equal",
+  "changed_parameter": "permutations only",
+  "comparison": "DM_vs_NDM",
+  "eligible_genes": 1946,
+  "eligible_proteins": 1947,
+  "gene_memberships_sha256": "b10f4a1ec9858ee0de12ce26fafa36fbd0cabcc678d27fd6287b957333d8b31c",
+  "gene_statistics_sha256": "77b410077db0f9423a8cf200b8be4ffad86b30cc9778d7f25395124caa52f0d5",
+  "implementation_hashes": {
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/src/pathway_centric.py": "ba86dca37fbcb03e94e158bf766ae1985f9ca11b39f6d14ef5f8d9fcf58f6011",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/src/pathway_permutation_sensitivity.py": "0291764b80f528cbadf838209ebec46cf351001de9374fdf09acacb46577e949"
+  },
+  "permutation_counts": [
+    10000,
+    50000,
+    100000
+  ],
+  "rank_comparison": "Spearman on p/q with average ranks for ties; all terms and pairwise candidate unions",
+  "redundancy": "not invoked or evaluated",
+  "runtime_seconds": {
+    "10000": 6.840279832947999,
+    "50000": 32.22196320886724,
+    "100000": 64.67782712494954
+  },
+  "seed_strategy": "SeedSequence([42, measured_size]); same eligible gene ordering; longer runs extend each size-specific RNG stream",
+  "software_versions": {
+    "numpy": "2.1.3",
+    "pandas": "2.2.3",
+    "scipy": "1.15.3",
+    "statsmodels": "0.14.4"
+  },
+  "source_hashes": {
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/differential_abundance/differential_abundance_DM_vs_NDM.csv": "2fcd4af1e0779b543ebafc0ae6f834a82374639a351f8253cf124b317f1f50df",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/all_pathways.csv": "0a7380f06a2b4d687e509c2057e09b0a1c2fb05455ba0384d95f625da9229ded",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/analysis_metadata.json": "e962780fd3270f8010925102db1ed49d0c45d944a8c901e733aa90bc4bae6f3b",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/gene_set_audit.csv": "ddadf1730c8b9275f254af44d76196c27f1c5e5c8924abce5a5216ab878e6a53",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/gene_sets.json": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/pathway_candidates.csv": "64ed8fcb100f3b2b14ff9750f2c4b0ba429f8b00a8b9d70fd047984d474308e7",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/pathway_clusters.csv": "0d78374dee7681bc4057f365c1aa4d9abbc1e14ca82ea49d7aa85c4b73ee4797",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/pathway_members.csv": "139304b9da3d6f8559d1412c0b4c8ede5d61e26099b327d1a074f26ee391e9df",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/protein_eligibility.csv": "885cea485da9d529a0b7f4b059ec56d8486255fd482bccbd2e7967ac22ef5e0c",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/representative_pathways.csv": "9b4a7dd8ceb7fbf6080c84892e918965258f8137037bf7b5e28bc9d60dae12d2",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_comparison/DM_vs_NDM/comparison_metadata.json": "3cd59ef1aa1b4fbe56a11cdf9e767c7d816d7ddeaefa9634e18f85215f20858b",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_comparison/DM_vs_NDM/comparison_summary.json": "60c46a2dff14367202b51dabe22451365e10da308034dee8b2f6898ef20886a6",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_comparison/DM_vs_NDM/pathway_comparison.csv": "097d63687a5d9260e05a252951b7b32a1eec610f4597388128f3bd9e2a67919b",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_comparison/DM_vs_NDM/pathway_protein_evidence.csv": "0dc5071abcec8d2814d0f5c1c03a592b6119d4e74d3388478fddad17b67e98ae",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_comparison/DM_vs_NDM/pathway_review_selection.csv": "e0eec5ad21bf69ff2938b02a419b2f7ec033147119b6c6c08fdb09540849d55a",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_protein/DM_vs_NDM/all_pathways.csv": "bc27c6265b359fc31bad9c65a7355f9463f34f2d91d077b67563c76103fdfa5e",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_protein/DM_vs_NDM/analysis_metadata.json": "b4def1d4111e5371e9964544bbfca2835fcdd49a9922408df1e1e731772f61b7",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_protein/DM_vs_NDM/candidate_members.csv": "b127133fc471b4958f7586d0f1d4a7b08db06ae5b25eacf9f603c61be65ae275",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_protein/DM_vs_NDM/gene_sets.json": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_protein/DM_vs_NDM/pathway_candidates.csv": "b117e7563d1c59719d4c4891b8f7cbba42dfdeee14a73f1830421af1f9c1fc88",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_protein/DM_vs_NDM/pathway_clusters.csv": "440fb31ce0376ea2b3f1a28159ad65bfb7931e7c02737c05c158ac1da23723a5",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_protein/DM_vs_NDM/protein_levels.csv": "195ed99ab650bc38ef6d2face6e462ac1978055237a9911c8721a22db98e045f",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_protein/DM_vs_NDM/representative_pathways.csv": "be4c6e12a9446049a284e37b3ebc138244242ed7738bad5e979253fca5cf6e8c",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_protein/DM_vs_NDM/universe_genes.csv": "6210fae8320c119b7acdaa65d233a4ceba442663b1dfbba1e0cd04fc3f7f09b1"
+  },
+  "tested_pathways": 1617,
+  "uncertainty_scope": "one fixed seed and nested streams; not an independent multi-seed replication study",
+  "unchanged_canonical_settings": {
+    "analysis_route": "pathway_centric",
+    "clustering_policy": "separate directions; all measured pathway genes; q then p then library/name representative",
+    "comparison": "DM_vs_NDM",
+    "differential_input_sha256": "f7021c9409c7dbaabb9dd07b85e871979c246f48a4774bbeee55df8646f06b10",
+    "direction_definition": "sign of mean t; mixed_signs flags both signs; not pathway activity",
+    "duplicate_gene_rule": "arithmetic mean of all eligible protein t-statistics",
+    "gene_set_database": [
+      "GO_Biological_Process_2023",
+      "GO_Cellular_Component_2023"
+    ],
+    "gene_sets_sha256": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44",
+    "jaccard_threshold": 0.25,
+    "limitations": "Ordinary, not moderated t. Competitive gene sampling assumes exchangeable genes; does not preserve inter-protein correlation. Signed mean may cancel mixed regulation.",
+    "louvain_seed": 42,
+    "maximum_pathway_size": 500,
+    "minimum_pathway_size": 5,
+    "multiple_testing_method": "BH across all libraries",
+    "number_of_candidate_pathways": 28,
+    "number_of_eligible_genes": 1946,
+    "number_of_eligible_proteins": 1947,
+    "number_of_excluded_proteins": 18,
+    "number_of_redundancy_clusters": 11,
+    "number_of_tested_pathways": 1617,
+    "organism": "Human",
+    "package_versions": {
+      "gseapy": "1.3.1",
+      "networkx": "3.4.2",
+      "numpy": "2.1.3",
+      "pandas": "2.2.3",
+      "statsmodels": "0.14.4"
+    },
+    "pathway_p_cutoff": 1.0,
+    "pathway_q_cutoff": 0.05,
+    "pathway_testing_method": "competitive mean-t gene sampling, two-sided equal-tail Monte Carlo",
+    "permutation_seed": 42,
+    "permutations": 10000,
+    "protein_statistic": "t_statistic (existing fitted group effect)"
+  }
+}

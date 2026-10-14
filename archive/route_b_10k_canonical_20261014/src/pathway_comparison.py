@@ -1,0 +1,352 @@
+"""Deterministic review checkpoint from saved, independently analyzed pathway results."""
+from __future__ import annotations
+
+import argparse
+import json
+import re
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+
+from src import protein_evidence as a
+from src.pathway_review_io import (
+    ROOT, dataframe_hash, guard_output, load_definitions, provenance, safe_label, sha256_file,
+)
+
+OUTPUT_DIR = ROOT/'results/pathway_comparison'
+ID_PATTERN = re.compile(r'\b(GO:\d{7}|R-[A-Z]{3}-\d+)\b')
+KEYS = ['pathway_library', 'match_identifier']
+
+
+def pathway_key(library, term):
+    """Exact versioned library + extracted stable ID, else unchanged full name."""
+    ids = set(ID_PATTERN.findall(str(term)))
+    if len(ids) > 1:
+        raise ValueError(f'Ambiguous pathway identifiers: {term}')
+    return str(library), next(iter(ids)) if ids else str(term)
+
+
+def keyed(frame):
+    frame = frame.copy()
+    frame['match_identifier'] = [pathway_key(r.pathway_library, r.pathway)[1] for r in frame.itertuples()]
+    # Several directions are legitimate; aliases within one direction are not silently merged.
+    group_cols = KEYS + (['direction'] if 'direction' in frame else [])
+    if frame.duplicated(group_cols).any():
+        raise ValueError('Duplicate/ambiguous pathway identity in a source table')
+    return frame
+
+
+def classify(a_present, b_present):
+    return 'A_AND_B' if a_present and b_present else 'A_ONLY' if a_present else 'B_ONLY'
+
+
+def direction_agreement(a_directions, b_direction):
+    translated = {'increased': 'positive', 'decreased': 'negative'}
+    known = {translated.get(x, x) for x in a_directions}
+    if len(known) != 1 or b_direction not in {'positive', 'negative'}:
+        return 'not_meaningful'
+    return 'agree' if next(iter(known)) == b_direction else 'opposite'
+
+
+def _records(frame):
+    # Keep every A directional statistic/assignment, not only the scalar display row.
+    cols = [c for c in ['pathway', 'direction', 'enrichment_p_value', 'enrichment_adjusted_p_value',
+                        'candidate_genes', 'cluster_id', 'is_representative'] if c in frame]
+    ordered = frame.sort_values([c for c in ['direction','pathway'] if c in frame], kind='stable')
+    return json.dumps(json.loads(ordered[cols].to_json(orient='records', double_precision=15)), sort_keys=True)
+
+
+def _truth(series):
+    return series.map(lambda v: str(v).lower() == 'true' or v == 1)
+
+
+def build_comparison(proteins, a_all, a_clusters, a_members, b_all, b_candidates, b_clusters,
+                     definitions, a_libraries, *, a_threshold=.05,
+                     a_definitions=None, b_libraries=None):
+    """Pure local comparison; levels annotate evidence and never feed either route's test."""
+    protein_rows = a.assign_candidate_origin(proteins).sort_values('row_position', kind='stable')
+    a_all, a_clusters = keyed(a_all), keyed(a_clusters)
+    b_all, b_candidates, b_clusters = keyed(b_all), keyed(b_candidates), keyed(b_clusters)
+    if b_all.duplicated(KEYS).any() or b_candidates.duplicated(KEYS).any() or b_clusters.duplicated(KEYS).any():
+        raise ValueError('Route B must have one result per pathway')
+    def keys(frame):
+        return set(map(tuple, frame[KEYS].to_numpy()))
+    if not keys(a_clusters).issubset(keys(a_all)) or not keys(b_candidates).issubset(keys(b_all)):
+        raise ValueError('Candidate identities absent from complete results')
+    if keys(b_candidates) != keys(b_clusters):
+        raise ValueError('B candidates and consolidated members disagree')
+    a_members = a_members.copy()
+    a_members['match_identifier'] = [pathway_key(r.pathway_library, r.pathway)[1] for r in a_members.itertuples()]
+    definition_index = {}
+    for lib, terms in sorted(definitions.items()):
+        for term, genes in sorted(terms.items()):
+            key = pathway_key(lib, term)
+            if key in definition_index:
+                raise ValueError(f'Ambiguous definition aliases for {key}')
+            definition_index[key] = set(genes)
+    a_definition_index = None
+    if a_definitions is not None:
+        a_definition_index = {}
+        for lib, terms in a_definitions.items():
+            for term, genes in terms.items():
+                key = pathway_key(lib, term)
+                if key in a_definition_index:
+                    raise ValueError(f'Ambiguous A definition aliases for {key}')
+                a_definition_index[key] = set(genes)
+    a_keys, b_keys = keys(a_clusters), keys(b_candidates)
+    a_test_keys, b_test_keys = keys(a_all), keys(b_all)
+    libraries_a = set(a_libraries)
+    libraries_b = set(b_libraries) if b_libraries is not None else set(b_all.pathway_library) | set(b_candidates.pathway_library)
+    candidate_union = sorted(a_keys | b_keys)
+    def subset(frame, key):
+        return frame.loc[frame.pathway_library.eq(key[0]) & frame.match_identifier.eq(key[1])]
+    rows, details = [], []
+    for library, identifier in candidate_union:
+        key = (library, identifier)
+        ar, ac = subset(a_all, key), subset(a_clusters, key)
+        br, bc = subset(b_all, key), subset(b_clusters, key)
+        am = subset(a_members, key)
+        a_present, b_present = key in a_keys, key in b_keys
+        # Directional records remain explicit; the scalar display uses lowest adjusted p then p/direction.
+        strongest = ar.sort_values(['enrichment_adjusted_p_value', 'enrichment_p_value', 'direction'], kind='stable')
+        a_display = strongest.iloc[0] if len(strongest) else None
+        b_display = br.iloc[0] if len(br) else None
+        names = sorted(set(ar.pathway) | set(br.pathway))
+        a_gene_set = a_definition_index.get(key) if a_definition_index is not None else None
+        b_gene_set = definition_index.get(key) if library in libraries_b else None
+        definition_agreement = ('equal' if a_gene_set == b_gene_set else 'different') if (
+            a_gene_set is not None and b_gene_set is not None) else 'unknown'
+        coverage = 'both_evaluable'
+        if library not in libraries_a:
+            coverage = 'library_not_analyzed_by_A'
+        elif key not in b_test_keys:
+            coverage = 'not_tested_by_B'
+        elif key not in a_test_keys and a_gene_set is None and b_gene_set is None:
+            coverage = 'A_term_coverage_unknown'
+        elif definition_agreement == 'different':
+            coverage = 'different_definition_snapshots'
+        comparable = coverage == 'both_evaluable'
+        # Full measured evidence uses the local snapshot; if both snapshots differ preserve their union,
+        # with per-row snapshot membership flags. Never present a union as a shared statistical set.
+        annotated = (a_gene_set or set()) | (b_gene_set or set())
+        available_set = definition_index.get(key)
+        complete = bool(a_gene_set is not None or b_gene_set is not None or available_set is not None)
+        if available_set is not None:
+            annotated |= available_set
+        if not complete:
+            annotated = set(am.candidate_gene.dropna().astype(str))
+        member_rows = protein_rows.loc[protein_rows.analysis_gene.isin(annotated)].copy()
+        a_row_positions = set(pd.to_numeric(am.row_position, errors='coerce').dropna()) if 'row_position' in am else set()
+        candidate_genes = set().union(*(set(a._split_genes(v)) for v in ac.candidate_genes)) if len(ac) else set()
+        a_dirs = sorted(set(ac.direction))
+        b_dir = str(b_display.direction) if b_display is not None else ''
+        row = dict(pathway_library=library, pathway_identifier=identifier,
+            identifier_type='stable_id' if ID_PATTERN.fullmatch(identifier) else 'exact_term_name',
+            pathway=names[0], route_a_pathway_names=';'.join(sorted(set(ar.pathway))),
+            route_b_pathway_name=str(b_display.pathway) if b_display is not None else '',
+            present_in_route_a=a_present, present_in_route_b=b_present,
+            category=classify(a_present, b_present), directly_comparable=comparable, coverage_status=coverage,
+            definition_agreement=definition_agreement, a_term_in_saved_results=key in a_test_keys,
+            b_term_tested=key in b_test_keys,
+            route_a_p_value=float(a_display.enrichment_p_value) if a_display is not None else np.nan,
+            route_a_adjusted_p=float(a_display.enrichment_adjusted_p_value) if a_display is not None else np.nan,
+            route_b_p_value=float(b_display.p_value) if b_display is not None else np.nan,
+            route_b_q_value=float(b_display.q_value) if b_display is not None else np.nan,
+            route_a_direction=';'.join(a_dirs), route_a_tested_directions=';'.join(sorted(set(ar.direction))),
+            route_a_display_direction=str(a_display.direction) if a_display is not None else '',
+            route_b_direction=b_dir, route_b_mixed_signs=bool(b_display.mixed_signs) if b_display is not None else False,
+            direction_agreement=direction_agreement(a_dirs, b_dir) if a_present and b_present else 'not_applicable',
+            route_a_candidate_gene_count=len(candidate_genes),
+            route_b_measured_member_count=int(b_display.pathway_size) if b_display is not None else np.nan,
+            membership_complete=complete,
+            total_measured_protein_count=len(member_rows) if complete else np.nan,
+            total_measured_gene_count=member_rows.analysis_gene.nunique() if complete else np.nan,
+            measured_genes=';'.join(sorted(set(member_rows.analysis_gene))),
+            route_a_contributing_genes=';'.join(sorted(candidate_genes)),
+            route_a_clusters=';'.join(sorted(set(ac.cluster_id.astype(str)))),
+            route_b_cluster=str(bc.iloc[0].cluster_id) if len(bc) else '',
+            route_a_representative=bool(_truth(ac.is_representative).any()),
+            route_b_representative=bool(_truth(bc.is_representative).any()),
+            route_a_significant_before_support=bool(ar.enrichment_adjusted_p_value.lt(a_threshold).any()),
+            route_a_directional_results=_records(ar), route_a_cluster_records=_records(ac))
+        gene_origins = member_rows.sort_values('candidate_origin', key=lambda s: s.map(a.ORIGIN_PRIORITY).fillna(99), kind='stable').drop_duplicates('analysis_gene')
+        for level in range(1,6):
+            row[f'level_{level}_protein_count'] = int(member_rows.candidate_origin.eq(f'Level {level}').sum()) if complete else np.nan
+            row[f'level_{level}_gene_count'] = int(gene_origins.candidate_origin.eq(f'Level {level}').sum()) if complete else np.nan
+        row['non_candidate_protein_count'] = int(member_rows.candidate_origin.eq('Not candidate').sum()) if complete else np.nan
+        row['non_candidate_gene_count'] = int(gene_origins.candidate_origin.eq('Not candidate').sum()) if complete else np.nan
+        rows.append(row)
+        for _, member in member_rows.iterrows():
+            item = member.to_dict()
+            item.update(pathway_library=library, pathway_identifier=identifier, pathway=names[0],
+                category=row['category'], membership_complete=complete,
+                in_a_definition=(member.analysis_gene in a_gene_set) if a_gene_set is not None else None,
+                in_b_definition=(member.analysis_gene in b_gene_set) if b_gene_set is not None else None,
+                route_a_contributing=(member.row_position in a_row_positions),
+                route_a_selected_gene=member.analysis_gene in candidate_genes,
+                route_b_contributing=(key in b_test_keys and b_gene_set is not None and member.analysis_gene in b_gene_set
+                                      and np.isfinite(float(member.t_statistic))))
+            details.append(item)
+    # Stable schemas remain useful when both routes have zero candidates.
+    empty_cols = ['pathway_library', 'pathway_identifier', 'pathway', 'present_in_route_a', 'present_in_route_b',
+                  'category', 'directly_comparable', 'coverage_status', 'direction_agreement',
+                  'route_a_p_value', 'route_a_adjusted_p', 'route_b_p_value', 'route_b_q_value',
+                  'route_a_direction', 'route_b_direction', 'route_a_candidate_gene_count',
+                  'route_b_measured_member_count', 'total_measured_protein_count', 'total_measured_gene_count',
+                  'membership_complete', 'route_a_clusters', 'route_b_cluster', 'route_a_representative',
+                  'route_b_representative', 'route_a_directional_results', 'route_a_cluster_records']
+    empty_cols += [f'level_{n}_{kind}_count' for n in range(1,6) for kind in ['protein','gene']]
+    empty_cols += ['non_candidate_protein_count', 'non_candidate_gene_count']
+    comparison = pd.DataFrame(rows) if rows else pd.DataFrame(columns=empty_cols)
+    detail_columns = ['pathway_library', 'pathway_identifier', 'pathway', 'category', 'membership_complete',
+                     'in_a_definition', 'in_b_definition', 'route_a_contributing', 'route_a_selected_gene',
+                     'route_b_contributing'] + list(protein_rows.columns)
+    evidence = pd.DataFrame(details, columns=detail_columns)
+    counts = comparison.category.value_counts()
+    comparable_saved = a_test_keys & b_test_keys
+    if a_definition_index is not None:
+        comparable_saved = {key for key in comparable_saved if key not in a_definition_index or
+                            key not in definition_index or a_definition_index[key] == definition_index[key]}
+    summary = dict(route_a_candidate_pathways=len(a_keys), route_a_directional_candidates=len(a_clusters),
+        route_b_candidate_pathways=len(b_keys), candidate_union_pathways=len(candidate_union),
+        shared_libraries=sorted(libraries_a & libraries_b),
+        shared_saved_identities=len(a_test_keys & b_test_keys),
+        comparable_saved_result_pathways=len(comparable_saved),
+        incomplete_membership_pathways=int((~comparison.membership_complete.astype(bool)).sum()) if len(comparison) else 0,
+        comparable_candidate_pathways=int(comparison.directly_comparable.sum()),
+        noncomparable_candidate_pathways=int((~comparison.directly_comparable.astype(bool)).sum()),
+        categories={c: int(counts.get(c,0)) for c in ['A_AND_B','A_ONLY','B_ONLY']},
+        comparable_categories={c: int(((comparison.category == c) & comparison.directly_comparable.astype(bool)).sum())
+                               for c in ['A_AND_B','A_ONLY','B_ONLY']},
+        direction_agreement={str(k): int(v) for k,v in comparison.direction_agreement.value_counts().items()},
+        count_definition='unique exact-library/identifier pathways; A directional candidates also separately counted',
+        level_composition='per-pathway protein rows and strongest-origin unique genes; pathway sums double-count shared genes')
+    summary['comparable_pathways'] = summary['comparable_saved_result_pathways']
+    if len(evidence):
+        distinct = evidence.drop_duplicates('row_position')
+        summary['unique_protein_level_counts_across_candidate_union'] = {str(k): int(v) for k,v in distinct.candidate_origin.value_counts().items()}
+        unique_genes = distinct.sort_values('candidate_origin', key=lambda s: s.map(a.ORIGIN_PRIORITY).fillna(99),kind='stable').drop_duplicates('analysis_gene')
+        summary['unique_gene_level_counts_across_candidate_union'] = {str(k): int(v) for k,v in unique_genes.candidate_origin.value_counts().items()}
+    return comparison, evidence, summary
+
+
+def validate_a_members(proteins, members):
+    """Reject stale or mismapped Route A protein evidence."""
+    if members.empty:
+        return
+    expected = a.assign_candidate_origin(proteins).set_index('row_position')
+    if members.row_position.isna().any() or not set(members.row_position).issubset(expected.index):
+        raise ValueError('A member row positions do not map to supplied differential table')
+    for row in members.itertuples():
+        actual = expected.loc[row.row_position]
+        if str(row.candidate_gene).strip().upper() != actual.analysis_gene or row.candidate_origin != actual.candidate_origin:
+            raise ValueError('A member gene/level does not match supplied differential table')
+        for column in ['log2FC', 't_statistic', 'p_value', 'q_value']:
+            if not np.isclose(float(getattr(row,column)),float(actual[column]),rtol=1e-9,atol=1e-12):
+                raise ValueError('A member statistics do not match supplied differential table')
+
+
+def run_comparison(comparison='DM_vs_NDM', *, a_dir=None, b_dir=None,
+                   differential_path=None, gene_sets_path=None, output_root=OUTPUT_DIR):
+    safe_label(comparison)
+    b_dir = Path(b_dir or ROOT/'results/pathway_centric'/comparison)
+    a_dir = Path(a_dir or ROOT/'results/pathway_protein'/comparison)
+    differential_path = Path(differential_path or a.DIFFERENTIAL_RESULTS_DIR/f'differential_abundance_{comparison}.csv')
+    ap, ac, am = (a_dir/name for name in ['all_pathways.csv','pathway_clusters.csv','candidate_members.csv'])
+    metadata_path = a_dir/'analysis_metadata.json'
+    paths = [differential_path, b_dir/'all_pathways.csv', b_dir/'pathway_candidates.csv',
+             b_dir/'pathway_clusters.csv', b_dir/'analysis_metadata.json', b_dir/'gene_sets.json',
+             a_dir/'gene_sets.json', ap, ac, am, metadata_path]
+    if gene_sets_path:
+        paths.append(Path(gene_sets_path))
+    target = guard_output(Path(output_root)/comparison,
+        [a_dir, b_dir, a.DIFFERENTIAL_RESULTS_DIR, ROOT/'archive'], paths)
+    a_snapshot = load_definitions(a_dir/'gene_sets.json')
+    b_metadata = json.loads((b_dir/'analysis_metadata.json').read_text())
+    a_metadata = json.loads(metadata_path.read_text())
+    if b_metadata.get('gene_sets_sha256') != sha256_file(b_dir/'gene_sets.json'):
+        raise ValueError('B gene-set snapshot hash does not match its metadata')
+    for meta in [a_metadata, b_metadata]:
+        if meta.get('comparison') != comparison:
+            raise ValueError('Source comparison metadata does not match requested comparison')
+    proteins = pd.read_csv(differential_path)
+    current_hash = dataframe_hash(proteins)
+    if b_metadata.get('differential_input_sha256') != current_hash:
+        raise ValueError('B differential-input hash does not match supplied protein table')
+    if a_metadata.get('gene_sets_sha256') != sha256_file(a_dir/'gene_sets.json'):
+        raise ValueError('Route A gene-set snapshot hash does not match metadata')
+    if a_metadata.get('differential_input_sha256') != current_hash:
+        raise ValueError('Route A differential-input hash does not match supplied protein table')
+    a_all, a_clusters, a_members = map(pd.read_csv, [ap,ac,am])
+    analysis_type = 'protein_centric'
+    if set(a_all.analysis_type) - {analysis_type} or set(a_clusters.analysis_type) - {analysis_type}:
+        raise ValueError('A result tables contain a different analysis route')
+    a_members = a_members.loc[a_members.analysis_type.eq(analysis_type)]
+    validate_a_members(proteins, a_members)
+    b_all, b_candidates, b_clusters = map(pd.read_csv, paths[1:4])
+    definitions = load_definitions(b_dir/'gene_sets.json')
+    if gene_sets_path:
+        extra = load_definitions(gene_sets_path)
+        for lib, terms in extra.items():
+            if lib in definitions and terms != definitions[lib]:
+                raise ValueError('Additional snapshot conflicts with route definitions')
+        definitions.update(extra)
+    a_libraries = a_metadata.get('libraries', sorted(set(a_all.pathway_library)))
+    table, evidence, summary = build_comparison(proteins,a_all,a_clusters,a_members,b_all,b_candidates,b_clusters,
+        definitions,a_libraries,a_threshold=a_metadata['adjusted_p_threshold'],
+        a_definitions=a_snapshot, b_libraries=b_metadata.get('gene_set_database'))
+    metadata = dict(comparison=comparison,
+        matching_rule='exact versioned library plus GO/Reactome ID if present, otherwise exact full term name; no fuzzy matching',
+        candidate_presence_rule='A retained after p/support filter and consolidation; B saved candidates and consolidation',
+        comparable_rule='shared exact library, B term tested, A term present or local membership available; differing known snapshots excluded',
+        scalar_a_statistic_rule='lowest adjusted p then p/direction among all saved A directions; full records retained, not a combined p/q',
+        protein_count_rule='each successfully tested row_position once per pathway',
+        gene_count_rule='unique symbol per pathway at its strongest protein origin; non-candidate only if no candidate row',
+        direction_rule='compare unique retained A increased/decreased sign to B positive/negative; multiple A signs or B zero not meaningful',
+        definition_source_rule='full evidence from available snapshots; absent definitions yield unknown totals and candidate-only partial evidence',
+        route_a_method='local measured-background hypergeometric ORA',
+        protein_level_rules='exclusive L1 q<.05 absFC>=1; L2 q<.05 .585<=absFC<1; L3 q<.05 absFC<.585; L4 p<.05 q>=.05 absFC>=.585; L5 p<.05 q>=.05 absFC<.585',
+        implementation_hashes=provenance([Path(__file__), ROOT/'src/pathway_review_io.py', ROOT/'src/protein_evidence.py']),
+        route_a_metadata=a_metadata, route_b_metadata=b_metadata, inputs=provenance(paths),
+        common_differential_input_sha256=current_hash,
+        common_input_verified_for_A=True,
+        warnings=['No automatic evidence integration or AI reporting.',
+                  'Category denotes saved candidate support, not validation or causal biology.',
+                  'A_ONLY/B_ONLY with directly_comparable=false are coverage differences, not route disagreement.'])
+    table['route_a_name'] = 'Route A'
+    table['route_b_name'] = 'Route B'
+    summary.update(route_a_name='Route A',route_b_name='Route B')
+    metadata.update(route_a_name='Route A',route_b_name='Route B',protein_evidence_scope='Levels 1–5')
+    target.mkdir(parents=True, exist_ok=True)
+    table.to_csv(target/'pathway_comparison.csv',index=False)
+    evidence.to_csv(target/'pathway_protein_evidence.csv',index=False)
+    selection = table[['pathway_library','pathway_identifier','pathway','category']].copy()
+    selection['route_a_name'] = 'Route A'
+    selection['route_b_name'] = 'Route B'
+    selection['review_decision'] = ''
+    selection['review_notes'] = ''
+    selection_path = target/'pathway_review_selection.csv'
+    if not selection_path.exists():
+        selection.to_csv(selection_path,index=False)
+    (target/'comparison_summary.json').write_text(json.dumps(summary,indent=2,sort_keys=True)+'\n')
+    (target/'comparison_metadata.json').write_text(json.dumps(metadata,indent=2,sort_keys=True)+'\n')
+    print(f'Comparison review outputs: {target}')
+    print(f"Shared libraries: {summary['shared_libraries']}; comparable candidate pathways: {summary['comparable_candidate_pathways']}")
+    return target, summary
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--comparison',default='DM_vs_NDM')
+    parser.add_argument('--a-dir',type=Path)
+    parser.add_argument('--b-dir',type=Path)
+    parser.add_argument('--gene-sets',type=Path,help='Optional additional local definitions for A-only libraries')
+    parser.add_argument('--differential-results',type=Path)
+    args=parser.parse_args()
+    run_comparison(args.comparison,a_dir=args.a_dir,b_dir=args.b_dir,
+                   differential_path=args.differential_results,gene_sets_path=args.gene_sets)
+
+
+if __name__=='__main__':
+    main()

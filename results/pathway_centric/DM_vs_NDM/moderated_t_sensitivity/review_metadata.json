@@ -1,0 +1,48 @@
+{
+  "theme_anchor_definitions": {
+    "Mitochondrial respiration / OXPHOS": [
+      "GO:0019646",
+      "GO:0009060",
+      "GO:0045333",
+      "GO:0042775",
+      "GO:0006119",
+      "GO:0015980"
+    ],
+    "Electron transport": [
+      "GO:0019646",
+      "GO:0022900",
+      "GO:0022904",
+      "GO:0042775",
+      "GO:0006122",
+      "GO:0005750",
+      "GO:0045275"
+    ],
+    "Fatty-acid oxidation / metabolism": [
+      "GO:0006635",
+      "GO:0033539",
+      "GO:0009062",
+      "GO:0006631",
+      "GO:0019395"
+    ],
+    "Coagulation / fibrinolysis": [
+      "GO:0051917",
+      "GO:0030195",
+      "GO:0051918",
+      "GO:0030194"
+    ],
+    "Platelet granules": [
+      "GO:0031091",
+      "GO:0031093"
+    ],
+    "Extracellular matrix": [
+      "GO:0062023"
+    ]
+  },
+  "theme_policy": "Fixed canonical GO anchors, overlapping descriptive families; no combined significance",
+  "null_diagnostics_policy": "Paired same-seed subsets for changing sizes only, reproduces saved p values; no alternate inference",
+  "classification": "GENERALLY ROBUST WITH BORDERLINE DIFFERENCES",
+  "protected_files_unchanged": true,
+  "implementation_hashes": {
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/src/pathway_moderated_t_review.py": "49073183e6923d9d6803ea89487d3c9f3d61c7f9f47ea2d34bac9c230cf71f1d"
+  }
+}

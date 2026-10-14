@@ -1,0 +1,22 @@
+{
+  "src/pathway_analysis.py": {
+    "sha256": "9ead0dda41daa7b6d8c44edee27ca63cd9e675e38ca80790c7a8e74e8ef5aebe",
+    "snapshot": "docs/reference/source/pathway_analysis.py.txt"
+  },
+  "src/pathway_comparison.py": {
+    "sha256": "aeb1430bb60172d5e0751dfdf12b438aa14aef34a5a5a70ac78eaa53b8bab294",
+    "snapshot": "docs/reference/source/pathway_comparison.py.txt"
+  },
+  "src/pathway_consolidation.py": {
+    "sha256": "33cba093558e4e270431afcd9068cb280857ce75c840ce688860d76b5db0743d",
+    "snapshot": "docs/reference/source/pathway_consolidation.py.txt"
+  },
+  "src/pathway_measured_ora.py": {
+    "sha256": "29a9695b4856e50001eb0edc36bce7cde4648aa9193a809e37524a178505e92c",
+    "snapshot": "docs/reference/source/pathway_measured_ora.py.txt"
+  },
+  "src/pathway_routes.py": {
+    "sha256": "0caac112ad68bc61e400798cf426734bfabbd2246af15e1c3d6eb9f6a91cf66f",
+    "snapshot": "docs/reference/source/pathway_routes.py.txt"
+  }
+}

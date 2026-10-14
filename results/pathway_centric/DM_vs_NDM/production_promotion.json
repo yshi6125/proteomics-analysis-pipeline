@@ -1,0 +1,33 @@
+{
+  "previous_canonical_archive": "archive/route_b_10k_canonical_20261014",
+  "permutations_before": 10000,
+  "permutations_after": 100000,
+  "tested_pathways": 1617,
+  "candidate_count": 28,
+  "added": [
+    [
+      "GO_Biological_Process_2023",
+      "Fatty Acid Beta-Oxidation Using acyl-CoA Dehydrogenase (GO:0033539)"
+    ]
+  ],
+  "removed": [
+    [
+      "GO_Biological_Process_2023",
+      "Protein Secretion (GO:0009306)"
+    ]
+  ],
+  "clusters": 9,
+  "singletons": 4,
+  "route_a_and_validation_files_byte_unchanged": true,
+  "protected_file_count": 40,
+  "jaccard_threshold": 0.25,
+  "louvain_seed": 42,
+  "strict_q_cutoff_note": "q<0.05 implemented explicitly; neither baseline nor production has an exact q=0.05 case.",
+  "diagnostics": "Descriptive fields do not affect inference, selection or clustering.",
+  "tests": {
+    "command": "MPLCONFIGDIR=/private/tmp/proteomics-mpl python -m pytest -q",
+    "passed": 96,
+    "failed": 0,
+    "seconds": 14.42
+  }
+}

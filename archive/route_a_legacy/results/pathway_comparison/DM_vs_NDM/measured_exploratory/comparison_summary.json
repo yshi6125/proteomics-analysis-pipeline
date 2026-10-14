@@ -1,0 +1,48 @@
+{
+  "candidate_union_pathways": 28,
+  "categories": {
+    "A_AND_B": 5,
+    "A_ONLY": 0,
+    "B_ONLY": 23
+  },
+  "comparable_candidate_pathways": 28,
+  "comparable_categories": {
+    "A_AND_B": 5,
+    "A_ONLY": 0,
+    "B_ONLY": 23
+  },
+  "comparable_pathways": 1617,
+  "comparable_saved_result_pathways": 1617,
+  "count_definition": "unique exact-library/identifier pathways; A directional candidates also separately counted",
+  "direction_agreement": {
+    "agree": 5,
+    "not_applicable": 23
+  },
+  "incomplete_membership_pathways": 0,
+  "level_composition": "per-pathway protein rows and strongest-origin unique genes; pathway sums double-count shared genes",
+  "noncomparable_candidate_pathways": 0,
+  "route_a_candidate_pathways": 5,
+  "route_a_directional_candidates": 5,
+  "route_b_candidate_pathways": 28,
+  "shared_libraries": [
+    "GO_Biological_Process_2023",
+    "GO_Cellular_Component_2023"
+  ],
+  "shared_saved_identities": 1617,
+  "unique_gene_level_counts_across_candidate_union": {
+    "Level 1": 1,
+    "Level 2": 3,
+    "Level 3": 1,
+    "Level 4": 44,
+    "Level 5": 14,
+    "Not candidate": 289
+  },
+  "unique_protein_level_counts_across_candidate_union": {
+    "Level 1": 1,
+    "Level 2": 3,
+    "Level 3": 1,
+    "Level 4": 44,
+    "Level 5": 14,
+    "Not candidate": 289
+  }
+}

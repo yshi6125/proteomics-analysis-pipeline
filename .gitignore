@@ -19,3 +19,8 @@ data/raw/*
 results/pathway_reports/*/draft_dataset_report_*.md
 results/pathway_reports/*/cache/
 results/pathway_reports/*/review/
+
+# Preserve original ignore policy for relocated historical reporting artifacts
+archive/route_a_legacy/results/pathway_reports/*/draft_dataset_report_*.md
+archive/route_a_legacy/results/pathway_reports/*/cache/
+archive/route_a_legacy/results/pathway_reports/*/review/

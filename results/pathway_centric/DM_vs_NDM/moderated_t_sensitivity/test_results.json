@@ -1,0 +1,24 @@
+{
+  "command": "MPLCONFIGDIR=/private/tmp/proteomics-mpl python -m pytest -q",
+  "passed": 106,
+  "failed": 0,
+  "elapsed_seconds": 13.91,
+  "new_validation_tests": 10,
+  "protected_file_count": 68,
+  "protected_files_byte_unchanged": true,
+  "deterministic_moderated_inference_rerun_exact_match": true,
+  "checks": [
+    "OLS and limma unmoderated fit agreement",
+    "independent posterior variance, moderated t/p and protein BH formulas",
+    "design/contrast/sample and row identity",
+    "unchanged eligible gene mapping and arithmetic-mean duplicate aggregation",
+    "unchanged tested family and memberships",
+    "pathway gene means, two-sided empirical p and global BH",
+    "strict q cutoff and tie-aware statistic/rank comparisons",
+    "paired same-seed null samples reproduce changing-pathway p values",
+    "theme anchors and borderline disagreements",
+    "member-change concentration",
+    "overwrite guard and no clustering",
+    "production and prior validation SHA-256 protection"
+  ]
+}

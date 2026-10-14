@@ -1,0 +1,52 @@
+{
+  "absent_library_gene_rule": "excluded from that library universe and submitted list; retained in universe audit",
+  "adjusted_p_threshold": 0.05,
+  "analysis_route": "protein_centric",
+  "candidate_directional_terms": 5,
+  "candidate_pathways": 5,
+  "clusters": 2,
+  "comparison": "DM_vs_NDM",
+  "cutoff_operator": "<",
+  "differential_input_sha256": "f7021c9409c7dbaabb9dd07b85e871979c246f48a4774bbeee55df8646f06b10",
+  "display_name": "Route A",
+  "duplicate_rule": "universe unique genes; candidates strongest origin, q, p, row position before direction",
+  "enrichment_background": "measured proteome / eligible measured genes",
+  "enrichment_method": "local ORA",
+  "enrichment_test": "one-sided upper-tail hypergeometric (Fisher greater equivalent)",
+  "gene_sets_sha256": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44",
+  "historical_method_reference": "src.pathway_measured_ora.measured_enrichment(branch=exploratory); unchanged Levels 1\u20135 inference",
+  "implementation_hashes": {
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/src/pathway_analysis.py": "7289b518e54a78fd6e007722b3390b6d5a45066cbd25d11ed4a7e2e68b438065",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/src/pathway_measured_ora.py": "47d597928780770226c5bf200295b0148b40754bb9064b077ddee26436ddbfca",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/src/pathway_protein.py": "0e5cddcf5c6ea4ccd723a7832b5424fd81502cb5b037434632bee77c2529b51c"
+  },
+  "jaccard_threshold": 0.25,
+  "libraries": [
+    "GO_Biological_Process_2023",
+    "GO_Cellular_Component_2023"
+  ],
+  "louvain_seed": 42,
+  "minimum_candidate_genes": 2,
+  "multiple_testing": "BH over all nonempty measured terms, libraries and both directions including zero hits",
+  "package_versions": {
+    "networkx": "3.4.2",
+    "pandas": "2.2.3",
+    "scipy": "1.15.3",
+    "statsmodels": "0.14.4"
+  },
+  "protein_candidate_levels": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "protein_evidence_scope": "Levels 1\u20135",
+  "source_policy": "local JSON only; supplied versioned library labels, not independently verified release dates",
+  "sources": {
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/differential_abundance/differential_abundance_DM_vs_NDM.csv": "2fcd4af1e0779b543ebafc0ae6f834a82374639a351f8253cf124b317f1f50df",
+    "/Users/yingshi/Downloads/proteomics-analysis-pipeline/results/pathway_centric/DM_vs_NDM/gene_sets.json": "86043488525f9bbc846d8e37ae59ee4023903b98e0f8a1a204f7caf872c9dd44"
+  },
+  "tested_directional_terms": 8846,
+  "universe_definition": "unique valid symbols in complete successfully tested DA table intersect library annotation union"
+}

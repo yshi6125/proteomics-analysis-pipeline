@@ -1,0 +1,178 @@
+"""Historical/reference Route A variants, retained for reproducibility.
+
+Production Route A uses src.pathway_protein. The numerical functions here also
+implement its selected Levels 1–5 method; the two-branch writer is reference-only.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+from importlib.metadata import version
+from pathlib import Path
+
+import pandas as pd
+from scipy.stats import hypergeom
+from statsmodels.stats.multitest import multipletests
+
+from src import pathway_analysis as legacy
+from src.pathway_consolidation import (
+    JACCARD_THRESHOLD, LOUVAIN_SEED, _rank_cluster_members,
+    build_similarity_network, cluster_similarity_network,
+)
+from src.pathway_review_io import (
+    ROOT, dataframe_hash, guard_output, load_definitions, provenance, safe_label, sha256_file,
+)
+
+OUTPUT_DIR = ROOT / 'results' / 'pathway_analysis_measured'
+BRANCHES = {'primary': ('primary_fdr', legacy.CANDIDATE_ORIGINS[:3]),
+            'exploratory': ('exploratory_all_candidates', legacy.CANDIDATE_ORIGINS)}
+
+
+def measured_enrichment(proteins, gene_sets, branch):
+    """Test all nonempty measured terms, including zero-overlap terms, in both directions."""
+    if branch not in BRANCHES:
+        raise ValueError('branch must be primary or exploratory')
+    candidates = legacy.assign_candidate_origin(proteins)
+    measured = set(candidates.analysis_gene.dropna())
+    analysis_type, origins = BRANCHES[branch]
+    rows, audits = [], []
+    for library, terms in sorted(gene_sets.items()):
+        annotations = {term: {str(g).strip().upper() for g in genes} for term, genes in terms.items()}
+        library_genes = set().union(*annotations.values()) if annotations else set()
+        universe = measured & library_genes
+        for gene in sorted(measured):
+            audits.append(dict(pathway_library=library, analysis_gene=gene, in_universe=gene in universe))
+        for direction in ('increased', 'decreased'):
+            reps = legacy._representative_candidate_genes(candidates, origins, direction)
+            submitted = set(reps.analysis_gene) & universe
+            for term, genes in sorted(annotations.items()):
+                members = genes & universe
+                if not members:
+                    continue
+                overlap = sorted(submitted & members)
+                n, k, draw, hit = len(universe), len(members), len(submitted), len(overlap)
+                p = float(hypergeom.sf(hit - 1, n, k, draw)) if draw else 1.
+                rows.append(dict(analysis_type=analysis_type,
+                    analysis_label=legacy.ANALYSIS_LABELS[analysis_type], direction=direction,
+                    pathway_library=library, pathway=term, enrichment_p_value=p,
+                    enrichment_adjusted_p_value=1., overlap_count=hit, overlap_size=len(genes),
+                    overlap=f'{hit}/{len(genes)}', input_candidate_count=draw,
+                    gene_ratio=hit / draw if draw else 0., candidate_genes=';'.join(overlap),
+                    measured_pathway_size=k, universe_size=n,
+                    table_a=hit, table_b=draw-hit, table_c=k-hit, table_d=n-draw-k+hit))
+    columns = legacy.ENRICHMENT_COLUMNS + ['measured_pathway_size', 'universe_size',
+                                          'table_a', 'table_b', 'table_c', 'table_d']
+    results = pd.DataFrame(rows, columns=columns)
+    if not results.empty:
+        results['enrichment_adjusted_p_value'] = multipletests(results.enrichment_p_value, method='fdr_bh')[1]
+    audit = pd.DataFrame(audits, columns=['pathway_library', 'analysis_gene', 'in_universe'])
+    return results, audit
+
+
+def consolidate_measured(results, adjusted_p_threshold=.05, min_candidate_genes=2,
+                         jaccard_threshold=JACCARD_THRESHOLD, louvain_seed=LOUVAIN_SEED):
+    """Preserve A's support, representative rank and graph logic, allowing empty outputs."""
+    if not 0 < adjusted_p_threshold <= 1:
+        raise ValueError('adjusted_p_threshold must be in (0,1]')
+    if isinstance(min_candidate_genes, bool) or not isinstance(min_candidate_genes, int) or min_candidate_genes < 1:
+        raise ValueError('min_candidate_genes must be a positive integer')
+    all_results = results.copy()
+    all_results['candidate_gene_count'] = all_results.candidate_genes.map(lambda s: len(legacy._split_genes(s)))
+    all_results['candidate_genes_reconstructed'] = all_results.candidate_genes
+    selected = all_results.loc[all_results.enrichment_adjusted_p_value.lt(adjusted_p_threshold)
+        & all_results.candidate_gene_count.ge(min_candidate_genes)].copy()
+    sets = {(r.analysis_type, r.direction, r.pathway_library, r.pathway):
+            frozenset(legacy._split_genes(r.candidate_genes)) for r in selected.itertuples()}
+    graph = build_similarity_network(sets, jaccard_threshold)
+    # Zero similarity cannot supply a meaningful weighted connection at threshold zero.
+    graph.remove_edges_from([(u, v) for u, v, d in graph.edges(data=True) if d['weight'] == 0])
+    communities = cluster_similarity_network(graph, louvain_seed)
+    ranked = []
+    for community in communities:
+        subset = selected.loc[[tuple(row[c] for c in ['analysis_type', 'direction', 'pathway_library', 'pathway'])
+                               in community for _, row in selected.iterrows()]]
+        representative = _rank_cluster_members(subset).iloc[0]
+        identity = tuple(representative[c] for c in ['analysis_type', 'direction', 'pathway_library', 'pathway'])
+        ranked.append((identity, community))
+    assignments = {}
+    for number, (representative, community) in enumerate(sorted(ranked), 1):
+        for key in community:
+            assignments[key] = (f'C{number:03d}', len(community), key == representative)
+    selected['cluster_id'] = [assignments[(r.analysis_type, r.direction, r.pathway_library, r.pathway)][0]
+                              for r in selected.itertuples()]
+    selected['cluster_size'] = [assignments[(r.analysis_type, r.direction, r.pathway_library, r.pathway)][1]
+                                for r in selected.itertuples()]
+    selected['is_representative'] = [assignments[(r.analysis_type, r.direction, r.pathway_library, r.pathway)][2]
+                                     for r in selected.itertuples()]
+    selected['is_singleton_cluster'] = selected.cluster_size.eq(1)
+    return selected.reset_index(drop=True)
+
+
+def run_measured_ora(comparison='DM_vs_NDM', *, gene_sets_path, differential_path=None,
+                     output_root=OUTPUT_DIR, adjusted_p_threshold=.05, min_candidate_genes=2,
+                     jaccard_threshold=.25, louvain_seed=42):
+    safe_label(comparison)
+    differential_path = Path(differential_path or legacy.DIFFERENTIAL_RESULTS_DIR / f'differential_abundance_{comparison}.csv')
+    gene_sets_path = Path(gene_sets_path)
+    sources = [differential_path, gene_sets_path]
+    target = guard_output(Path(output_root) / comparison,
+        [legacy.RESULTS_DIR, ROOT/'results/pathway_consolidation', ROOT/'results/pathway_centric'], sources)
+    definitions = load_definitions(gene_sets_path)
+    proteins = pd.read_csv(differential_path)
+    assigned = legacy.assign_candidate_origin(proteins)
+    targets = {}
+    for branch in BRANCHES:
+        results, universe = measured_enrichment(proteins, definitions, branch)
+        clusters = consolidate_measured(results, adjusted_p_threshold, min_candidate_genes,
+                                       jaccard_threshold, louvain_seed)
+        targets[branch] = (results, clusters, universe)
+    target.mkdir(parents=True, exist_ok=True)
+    assigned.to_csv(target/'protein_levels.csv', index=False)
+    (target/'gene_sets.json').write_text(json.dumps(definitions, indent=2, sort_keys=True)+'\n')
+    for branch, (results, clusters, universe) in targets.items():
+        directory = target/branch
+        directory.mkdir(exist_ok=True)
+        results.to_csv(directory/'all_pathways.csv', index=False)
+        clusters.drop(columns=['cluster_id', 'cluster_size', 'is_representative', 'is_singleton_cluster']).to_csv(
+            directory/'pathway_candidates.csv', index=False)
+        clusters.to_csv(directory/'pathway_clusters.csv', index=False)
+        clusters.loc[clusters.is_representative].to_csv(directory/'representative_pathways.csv', index=False)
+        universe.to_csv(directory/'universe_genes.csv', index=False)
+        legacy.build_pathway_candidate_members(results, assigned).to_csv(directory/'candidate_members.csv', index=False)
+    metadata = dict(comparison=comparison, analysis_route='protein_centric', mode='measured_background',
+        method='one-sided upper-tail hypergeometric ORA (Fisher greater equivalent)',
+        universe_definition='unique valid symbols in complete successfully tested DA table intersect library annotation union',
+        duplicate_rule='universe unique genes; candidates legacy strongest origin, q, p, row position before direction',
+        absent_library_gene_rule='excluded from that library universe and submitted list; retained in universe audit',
+        multiple_testing='BH per primary/exploratory branch over all nonempty measured terms, libraries and both directions including zero hits',
+        adjusted_p_threshold=adjusted_p_threshold, cutoff_operator='<', minimum_candidate_genes=min_candidate_genes,
+        jaccard_threshold=jaccard_threshold, louvain_seed=louvain_seed, libraries=sorted(definitions),
+        sources=provenance(sources), differential_input_sha256=dataframe_hash(proteins),
+        gene_sets_sha256=sha256_file(target/'gene_sets.json'),
+        package_versions={p: version(p) for p in ['scipy', 'statsmodels', 'pandas', 'networkx']},
+        source_policy='local JSON only; versioned library labels are supplied resource names, not verified release dates',
+        branches={b: dict(tested_directional_terms=len(r), candidate_directional_terms=len(c),
+                         clusters=int(c.cluster_id.nunique())) for b,(r,c,u) in targets.items()})
+    (target/'analysis_metadata.json').write_text(json.dumps(metadata, indent=2, sort_keys=True)+'\n')
+    print(f'Route A measured-background results: {target} (legacy unchanged)')
+    return target, metadata
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--comparison', default='DM_vs_NDM')
+    parser.add_argument('--gene-sets', type=Path, required=True, help='Local versioned gene-set JSON; may use B snapshot')
+    parser.add_argument('--differential-results', type=Path)
+    parser.add_argument('--adjusted-p-threshold', type=float, default=.05)
+    parser.add_argument('--min-candidate-genes', type=int, default=2)
+    parser.add_argument('--jaccard-threshold', type=float, default=.25)
+    parser.add_argument('--louvain-seed', type=int, default=42)
+    args = parser.parse_args()
+    print('REFERENCE ONLY: production Route A uses python -m src.pathway_protein')
+    run_measured_ora(args.comparison, gene_sets_path=args.gene_sets, differential_path=args.differential_results,
+                     adjusted_p_threshold=args.adjusted_p_threshold, min_candidate_genes=args.min_candidate_genes,
+                     jaccard_threshold=args.jaccard_threshold, louvain_seed=args.louvain_seed)
+
+
+if __name__ == '__main__':
+    main()

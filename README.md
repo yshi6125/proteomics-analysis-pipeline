@@ -1,216 +1,182 @@
 # Proteomics Analysis Pipeline
 
-## Overview
+The production workflow shares one complete successfully tested differential
+protein table, runs Route A and Route B independently, and creates deterministic
+comparison outputs for human review. Route A means **Protein-Centric Analysis:
+Levels 1–5 candidates, local ORA, measured-proteome background**. Route B remains
+threshold-independent mean-t pathway analysis.
 
-This repository contains a reproducible V1 workflow for quantitative proteomics,
-from input quality control through disease-specific, evidence-grounded pathway
-reports. Deterministic analysis produces structured pathway evidence before any
-LLM is used.
-
-## End-to-End Workflow
-
-```text
-Proteomics input
-  -> QC, missingness, and transformation diagnostics
-  -> diagnosis-driven normalization and log2 transformation
-  -> PCA plus group/batch diagnosis
-  -> differential protein analysis (abundance ~ group + batch)
-  -> candidate prioritization (Levels 1-5)
-  -> pathway enrichment
-  -> pathway support filtering
-  -> Jaccard network construction and Louvain redundancy reduction
-  -> evidence aggregation
-  -> separate primary and exploratory branches
-  -> disease-specific PubMed retrieval (previous five years)
-  -> batched LLM literature assessment and interpretation
-  -> deterministic dataset-evidence and disease-relevance classification
-  -> scientific reviewer and bounded correction pass
-  -> final pathway report
+```mermaid
+flowchart TD
+    I[Proteomics input] --> Q[QC and diagnosis]
+    Q --> P[Approved preprocessing and log2 matrix]
+    P --> D[Differential analysis: group plus batch]
+    D --> S[Complete protein statistics and evidence levels]
+    S --> A[Route A: Levels 1–5 candidates]
+    S --> B[Route B: all eligible measured gene statistics]
+    A --> O[Local ORA with measured-proteome background]
+    B --> T[Unchanged mean-t gene sampling and BH]
+    O --> AC[Pathway candidates and redundancy consolidation]
+    T --> BC[Pathway candidates and redundancy consolidation]
+    AC --> C[A/B comparison]
+    BC --> C
+    C --> H[Human review and pathway selection]
+    H -. future connection .-> R[Selected evidence and AI-assisted report]
 ```
 
-The analysis writes processed data and audit tables under `data/processed/` and
-`results/`, with diagnostic figures under `figures/`. Primary evidence uses
-Levels 1-3; the exploratory branch additionally includes Levels 4-5. Pathway
-redundancy is reduced independently within each branch using candidate-gene
-Jaccard similarity, a pathway network, and seeded Louvain clustering. The
-resulting evidence JSON is the fixed input to the reporting layer.
+The current production workflow stops at human review. Automatic B/combined
+reporting is not implemented. Existing AI/reporting code is unchanged and still
+uses the historical evidence schema; it should not consume production comparison
+CSVs directly.
 
-## Design Principles
-
-- Preprocessing is diagnosis-driven: diagnostics inform explicit normalization,
-  transformation, and statistical-design decisions rather than applying automatic
-  transformations.
-- Batch-associated variation is diagnosed before analysis and batch is modeled
-  directly as a nuisance covariate in differential abundance. Batch effects are
-  not subtracted from the production analysis matrix before inference.
-- QC, differential analysis, enrichment, clustering, and evidence aggregation
-  remain deterministic and precede LLM interpretation.
-- Primary and exploratory evidence are never combined or used to upgrade one
-  another.
-- Dataset Evidence Strength is independent of literature-based Disease Relevance;
-  both classifications are computed in Python using fixed rules.
-- Enrichment and protein abundance do not imply pathway activation, inhibition,
-  metabolic flux, or causality.
-- AI interpretation is restricted to supplied evidence and checked by a bounded
-  Scientific Reviewer Agent before the final report is saved.
-
-## Installation
+## Installation and shared upstream stages
 
 ```bash
 python -m pip install -r requirements.txt
-```
-
-## Usage
-
-Run the deterministic stages in order. `normalization.py` provides explicit
-preprocessing functions; apply the approved normalization and log2 transformation
-after reviewing the diagnostics. Differential abundance reads
-`data/processed/data_log2.csv` and fits the biological contrast and preparation
-batch simultaneously. Batch is included as a nuisance covariate; no
-batch-corrected abundance matrix is created or used for inference.
-
-```bash
 python src/qc.py
 python src/diagnosis.py --comparison DM_vs_NDM
+```
+
+After reviewing diagnostics, call the preprocessing functions in
+`src/normalization.py`, apply the approved scaling/log2 choices, and explicitly
+save `data/processed/data_log2.csv`. The functions do not automatically persist
+that file. Diagnosis never changes the production matrix or automatically removes
+outliers. It records versioned reports under `results/diagnostics/diagnosis_###/`.
+
+```bash
 python src/differential_abundance.py
-python src/pathway_analysis.py
-python src/pathway_consolidation.py
-python src/evidence_builder.py
 ```
 
-Each diagnosis execution is saved without overwriting prior runs under
-`results/diagnostics/diagnosis_###/`, including a deterministic Markdown report,
-the figures and tables produced by that run, and a `latest_diagnosis.json`
-pointer. Diagnosis history is separate from downstream production outputs.
+Differential analysis uses observed values, ordinary per-protein OLS group-effect
+t-statistics, batch covariates when multiple batches exist, and protein-level BH.
+It requires at least four observations per group by default and rejects perfect
+group/batch confounding. There is no batch-subtracted production matrix.
 
-Diagnosis/QC is intentionally versioned because preprocessing diagnostics may be
-run repeatedly while evaluating transformations, scaling, batch effects, and
-potential outliers before committing to the final analysis strategy:
+## Production commands
 
-```text
-results/diagnostics/
-├── diagnosis_001/
-│   ├── diagnosis_report_DM_vs_NDM.md
-│   ├── figures/
-│   └── tables/
-├── diagnosis_002/
-│   ├── diagnosis_report_DM_vs_NDM.md
-│   ├── figures/
-│   └── tables/
-├── diagnosis_003/
-│   ├── diagnosis_report_DM_vs_NDM.md
-│   ├── figures/
-│   └── tables/
-├── diagnosis_004/
-│   ├── diagnosis_report_DM_vs_NDM.md
-│   ├── figures/
-│   └── tables/
-└── latest_diagnosis.json
-```
-
-These directories are exploratory QC and preprocessing records. Their numbering
-does not create new versions of the final differential-abundance, pathway,
-evidence, or AI-report outputs; production analysis remains separate and begins
-only after the preprocessing strategy has been approved.
-
-For datasets with two or more valid preparation batches, differential abundance
-fits `abundance ~ group + batch`; with one batch it records and uses the
-group-only fallback. Perfect group/batch confounding is rejected. Future studies
-may require additional covariates selected for their specific clinical design;
-the pipeline does not add age, sex, BMI, or other covariates automatically.
-
-The final two commands create independent primary and exploratory cluster tables
-and `pathway_evidence_<comparison>.json` files. Their default comparison is
-`DM_vs_NDM`.
-
-Preview the disease-specific PubMed queries without searching PubMed, generating
-a report, or invoking the reviewer:
+With the existing local gene-set snapshot and differential results:
 
 ```bash
-python src/generate_pathway_report.py \
-  --comparison DM_vs_NDM \
-  --disease "Type 2 diabetes" \
-  --branch exploratory \
-  --provider gemini \
-  --model <supported-gemini-model> \
-  --preview-queries
+# Route A: the single canonical protein-centric workflow, offline
+python -m src.pathway_protein --comparison DM_vs_NDM
+
+# Route B: 100k production inference, offline from the pinned snapshot
+python -m src.pathway_routes --route pathway --comparison DM_vs_NDM \
+  --gene-sets results/pathway_centric/DM_vs_NDM/gene_sets.json
+
+# Route A versus Route B: reads saved results only, offline
+python -m src.pathway_comparison --comparison DM_vs_NDM
 ```
 
-Generate a reviewed report with Gemini and four clusters per literature batch:
+`python -m src.pathway_routes --route protein` also runs canonical Route A. Use
+`--route both --gene-sets <snapshot.json>` to run both analyses independently with
+one explicit local resource. It does not automatically run comparison or reports.
+Dispatcher size/permutation/q/p flags apply to B; A parameter overrides are exposed
+by `src.pathway_protein`. Production commands have no A mode/branch choices.
+
+Route A accepts `--gene-sets <snapshot.json>`; absent that flag, it uses the
+existing `results/pathway_centric/<comparison>/gene_sets.json`. If no local resource
+exists, A fails with instructions rather than silently downloading a new library.
+Route B still downloads libraries when run without local definitions. Preserve a
+pinned snapshot outside output directories if you maintain several runs/resources.
+
+To regenerate the comparison, repeat only `python -m src.pathway_comparison`.
+No upstream statistics are rerun. Existing review selections are preserved.
+
+## Outputs and scientific interpretation
+
+| Output | Location |
+|---|---|
+| Shared differential protein table | `results/differential_abundance/differential_abundance_<comparison>.csv` |
+| Route A results, memberships, levels, universe and provenance | `results/pathway_protein/<comparison>/` |
+| Route B results and provenance | `results/pathway_centric/<comparison>/` |
+| A/B comparison, detailed proteins, summary, metadata and review selections | `results/pathway_comparison/<comparison>/` |
+
+A uses per-library unique measured genes annotated in that library as its
+background. It retains the selected Levels 1–5 candidate rules, upper-tail
+hypergeometric tests, BH over all measured terms/libraries/both directions,
+adjusted p<0.05 and at least two candidate genes, then seeded Jaccard/Louvain.
+All numerical rules are unchanged from the selected numerical workflow.
+
+B remains mean signed gene t with 100,000 size-matched random gene subsets, seed
+42, measured pathway size 5–500, and BH across tested terms/libraries. Default
+Jaccard threshold is 0.25 and Louvain seed 42 in both routes. B's gene correlation,
+ordinary t, duplicate averaging and directionality assumptions are unchanged.
+
+Comparison matches exact versioned library plus GO/Reactome ID where available,
+otherwise the exact full term name. A_AND_B/A_ONLY/B_ONLY describe selected
+statistical support, not validation or causality. Read coverage flags, separate
+protein/gene counts and direction records before interpreting agreement. No
+cross-route p/q ranking, combined significance or evidence upgrade is computed.
+Neither protein abundance nor pathway direction implies activation/inhibition.
+
+[Comparison guide](docs/PATHWAY_COMPARISON_GUIDE.md) ·
+[Architecture](docs/PIPELINE_ARCHITECTURE.md) ·
+[Quick review](docs/PIPELINE_ONE_PAGE.md)
+
+## Archive
+
+Historical workflows, results, reports, documents and reference tests are separated
+under `archive/route_a_legacy/`. Production source and commands do not import or
+read archived workflows/results. Only Route A, Route B and their comparison remain
+in the active pathway result trees. See [archive instructions](archive/route_a_legacy/REPRODUCTION.md)
+and [the cleanup report](docs/CLEANUP_REPORT.md).
+
+## Validation
 
 ```bash
-python src/generate_pathway_report.py \
-  --comparison DM_vs_NDM \
-  --disease "Type 2 diabetes" \
-  --branch exploratory \
-  --provider gemini \
-  --model <supported-gemini-model> \
-  --literature-batch-size 4
+python -m pytest -q
 ```
 
-Use `--provider openai --model <openai-model>` for OpenAI. `--refresh-cache`
-bypasses cached themes, literature assessments, and reviews. `--skip-review`
-disables scientific review for development or debugging. Reports are written to
-`results/pathway_reports/<branch>/`. Final reports may be committed as example
-outputs; caches, temporary drafts, and reviewer working records are not tracked.
+Regression tests compare canonical A statistics/memberships/clusters with the
+preserved numerical baseline, compare comparison baseline
+numerics, verify historical source protection and review preservation, and retain
+the frozen Route B regression.
 
-## Environment Variables
+## Route B direction and redundancy diagnostics
 
-- `GEMINI_API_KEY`: required when `--provider gemini` is selected.
-- `OPENAI_API_KEY`: required when `--provider openai` is selected.
-- `NCBI_EMAIL`: optional contact address included in NCBI E-utilities requests.
-- `NCBI_API_KEY`: optional; enables the higher NCBI request rate. Without it,
-  requests are conservatively throttled to comply with the lower public rate.
+The saved threshold sweep is a historical 10k validation record. Current production
+outputs directly contain all ten direction/tail/coherence fields; comparison and
+protein-evidence views expose them with the `route_b_` prefix. Do not overwrite
+the saved sweep when reviewing the promoted 100k production results.
 
-Do not commit environment-variable values or local credential files.
-
-## Key Outputs
-
-- `results/diagnostics/diagnosis_###/`: immutable diagnosis reports with the
-  figures and tables generated during each QC/preprocessing assessment.
-- `results/differential_abundance/`: protein statistics and Level 1-5 candidate
-  summaries.
-- `results/pathway_analysis/`: primary and exploratory enrichment results plus
-  pathway-member evidence.
-- `results/pathway_consolidation/<branch>/`: support-filtered clusters,
-  consolidation metadata, and pathway evidence JSON.
-- `results/pathway_reports/<branch>/`: generated reports and reviewer provenance
-  at runtime.
-
-Differential-abundance figures are organized into two evidence views:
-
-```text
-Differential Abundance
-├── Primary candidates (Levels 1–3)
-│   ├── figures/differential_abundance/volcano_<comparison>.png
-│   └── figures/differential_abundance/top_protein_heatmap_<comparison>.png
-└── Exploratory candidates (exclusive Levels 4–5)
-    ├── figures/differential_abundance/exploratory/volcano_<comparison>.png
-    ├── figures/differential_abundance/exploratory/heatmap_all_<comparison>.png
-    └── figures/differential_abundance/exploratory/heatmap_top_<N>_<comparison>.png
+```bash
+python -m src.pathway_redundancy_sensitivity --comparison DM_vs_NDM
 ```
 
-Primary figures emphasize higher-confidence candidates. Exploratory figures
-show nominal Level 4–5 candidates retained for hypothesis generation and
-exploratory pathway analysis. When a top-N exploratory heatmap is produced, it
-ranks Level 4 before Level 5, then smaller p-value, larger absolute log2FC, and a
-stable gene/accession tie-break; the complete heatmap still contains every
-exclusive Level 4–5 candidate.
+This offline post-analysis command writes enriched direction/coherence views and a
+seeded Jaccard-threshold sweep under
+`results/pathway_centric/DM_vs_NDM/redundancy_sensitivity/`. It leaves canonical
+A/B statistics, memberships, candidates and clusters untouched. The current
+recommendation is to retain Jaccard 0.25. See
+[the diagnostic review](docs/ROUTE_B_DIRECTION_REDUNDANCY_REVIEW.md) for fields,
+component/community distinctions, overlaps and sensitivity results.
 
-Example outputs: [primary Type 2 diabetes pathway report](results/pathway_reports/primary/dataset_report_DM_vs_NDM.md)
-and [exploratory Type 2 diabetes pathway report](results/pathway_reports/exploratory/dataset_report_DM_vs_NDM.md).
+## Route B permutation-count sensitivity
 
-## Limitations
+The completed historical validation is retained at
+`results/pathway_centric/DM_vs_NDM/permutation_sensitivity/`.
 
-- Many exploratory pathways may be supported mainly by lower-tier candidates.
-- Literature retrieval depends on the biological theme and disease terminology
-  used in PubMed queries.
-- Protein abundance and enrichment do not establish pathway activity, metabolic
-  flux, or causality.
-- AI-generated interpretations are evidence-grounded and reviewer-checked, but
-  still require expert scientific review.
+This offline inference-only analysis compares 10k/50k/100k permutations using
+identical frozen inputs/settings, writes to `permutation_sensitivity/` under the
+Route B comparison directory, and never invokes clustering or replaces canonical
+results. See [the permutation sensitivity report](docs/ROUTE_B_PERMUTATION_SENSITIVITY.md).
+The canonical/default production value is now 100k. The original 10k/50k/100k
+validation records are preserved unchanged; the historical sensitivity runner expects
+the archived 10k baseline and must not be rerun over these records. See
+[the production promotion report](docs/ROUTE_B_100K_PRODUCTION_UPDATE.md).
 
-## Data Availability
+## Ordinary versus moderated-t validation
 
-The repository uses an anonymized, simulated, or publicly available example
-dataset. Proprietary or unpublished research data are not included.
+The finalized 100k ordinary-t Route B was validated against standard limma 3.54.0
+moderation with the same group/batch design. All 28 canonical candidates remain;
+four borderline metabolic/ATP-synthesis terms are added. All six major themes
+remain supported. Production remains ordinary t. See the
+[validation report](results/pathway_centric/DM_vs_NDM/moderated_t_sensitivity/moderated_t_sensitivity_report.md)
+and [side-by-side pathway table](results/pathway_centric/DM_vs_NDM/moderated_t_sensitivity/pathway_comparison.csv).
+
+Reproduction code is `src/pathway_moderated_t_sensitivity.py` with
+`scripts/moderated_t_limma.R`; it requires R/limma and refuses to overwrite an
+existing experiment. Descriptive theme/null review is in
+`src/pathway_moderated_t_review.py`. Neither script regenerates production clusters
+or comparison outputs.
